@@ -102,7 +102,6 @@ As each 'VBObox' object can contain:
 //=============================================================================
 
 floatsPerVertex = 7;
-
 //=============================================================================
 //=============================================================================
 function VBObox0() {
@@ -138,8 +137,6 @@ function VBObox0() {
   'void main() {\n' +
   '  gl_FragColor = vec4(v_Colr0, 1.0);\n' + 
   '}\n';
-
-
   //New Stuff: Make each 3D shape in its own array of vertices:
   makeGroundGrid();				// create, fill the gndVerts array
 
@@ -159,8 +156,6 @@ function VBObox0() {
 		}
 
 	this.vboContents = colorShapes;
-
-  
 
 //Back to Old Stuff:
 	/*this.vboContents = //---------------------------------------------------------

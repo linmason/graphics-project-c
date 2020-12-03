@@ -126,22 +126,6 @@ g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
 // 'projection' transforms; then VBObox objects use it in their 'adjust()'
 // member functions to ensure every VBObox draws its 3D parts and assemblies
 // using the same 3D camera at the same 3D position in the same 3D world).
-var g_strafeTranslate = 0;
-var g_lookatTranslate = 0;
-var g_theta = 0;
-var g_thetaRate = 0;
-var g_zOffset = 0;
-var g_zOffsetRate = 0;
-var ANGLE_STEP = 45.0;		// Rotation angle rate (degrees/second)
-
-// Create, init current rotation angle value in JavaScript
-	var currentAngle = 0.0;
-
-	// Initialize eye position
-	var eye_position = [5, 5, 3];
-
-	// Initialize look at position
-	var lookat_position = [0, 0, 0];
 
 function main() {
 //=============================================================================
@@ -167,10 +151,6 @@ function main() {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
-  //Camera: add event listeners and variables
-	window.addEventListener("keydown", myKeyDown, false);
-	window.addEventListener("keyup", myKeyUp, false);
-	
   gl.clearColor(0.2, 0.2, 0.2, 1);	  // RGBA color for clearing <canvas>
 
   gl.enable(gl.DEPTH_TEST);
@@ -201,6 +181,7 @@ function main() {
   gouraudBox.init(gl);		//  "		"		"  for 1st kind of shading & lighting
 	phongBox.init(gl);    //  "   "   "  for 2nd kind of shading & lighting
 	
+setCamera();				// TEMPORARY: set a global camera used by ALL VBObox objects...
 	
   gl.clearColor(0.2, 0.2, 0.2, 1);	  // RGBA color for clearing <canvas>
   
@@ -224,11 +205,6 @@ function main() {
   //------------------------------------
   var tick = function() {		    // locally (within main() only), define our 
                                 // self-calling animation function. 
-    // Camera: get lookat and eye positions
-		updateCameraPositions(eye_position, lookat_position);
-		currentAngle = animate(currentAngle);  // Update the rotation angle
-		setCamera();
-
     requestAnimationFrame(tick, g_canvasID); // browser callback request; wait
                                 // til browser is ready to re-draw canvas, then
     timerAll();  // Update all time-varying params, and
@@ -357,168 +333,10 @@ function setCamera() {
                       1.0,   // camera z-near distance (always positive; frustum begins at z = -znear)
                       200.0);  // camera z-far distance (always positive; frustum ends at z = -zfar)
 
-  g_worldMat.lookAt( eye_position[0], eye_position[1], eye_position[2],	// center of projection
-		lookat_position[0], lookat_position[1], lookat_position[2],	// look-at point 
-		0, 0, 1);	// View UP vector.
+  g_worldMat.lookAt( 5.0, 5.0, 3.0,	// center of projection
+  								 0.0, 0.0, 0.0,	// look-at point 
+  								 0.0, 0.0, 1.0);	// View UP vector.
 	// READY to draw in the 'world' coordinate system.
 //------------END COPY
 
 }
-
-// updates camera position based on keyboard input
-function updateCameraPositions(eye_position, lookat_position) {
-	// Update theta and zOffset
-	g_theta += g_thetaRate;
-	g_zOffset += g_zOffsetRate;
-
-	// element-wise subtraction and mult of velocity
-	var displacement = [];
-	for(var i = 0;i<=lookat_position.length-1;i++)
-  		displacement.push((lookat_position[i] - eye_position[i]) * g_lookatTranslate * 0.02);
-
-	// element-wise add displacement to eye position
-	for(var i = 0;i<=lookat_position.length-1;i++) {
-		eye_position[i] += displacement[i];
-	}
-
-	// element-wise add strafing to eye position
-	eye_position[0] += Math.cos(g_theta + Math.PI/2) * g_strafeTranslate * 0.02;
-	eye_position[1] += Math.sin(g_theta + Math.PI/2) * g_strafeTranslate * 0.02;
-
-
-	// update look at position
-	lookat_position[0] = eye_position[0] + Math.cos(g_theta);
-	lookat_position[1] = eye_position[1] + Math.sin(g_theta);
-	lookat_position[2] = eye_position[2] + g_zOffset;
-
-	console.log("updateCameraPosition")
-	console.log(eye_position);
-	console.log(lookat_position);
-	console.log(displacement);
-	console.log(g_theta);
-	console.log(g_zOffset);
-	
-
-}
-
-function animate(angle) {
-//==============================================================================
-	// Calculate the elapsed time
-	var now = Date.now();
-	var elapsed = now - g_lastMS;
-	g_lastMS = now;    
-	// Update the current rotation angle (adjusted by the elapsed time)
-	//  limit the angle to move smoothly between +20 and -85 degrees:
-	//  if(angle >  120.0 && ANGLE_STEP > 0) ANGLE_STEP = -ANGLE_STEP;
-	//  if(angle < -120.0 && ANGLE_STEP < 0) ANGLE_STEP = -ANGLE_STEP;
-  
-	var newAngle = angle + (ANGLE_STEP * elapsed) / 1000.0;
-	return newAngle %= 360;
-}
-
-function myKeyDown(kev) {
-	//===============================================================================
-	// Called when user presses down ANY key on the keyboard;
-	//
-	// For a light, easy explanation of keyboard events in JavaScript,
-	// see:    http://www.kirupa.com/html5/keyboard_events_in_javascript.htm
-	// For a thorough explanation of a mess of JavaScript keyboard event handling,
-	// see:    http://javascript.info/tutorial/keyboard-events
-	//
-	// NOTE: Mozilla deprecated the 'keypress' event entirely, and in the
-	//        'keydown' event deprecated several read-only properties I used
-	//        previously, including kev.charCode, kev.keyCode. 
-	//        Revised 2/2019:  use kev.key and kev.code instead.
-	//
-	// Report EVERYTHING in console:
-	  console.log(  "--kev.code:",    kev.code,   "\t\t--kev.key:",     kev.key, 
-				  "\n--kev.ctrlKey:", kev.ctrlKey,  "\t--kev.shiftKey:",kev.shiftKey,
-				  "\n--kev.altKey:",  kev.altKey,   "\t--kev.metaKey:", kev.metaKey);
-
-	switch(kev.code) {
-		//----------------WASD keys------------------------
-		case "KeyA":
-			console.log("a/A key: Strafe LEFT!\n");
-			g_strafeTranslate = 1;
-			console.log(g_strafeTranslate);
-			break;
-		case "KeyD":
-			console.log("d/D key: Strafe RIGHT!\n");
-			g_strafeTranslate = -1;
-			console.log(g_strafeTranslate);
-			break;
-		case "KeyS":
-			console.log("s/S key: Move BACK!\n");
-			g_lookatTranslate = -1;
-			console.log(g_lookatTranslate);
-			break;
-		case "KeyW":
-			console.log("w/W key: Move FWD!\n");
-			g_lookatTranslate = 1;
-			console.log(g_lookatTranslate);
-			break;
-		//----------------Arrow keys------------------------
-		case "ArrowLeft": 	
-			console.log(' left-arrow.');
-			g_thetaRate = 0.03;
-			break;
-		case "ArrowRight":
-			console.log('right-arrow.');
-			g_thetaRate = -0.03;
-			break;
-		case "ArrowUp":		
-			console.log('   up-arrow.');
-			g_zOffsetRate = 0.02;
-			break;
-		case "ArrowDown":
-			console.log(' down-arrow.');
-			g_zOffsetRate = -0.02;
-			break;	
-		default:
-			console.log("UNUSED!");
-			break;
-	}
-}
-
-
-function myKeyUp(kev) {
-	//===============================================================================
-	// Called when user releases ANY key on the keyboard; captures scancodes well
-	
-	console.log('myKeyUp()--keyCode='+kev.keyCode+' released.');
-	switch(kev.code) {
-		//----------------WASD keys------------------------
-		case "KeyA":
-			g_strafeTranslate = 0;
-			console.log(g_strafeTranslate);
-			break;
-		case "KeyD":
-			g_strafeTranslate = 0;
-			console.log(g_strafeTranslate);
-			break;
-		case "KeyS":
-			g_lookatTranslate = 0;
-			console.log(g_lookatTranslate);
-			break;
-		case "KeyW":
-			g_lookatTranslate = 0;
-			console.log(g_lookatTranslate);
-			break;
-		//----------------Arrow keys------------------------
-		case "ArrowLeft": 	
-			g_thetaRate = 0;
-			break;
-		case "ArrowRight":
-			g_thetaRate = 0;
-			break;
-		case "ArrowUp":
-			g_zOffsetRate = 0;
-			break;
-		case "ArrowDown":
-			g_zOffsetRate = 0;
-			break;	
-		default:
-			break;
-	}
-
-	}
