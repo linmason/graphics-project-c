@@ -102,7 +102,9 @@ As each 'VBObox' object can contain:
 //=============================================================================
 
 floatsPerVertex = 7;
-
+makeGroundGrid();				// create, fill the gndVerts array
+makeSphere()
+makeGouraudSphere()
 //=============================================================================
 //=============================================================================
 function VBObox0() {
@@ -141,7 +143,6 @@ function VBObox0() {
 
 
   //New Stuff: Make each 3D shape in its own array of vertices:
-  makeGroundGrid();				// create, fill the gndVerts array
 
     // how many floats total needed to store all shapes?
 	var mySiz = (gndVerts.length);
@@ -494,19 +495,19 @@ function VBObox1() {
 // easily WITHOUT disrupting any other code, ever!
   
 	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
-  'precision highp float;\n' +				// req'd in OpenGL ES if we use 'float'
-  //
   'uniform mat4 u_ModelMatrix;\n' +
-  'attribute vec4 a_Pos1;\n' +
-  'attribute vec3 a_Colr1;\n'+
-  'attribute float a_PtSiz1; \n' +
-  'varying vec3 v_Colr1;\n' +
-  //
+  'uniform mat4 u_NormalMatrix;\n' +
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Color;\n' +
   'void main() {\n' +
-  '  gl_PointSize = a_PtSiz1;\n' +
-  '  gl_Position = u_ModelMatrix * a_Pos1;\n' +
-  '	 v_Colr1 = a_Colr1;\n' + 
-  ' }\n';
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 0.0);\n' +
+  'vec3 normVec = normalize(transVec.xyz);\n' +
+  'vec3 lightVec = vec3(0.0, 0.0, 1.0);\n' +				
+  '  gl_Position = u_ModelMatrix * a_Position;\n' +
+  '  v_Color = vec4(0.3*a_Color + 0.7*dot(normVec,lightVec), 1.0);\n' +
+  '}\n';
 /*
  // SQUARE dots:
 	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
@@ -531,13 +532,34 @@ function VBObox1() {
  // SHADED, sphere-like dots:
 	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
   'precision mediump float;\n' +
-  'varying vec3 v_Colr1;\n' +
+  'varying vec4 v_Color;\n' +
   'void main() {\n' +
-  '  float dist = distance(gl_PointCoord, vec2(0.5, 0.5)); \n' + 
-  '  if(dist < 0.5) {\n' + 
- 	'  	gl_FragColor = vec4((1.0-2.0*dist)*v_Colr1.rgb, 1.0);\n' +
-  '    } else {discard;};' +
+  '  gl_FragColor = v_Color;\n' +
   '}\n';
+
+
+ //New Stuff: Make each 3D shape in its own array of vertices:
+
+    // how many floats total needed to store all shapes?
+	var mySiz = (gsphVerts.length);
+
+	// How many vertices total?
+	var nn = mySiz / (floatsPerVertex+3);
+	console.log('nn is', nn, 'mySiz is', mySiz, 'floatsPerVertex is', floatsPerVertex+3);
+	// Copy all shapes into one big Float32 array:
+  	var colorShapes = new Float32Array(mySiz);
+	this.vboContents = new Float32Array(mySiz)
+	// Copy them:  remember where to start for each shape:
+	gsphStart = 0;							// we stored the cylinder first.
+  	for(i=0,j=0; j< gsphVerts.length; i++,j++) {
+  		colorShapes[i] = gsphVerts[j];
+		}
+
+	this.vboContents = colorShapes;
+		
+
+  //Back to Old Stuff:
+	/*
 
 	this.vboContents = //---------------------------------------------------------
 		new Float32Array ([					// Array of vertex attribute values we will
@@ -546,9 +568,9 @@ function VBObox1() {
   	-0.3,  0.7,	0.0, 1.0,		0.0, 1.0, 1.0,  17.0,
     -0.3, -0.3, 0.0, 1.0,		1.0, 0.0, 1.0,  20.0,
      0.3, -0.3, 0.0, 1.0,		1.0, 1.0, 0.0,  33.0,
-  ]);	
+  ]);	*/
   
-	this.vboVerts = 3;							// # of vertices held in 'vboContents' array;
+	this.vboVerts = nn;							// # of vertices held in 'vboContents' array;
 	this.FSIZE = this.vboContents.BYTES_PER_ELEMENT;  
 	                              // bytes req'd by 1 vboContents array element;
 																// (why? used to compute stride and offset 
@@ -807,7 +829,7 @@ VBObox1.prototype.draw = function() {
   }
   
   // ----------------------------Draw the contents of the currently-bound VBO:
-  gl.drawArrays(gl.POINTS,		    // select the drawing primitive to draw:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
                   // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
                   //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
   							0, 								// location of 1st vertex to draw;
@@ -1076,6 +1098,9 @@ VBObox2.prototype.switchToMe = function() {
 // this sets up data paths from VBO to our shader units:
   // 	Here's how to use the almost-identical OpenGL version of this function:
 	//		http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribPointer.xml )
+
+  var FSIZE = this.vboContents.BYTES_PER_ELEMENT;
+
   gl.vertexAttribPointer(
 		this.a_PositionLoc,//index == ID# for the attribute var in GLSL shader pgm;
 		this.vboFcount_a_Position, // # of floats used by this attribute: 1,2,3 or 4?
@@ -1279,4 +1304,178 @@ function makeGroundGrid() {
 		gndVerts[j+5] = yColr[1];			// grn
 		gndVerts[j+6] = yColr[2];			// blu
 	}
+}
+
+function makeSphere() {
+//==============================================================================
+// Make a sphere from one OpenGL TRIANGLE_STRIP primitive.   Make ring-like 
+// equal-lattitude 'slices' of the sphere (bounded by planes of constant z), 
+// and connect them as a 'stepped spiral' design (see makeCylinder) to build the
+// sphere from one triangle strip.
+	var slices = 13;		// # of slices of the sphere along the z axis. >=3 req'd
+												// (choose odd # or prime# to avoid accidental symmetry)
+	var sliceVerts	= 27;	// # of vertices around the top edge of the slice
+												// (same number of vertices on bottom of slice, too)
+	var topColr = new Float32Array([0.7, 0.7, 0.7]);	// North Pole: light gray
+	var equColr = new Float32Array([0.3, 0.7, 0.3]);	// Equator:    bright green
+	var botColr = new Float32Array([0.9, 0.9, 0.9]);	// South Pole: brightest gray.
+	var sliceAngle = Math.PI/slices;	// lattitude angle spanned by one slice.
+
+		// Create a (global) array to hold this sphere's vertices:
+	sphVerts = new Float32Array(  ((slices * 2* sliceVerts) -2) * floatsPerVertex);
+											// # of vertices * # of elements needed to store them. 
+											// each slice requires 2*sliceVerts vertices except 1st and
+											// last ones, which require only 2*sliceVerts-1.
+										
+	// Create dome-shaped top slice of sphere at z=+1
+	// s counts slices; v counts vertices; 
+	// j counts array elements (vertices * elements per vertex)
+	var cos0 = 0.0;					// sines,cosines of slice's top, bottom edge.
+	var sin0 = 0.0;
+	var cos1 = 0.0;
+	var sin1 = 0.0;	
+	var j = 0;							// initialize our array index
+	var isLast = 0;
+	var isFirst = 1;
+	for(s=0; s<slices; s++) {	// for each slice of the sphere,
+		// find sines & cosines for top and bottom of this slice
+		if(s==0) {
+			isFirst = 1;	// skip 1st vertex of 1st slice.
+			cos0 = 1.0; 	// initialize: start at north pole.
+			sin0 = 0.0;
+		}
+		else {					// otherwise, new top edge == old bottom edge
+			isFirst = 0;	
+			cos0 = cos1;
+			sin0 = sin1;
+		}								// & compute sine,cosine for new bottom edge.
+		cos1 = Math.cos((s+1)*sliceAngle);
+		sin1 = Math.sin((s+1)*sliceAngle);
+		// go around the entire slice, generating TRIANGLE_STRIP verts
+		// (Note we don't initialize j; grows with each new attrib,vertex, and slice)
+		if(s==slices-1) isLast=1;	// skip last vertex of last slice.
+		for(v=isFirst; v< 2*sliceVerts-isLast; v++, j+=floatsPerVertex) {	
+			if(v%2==0)
+			{				// put even# vertices at the the slice's top edge
+							// (why PI and not 2*PI? because 0 <= v < 2*sliceVerts
+							// and thus we can simplify cos(2*PI(v/2*sliceVerts))  
+				sphVerts[j  ] = sin0 * Math.cos(Math.PI*(v)/sliceVerts); 	
+				sphVerts[j+1] = sin0 * Math.sin(Math.PI*(v)/sliceVerts);	
+				sphVerts[j+2] = cos0;		
+				sphVerts[j+3] = 1.0;			
+			}
+			else { 	// put odd# vertices around the slice's lower edge;
+							// x,y,z,w == cos(theta),sin(theta), 1.0, 1.0
+							// 					theta = 2*PI*((v-1)/2)/capVerts = PI*(v-1)/capVerts
+				sphVerts[j  ] = sin1 * Math.cos(Math.PI*(v-1)/sliceVerts);		// x
+				sphVerts[j+1] = sin1 * Math.sin(Math.PI*(v-1)/sliceVerts);		// y
+				sphVerts[j+2] = cos1;																				// z
+				sphVerts[j+3] = 1.0;																				// w.		
+			}
+			if(s==0) {	// finally, set some interesting colors for vertices:
+				sphVerts[j+4]=topColr[0]; 
+				sphVerts[j+5]=topColr[1]; 
+				sphVerts[j+6]=topColr[2];	
+				}
+			else if(s==slices-1) {
+				sphVerts[j+4]=botColr[0]; 
+				sphVerts[j+5]=botColr[1]; 
+				sphVerts[j+6]=botColr[2];	
+			}
+			else {
+					sphVerts[j+4]=Math.random();// equColr[0]; 
+					sphVerts[j+5]=Math.random();// equColr[1]; 
+					sphVerts[j+6]=Math.random();// equColr[2];					
+			}
+		}
+	}
+}
+
+function makeGouraudSphere() {
+//==============================================================================
+// Make a sphere from one OpenGL TRIANGLE_STRIP primitive.   Make ring-like 
+// equal-lattitude 'slices' of the sphere (bounded by planes of constant z), 
+// and connect them as a 'stepped spiral' design (see makeCylinder) to build the
+// sphere from one triangle strip.
+	var slices = 13;		// # of slices of the sphere along the z axis. >=3 req'd
+												// (choose odd # or prime# to avoid accidental symmetry)
+	var sliceVerts	= 27;	// # of vertices around the top edge of the slice
+												// (same number of vertices on bottom of slice, too)
+	var topColr = new Float32Array([0.7, 0.7, 0.7]);	// North Pole: light gray
+	var equColr = new Float32Array([0.3, 0.7, 0.3]);	// Equator:    bright green
+	var botColr = new Float32Array([0.9, 0.9, 0.9]);	// South Pole: brightest gray.
+	var sliceAngle = Math.PI/slices;	// lattitude angle spanned by one slice.
+
+		// Create a (global) array to hold this sphere's vertices:
+	gsphVerts = new Float32Array(  ((slices * 2* sliceVerts) -2) * (floatsPerVertex+3));
+											// # of vertices * # of elements needed to store them. 
+											// each slice requires 2*sliceVerts vertices except 1st and
+											// last ones, which require only 2*sliceVerts-1.
+										
+	// Create dome-shaped top slice of sphere at z=+1
+	// s counts slices; v counts vertices; 
+	// j counts array elements (vertices * elements per vertex)
+	var cos0 = 0.0;					// sines,cosines of slice's top, bottom edge.
+	var sin0 = 0.0;
+	var cos1 = 0.0;
+	var sin1 = 0.0;	
+	var j = 0;							// initialize our array index
+	var isLast = 0;
+	var isFirst = 1;
+	for(s=0; s<slices; s++) {	// for each slice of the sphere,
+		// find sines & cosines for top and bottom of this slice
+		if(s==0) {
+			isFirst = 1;	// skip 1st vertex of 1st slice.
+			cos0 = 1.0; 	// initialize: start at north pole.
+			sin0 = 0.0;
+		}
+		else {					// otherwise, new top edge == old bottom edge
+			isFirst = 0;	
+			cos0 = cos1;
+			sin0 = sin1;
+		}								// & compute sine,cosine for new bottom edge.
+		cos1 = Math.cos((s+1)*sliceAngle);
+		sin1 = Math.sin((s+1)*sliceAngle);
+		// go around the entire slice, generating TRIANGLE_STRIP verts
+		// (Note we don't initialize j; grows with each new attrib,vertex, and slice)
+		if(s==slices-1) isLast=1;	// skip last vertex of last slice.
+		for(v=isFirst; v< 2*sliceVerts-isLast; v++, j+=(floatsPerVertex+3)) {	
+			if(v%2==0)
+			{				// put even# vertices at the the slice's top edge
+							// (why PI and not 2*PI? because 0 <= v < 2*sliceVerts
+							// and thus we can simplify cos(2*PI(v/2*sliceVerts))  
+				sphVerts[j  ] = sin0 * Math.cos(Math.PI*(v)/sliceVerts); 	
+				sphVerts[j+1] = sin0 * Math.sin(Math.PI*(v)/sliceVerts);	
+				sphVerts[j+2] = cos0;		
+				sphVerts[j+3] = 1.0;			
+			}
+			else { 	// put odd# vertices around the slice's lower edge;
+							// x,y,z,w == cos(theta),sin(theta), 1.0, 1.0
+							// 					theta = 2*PI*((v-1)/2)/capVerts = PI*(v-1)/capVerts
+				sphVerts[j  ] = sin1 * Math.cos(Math.PI*(v-1)/sliceVerts);		// x
+				sphVerts[j+1] = sin1 * Math.sin(Math.PI*(v-1)/sliceVerts);		// y
+				sphVerts[j+2] = cos1;																				// z
+				sphVerts[j+3] = 1.0;																				// w.		
+			}
+			if(s==0) {	// finally, set some interesting colors for vertices:
+				sphVerts[j+4]=topColr[0]; 
+				sphVerts[j+5]=topColr[1]; 
+				sphVerts[j+6]=topColr[2];	
+				}
+			else if(s==slices-1) {
+				sphVerts[j+4]=botColr[0]; 
+				sphVerts[j+5]=botColr[1]; 
+				sphVerts[j+6]=botColr[2];	
+			}
+			else {
+					sphVerts[j+4]=Math.random();// equColr[0]; 
+					sphVerts[j+5]=Math.random();// equColr[1]; 
+					sphVerts[j+6]=Math.random();// equColr[2];					
+			}
+			sphVerts[j+7] = sphVerts[j]
+			sphVerts[j+8] = sphVerts[j+1]
+			sphVerts[j+9] = sphVerts[j+2]
+		}
+	}
+	console.log(sphVerts)
 }

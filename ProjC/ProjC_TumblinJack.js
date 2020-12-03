@@ -390,15 +390,6 @@ function updateCameraPositions(eye_position, lookat_position) {
 	lookat_position[0] = eye_position[0] + Math.cos(g_theta);
 	lookat_position[1] = eye_position[1] + Math.sin(g_theta);
 	lookat_position[2] = eye_position[2] + g_zOffset;
-
-	console.log("updateCameraPosition")
-	console.log(eye_position);
-	console.log(lookat_position);
-	console.log(displacement);
-	console.log(g_theta);
-	console.log(g_zOffset);
-	
-
 }
 
 function animate(angle) {
