@@ -506,7 +506,7 @@ function VBObox1() {
   
 	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
   'uniform mat4 u_MVPMatrix;\n' +
-  //'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_ModelMatrix;\n' +
   'uniform mat4 u_NormalMatrix;\n' +
   'uniform vec4 u_LightPosition;\n' +
   'attribute vec4 a_Position;\n' +
@@ -514,11 +514,11 @@ function VBObox1() {
   'attribute vec3 a_Normal;\n' +
   'varying vec4 v_Colr;\n' +
   'void main() {\n' +
-  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 0.0);\n' +
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
-  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_MVPMatrix * a_Position).xyz);\n' +
+  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.0*a_Color + 0.7*dot(normVec,lightVec), 1.0);\n' +
+  '  v_Colr = vec4(0.0*a_Color + 1.0*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
   this.FRAG_SRC = 
@@ -718,12 +718,12 @@ VBObox1.prototype.init = function() {
     return;
   }
 
-  //this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
-  //if (!this.u_ModelMatrixLoc) { 
-    //console.log(this.constructor.name + 
-    						//'.init() failed to get GPU location for u_ModelMatrix uniform');
-    //return;
-  //}
+  this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
+  if (!this.u_ModelMatrixLoc) { 
+    console.log(this.constructor.name + 
+    						'.init() failed to get GPU location for u_ModelMatrix uniform');
+    return;
+  }
 
   this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
 	if(!this.u_NormalMatrixLoc) {	
@@ -733,7 +733,7 @@ VBObox1.prototype.init = function() {
 
   this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
   if(!this.u_LightPositionLoc) { 
-    console.log('Failed to get GPU storage location for u_NormalMatrix'); 
+    console.log('Failed to get GPU storage location for u_LightPosition'); 
     return  
   }
 }
@@ -841,24 +841,27 @@ VBObox1.prototype.adjust = function() {
 
 	// Adjust values for our uniforms,
    this.MVPMatrix.setIdentity();
-   //this.ModelMatrix.setIdentity();
+   this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
   //this.MVPMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
   //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);  // -spin drawing axes,
 
-  this.NormalMatrix.setInverseOf(this.MVPMatrix);	
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
   this.NormalMatrix.transpose();
 
   // Set Light Position
-  this.LightPosition = new Vector4(0.0, 10.0, 0.0, 1.0);
+  this.LightPosition.elements[0] = 0.0;
+  this.LightPosition.elements[1] = 0.0;
+  this.LightPosition.elements[2] = 10.0;
+  this.LightPosition.elements[3] = 0.0;
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
   gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
-  //gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
-  										//false, 										// use matrix transpose instead?
-  										//this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
 
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
