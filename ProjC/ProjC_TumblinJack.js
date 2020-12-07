@@ -99,7 +99,7 @@ var g_angleMax1  = 150.0;       // max, min allowed angle, in degrees
 var g_angleMin1  =  60.0;
                                 //---------------
 var g_angleNow2  =  0.0; 			  // Current rotation angle, in degrees.
-var g_angleRate2 = -62.0;				// Rotation angle rate, in degrees/second.
+var g_angleRate2 =  100.0;				// Rotation angle rate, in degrees/second.
 
                                 //---------------
 var g_posNow0 =  0.0;           // current position
@@ -173,7 +173,7 @@ function main() {
 	
   gl.clearColor(0.2, 0.2, 0.2, 1);	  // RGBA color for clearing <canvas>
 
-  //gl.enable(gl.DEPTH_TEST);
+  gl.enable(gl.DEPTH_TEST);
 
   /*
 //----------------SOLVE THE 'REVERSED DEPTH' PROBLEM:------------------------
