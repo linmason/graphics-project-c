@@ -509,6 +509,7 @@ function VBObox1() {
   'uniform mat4 u_ModelMatrix;\n' +
   'uniform mat4 u_NormalMatrix;\n' +
   'uniform vec4 u_LightPosition;\n' +
+  'uniform vec4 u_EyePosition;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
   'attribute vec3 a_Normal;\n' +
@@ -517,8 +518,10 @@ function VBObox1() {
   'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
   'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
+  '  v_Colr = vec4(0.0*a_Color + 0.0*dot(normVec,lightVec)+ 1.0*eyeVec, 1.0);\n' +
+  //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
   this.FRAG_SRC = 
@@ -616,10 +619,12 @@ function VBObox1() {
   this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
 	this.NormalMatrix = new Matrix4();
   this.LightPosition = new Vector4();
+  this.EyePosition = new Vector4();
   this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
   this.u_LightPositionLoc;
+  this.u_EyePositionLoc;
 };
 
 
@@ -734,6 +739,12 @@ VBObox1.prototype.init = function() {
   this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
   if(!this.u_LightPositionLoc) { 
     console.log('Failed to get GPU storage location for u_LightPosition'); 
+    return  
+  }
+
+  this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
+  if(!this.u_EyePositionLoc) { 
+    console.log('Failed to get GPU storage location for u_EyePosition'); 
     return  
   }
 }
@@ -856,6 +867,12 @@ VBObox1.prototype.adjust = function() {
   this.LightPosition.elements[2] = g_light_z;
   this.LightPosition.elements[3] = 0.0;
 
+  // Set Eye Position
+  this.EyePosition.elements[0] = eye_position[0];
+  this.EyePosition.elements[1] = eye_position[1];
+  this.EyePosition.elements[2] = eye_position[2];
+  this.EyePosition.elements[3] = 0.0;
+
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
   gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
@@ -865,6 +882,7 @@ VBObox1.prototype.adjust = function() {
 
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
+  gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
 }
 
 VBObox1.prototype.draw = function() {

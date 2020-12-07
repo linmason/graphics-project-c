@@ -118,7 +118,7 @@ var g_show0 = 1;								// 0==Show, 1==Hide VBO0 contents on-screen.
 var g_show1 = 1;								// 	"					"			VBO1		"				"				" 
 var g_show2 = 0;                //  "         "     VBO2    "       "       "
 
-// Save slider values move all but g_light_x in function main?
+// Save slider values for light position
 var html_xSlider = document.getElementById("Light_xSlider");
 var html_xOutput = document.getElementById("Light_xValue");
 var g_light_x = html_xSlider.value;
