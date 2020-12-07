@@ -518,7 +518,7 @@ function VBObox1() {
   'vec3 normVec = normalize(transVec.xyz);\n' +
   'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.0*a_Color + 1.0*dot(normVec,lightVec), 1.0);\n' +
+  '  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
   this.FRAG_SRC = 
@@ -844,16 +844,16 @@ VBObox1.prototype.adjust = function() {
    this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
-  //this.MVPMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
-  //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);  // -spin drawing axes,
+  this.MVPMatrix.rotate(g_angleNow0, 0, 0, 1);	// -spin drawing axes,
+  this.ModelMatrix.rotate(g_angleNow0, 0, 0, 1);  // -spin drawing axes,
 
   this.NormalMatrix.setInverseOf(this.ModelMatrix);	
   this.NormalMatrix.transpose();
 
   // Set Light Position
-  this.LightPosition.elements[0] = 0.0;
-  this.LightPosition.elements[1] = 0.0;
-  this.LightPosition.elements[2] = 10.0;
+  this.LightPosition.elements[0] = g_light_x;
+  this.LightPosition.elements[1] = g_light_y;
+  this.LightPosition.elements[2] = g_light_z;
   this.LightPosition.elements[3] = 0.0;
 
   //  Transfer new uniforms' values to the GPU:-------------
@@ -1471,6 +1471,7 @@ function makeGouraudSphere() {
 	var topColr = new Float32Array([0.7, 0.7, 0.7]);	// North Pole: light gray
 	var equColr = new Float32Array([0.3, 0.7, 0.3]);	// Equator:    bright green
 	var botColr = new Float32Array([0.9, 0.9, 0.9]);	// South Pole: brightest gray.
+  var redColr = new Float32Array([1.0, 0.0, 0.0]);  // North Pole: light gray
 	var sliceAngle = Math.PI/slices;	// lattitude angle spanned by one slice.
 
 		// Create a (global) array to hold this sphere's vertices:
@@ -1536,16 +1537,25 @@ function makeGouraudSphere() {
 				gsphVerts[j+4]=topColr[0]; 
 				gsphVerts[j+5]=topColr[1]; 
 				gsphVerts[j+6]=topColr[2];	
+        //gsphVerts[j+4]=redColr[0]; 
+        //gsphVerts[j+5]=redColr[1]; 
+        //gsphVerts[j+6]=redColr[2];  
 				}
 			else if(s==slices-1) {
 				gsphVerts[j+4]=botColr[0]; 
 				gsphVerts[j+5]=botColr[1]; 
 				gsphVerts[j+6]=botColr[2];	
+        //gsphVerts[j+4]=redColr[0]; 
+        //gsphVerts[j+5]=redColr[1]; 
+        //gsphVerts[j+6]=redColr[2];  
 			}
 			else {
-					gsphVerts[j+4]=Math.random();// equColr[0]; 
-					gsphVerts[j+5]=Math.random();// equColr[1]; 
-					gsphVerts[j+6]=Math.random();// equColr[2];					
+					///gsphVerts[j+4]=Math.random();// equColr[0]; 
+					///gsphVerts[j+5]=Math.random();// equColr[1]; 
+					///gsphVerts[j+6]=Math.random();// equColr[2];					
+          gsphVerts[j+4]=redColr[0];
+          gsphVerts[j+5]=redColr[1];
+          gsphVerts[j+6]=redColr[2];
 			}
 			
 			gsphVerts[j+7] = gsphVerts[j];

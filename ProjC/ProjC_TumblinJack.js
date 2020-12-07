@@ -91,7 +91,7 @@ var g_lastMS = Date.now();			// Timestamp (in milliseconds) for our
                                 // time-varying params for our webGL drawings.
   // All time-dependent params (you can add more!)
 var g_angleNow0  =  0.0; 			  // Current rotation angle, in degrees.
-var g_angleRate0 = 45.0;				// Rotation angle rate, in degrees/second.
+var g_angleRate0 = 900.0;				// Rotation angle rate, in degrees/second.
                                 //---------------
 var g_angleNow1  = 100.0;       // current angle, in degrees
 var g_angleRate1 =  95.0;        // rotation angle rate, degrees/sec
@@ -117,6 +117,37 @@ var g_posMin1 = -1.0;
 var g_show0 = 1;								// 0==Show, 1==Hide VBO0 contents on-screen.
 var g_show1 = 1;								// 	"					"			VBO1		"				"				" 
 var g_show2 = 0;                //  "         "     VBO2    "       "       "
+
+// Save slider values move all but g_light_x in function main?
+var html_xSlider = document.getElementById("Light_xSlider");
+var html_xOutput = document.getElementById("Light_xValue");
+var g_light_x = html_xSlider.value;
+html_xOutput.innerHTML = html_xSlider.value;
+html_xSlider.oninput = function() {
+  html_xOutput.innerHTML = this.value;
+  g_light_x = this.value;
+}
+
+// Save slider values move all but g_light_y in function main?
+var html_ySlider = document.getElementById("Light_ySlider");
+var html_yOutput = document.getElementById("Light_yValue");
+var g_light_y = html_ySlider.value;
+html_yOutput.innerHTML = html_ySlider.value;
+html_ySlider.oninput = function() {
+  html_yOutput.innerHTML = this.value;
+  g_light_y = this.value;
+}
+
+// Save slider values move all but g_light_y in function main?
+var html_zSlider = document.getElementById("Light_zSlider");
+var html_zOutput = document.getElementById("Light_zValue");
+var g_light_z = html_zSlider.value;
+html_zOutput.innerHTML = html_zSlider.value;
+html_zSlider.oninput = function() {
+  html_zOutput.innerHTML = this.value;
+  g_light_z = this.value;
+}
+
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
