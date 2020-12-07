@@ -99,7 +99,7 @@ var g_angleMax1  = 150.0;       // max, min allowed angle, in degrees
 var g_angleMin1  =  60.0;
                                 //---------------
 var g_angleNow2  =  0.0; 			  // Current rotation angle, in degrees.
-var g_angleRate2 = -62.0;				// Rotation angle rate, in degrees/second.
+var g_angleRate2 =  100.0;				// Rotation angle rate, in degrees/second.
 
                                 //---------------
 var g_posNow0 =  0.0;           // current position
@@ -116,7 +116,7 @@ var g_posMin1 = -1.0;
 // For mouse/keyboard:------------------------
 var g_show0 = 1;								// 0==Show, 1==Hide VBO0 contents on-screen.
 var g_show1 = 1;								// 	"					"			VBO1		"				"				" 
-var g_show2 = 1;                //  "         "     VBO2    "       "       "
+var g_show2 = 0;                //  "         "     VBO2    "       "       "
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
@@ -138,7 +138,7 @@ var ANGLE_STEP = 45.0;		// Rotation angle rate (degrees/second)
 	var currentAngle = 0.0;
 
 	// Initialize eye position
-	var eye_position = [5, 5, 3];
+	var eye_position = [-5, 0, 0];
 
 	// Initialize look at position
 	var lookat_position = [0, 0, 0];
@@ -390,15 +390,6 @@ function updateCameraPositions(eye_position, lookat_position) {
 	lookat_position[0] = eye_position[0] + Math.cos(g_theta);
 	lookat_position[1] = eye_position[1] + Math.sin(g_theta);
 	lookat_position[2] = eye_position[2] + g_zOffset;
-
-	console.log("updateCameraPosition")
-	console.log(eye_position);
-	console.log(lookat_position);
-	console.log(displacement);
-	console.log(g_theta);
-	console.log(g_zOffset);
-	
-
 }
 
 function animate(angle) {

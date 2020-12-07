@@ -494,7 +494,7 @@ function VBObox1() {
 // written into code) in all other VBObox functions. Keeping all these (initial)
 // values here, in this one coonstrutor function, ensures we can change them 
 // easily WITHOUT disrupting any other code, ever!
-  
+ /*
 	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
   'uniform mat4 u_ModelMatrix;\n' +
   'uniform mat4 u_NormalMatrix;\n' +
@@ -503,13 +503,53 @@ function VBObox1() {
   'attribute vec3 a_Normal;\n' +
   'varying vec4 v_Colr;\n' +
   'void main() {\n' +
-  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 0.0);\n' +
+  'vec4 transVec = u_ModelMatrix * vec4(a_Normal, 0.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
-  'vec3 lightVec = vec3(0.0, 3.0, 0.0);\n' +
-  //'vec3 L_Vec = normalize(lightVec - (u_ModelMatrix*a_Position));\n' + 
+  'vec3 lightVec = vec3(0.0, 0.0, 10.0);\n' +				
   '  gl_Position = u_ModelMatrix * a_Position;\n' +
   '  v_Colr = vec4(0.3*a_Color + 0.7*dot(normVec,lightVec), 1.0);\n' +
+  '}\n';*/
+
+  //The above, with some ch-ch-changes
+  this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
+  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_NormalMatrix;\n' +
+
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Colr;\n' +
+  'void main() {\n' +
+
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
+  'vec3 normVec = normalize(transVec.xyz);\n' +
+  'vec3 lightVec = vec3(0.0, 0.0, 5.0);\n' +				
+    '  gl_Position = u_ModelMatrix * a_Position;\n' +
+  '  v_Color = vec4(0.3*a_Color + 0.7*dot(normVec,lightVec), 0.0);\n' +
   '}\n';
+
+
+
+
+  /*The above, with some ch-ch-changes
+
+  this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
+  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_NormalMatrix;\n' +
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Colr;\n' +
+  'void main() {\n' +
+  'vec4 transVec = u_ModelMatrix * vec4(a_Normal, 0.0);\n' +
+  'vec3 lightVec = vec3(0.0, 0.0, 10.0);\n' +			
+  'vec3 L_Vec = normalize(lightVec-(u_ModelMatrix*vec4(a_Normal, 0)));\n' +
+  'vec3 N_Vec = normalize(u_NormalMatrix*a_Normal)' +
+  '  gl_Position = u_ModelMatrix * a_Position;\n' +
+  '  v_Colr = vec4(0.3*a_Color + 0.7*dot(N_Vec,lightVec), 1.0);\n' +
+  '}\n';*/
+
+
 /*
  // SQUARE dots:
 	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
@@ -691,7 +731,7 @@ VBObox1.prototype.init = function() {
   //	 use gl.bufferSubData() to modify VBO contents without changing VBO size)
   gl.bufferData(gl.ARRAY_BUFFER, 			  // GLenum target(same as 'bindBuffer()')
  					 				this.vboContents, 		// JavaScript Float32Array
-  							 	gl.STATIC_DRAW);			// Usage hint.  
+  							 	gl.DYNAMIC_DRAW);			// Usage hint.  
   //	The 'hint' helps GPU allocate its shared memory for best speed & efficiency
   //	(see OpenGL ES specification for more info).  Your choices are:
   //		--STATIC_DRAW is for vertex buffers rendered many times, but whose 
@@ -736,10 +776,10 @@ VBObox1.prototype.init = function() {
     return;
   }
 
-  	this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
-	if(!this.u_NormalMatrixLoc) {	
-		console.log('Failed to get GPU storage location for u_NormalMatrix');	
-		return	
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');
+	if(!this.u_NormalMatrixLoc) {
+		console.log('Failed to get GPU storage location for u_NormalMatrix');
+		return
 	}
 }
 
@@ -844,22 +884,24 @@ VBObox1.prototype.adjust = function() {
   						'.adjust() call you needed to call this.switchToMe()!!');
   }
 	// Adjust values for our uniforms,
-   this.ModelMatrix.setIdentity();
+	this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.ModelMatrix.set(g_worldMat);
-  //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
 
-  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
+  
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);
   this.NormalMatrix.transpose();
-
-
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
+
+
+
   gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
   										false, 										// use matrix transpose instead?
   										this.ModelMatrix.elements);	// send data from Javascript.
-
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
 }
 
@@ -1025,7 +1067,6 @@ function VBObox2() {
 };
 
 
-
 VBObox2.prototype.init = function() {
 //=============================================================================
 // Prepare the GPU to use all vertices, GLSL shaders, attributes, & uniforms 
@@ -1111,6 +1152,13 @@ VBObox2.prototype.init = function() {
   if (!this.u_ModelMatrixLoc) { 
     console.log(this.constructor.name + 
     						'.init() failed to get GPU location for u_ModelMatrix uniform');
+    return;
+  }
+
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');
+  if (!this.u_NormalMatrixLoc) { 
+    console.log(this.constructor.name + 
+    						'.init() failed to get GPU location for u_NormalMatrix uniform');
     return;
   }
 }
