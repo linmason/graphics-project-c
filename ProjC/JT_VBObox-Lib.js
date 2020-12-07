@@ -510,6 +510,7 @@ function VBObox1() {
   'uniform mat4 u_NormalMatrix;\n' +
   'uniform vec4 u_LightPosition;\n' +
   'uniform vec4 u_EyePosition;\n' +
+  'uniform float u_LightOn;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
   'attribute vec3 a_Normal;\n' +
@@ -520,7 +521,7 @@ function VBObox1() {
   'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.0*a_Color + 0.0*dot(normVec,lightVec)+ 1.0*eyeVec, 1.0);\n' +
+  '  v_Colr = vec4(0.3*a_Color + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
   //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
@@ -620,11 +621,13 @@ function VBObox1() {
 	this.NormalMatrix = new Matrix4();
   this.LightPosition = new Vector4();
   this.EyePosition = new Vector4();
+  this.LightOn = 1.0;
   this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
   this.u_LightPositionLoc;
   this.u_EyePositionLoc;
+  this.u_LightOnLoc;
 };
 
 
@@ -745,6 +748,12 @@ VBObox1.prototype.init = function() {
   this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
   if(!this.u_EyePositionLoc) { 
     console.log('Failed to get GPU storage location for u_EyePosition'); 
+    return  
+  }
+
+  this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
+  if(!this.u_LightOnLoc) { 
+    console.log('Failed to get GPU storage location for u_LightOn'); 
     return  
   }
 }
@@ -873,6 +882,10 @@ VBObox1.prototype.adjust = function() {
   this.EyePosition.elements[2] = eye_position[2];
   this.EyePosition.elements[3] = 0.0;
 
+  // Set light on or off
+  if (g_lightSwitch) {this.LightOn = 1.0;}
+  else {this.LightOn = 0.0;}
+
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
   gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
@@ -883,6 +896,7 @@ VBObox1.prototype.adjust = function() {
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
   gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
 }
 
 VBObox1.prototype.draw = function() {

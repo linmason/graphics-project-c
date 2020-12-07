@@ -148,6 +148,13 @@ html_zSlider.oninput = function() {
   g_light_z = this.value;
 }
 
+// Save slider values move all but g_light_y in function main?
+var html_lightSwitch = document.getElementById("Light_Switch");
+var g_lightSwitch = html_lightSwitch.checked;
+html_lightSwitch.oninput = function() {
+  g_lightSwitch = this.checked;
+  console.log(g_lightSwitch);
+}
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
