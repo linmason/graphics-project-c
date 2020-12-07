@@ -116,7 +116,7 @@ var g_posMin1 = -1.0;
 // For mouse/keyboard:------------------------
 var g_show0 = 1;								// 0==Show, 1==Hide VBO0 contents on-screen.
 var g_show1 = 1;								// 	"					"			VBO1		"				"				" 
-var g_show2 = 1;                //  "         "     VBO2    "       "       "
+var g_show2 = 0;                //  "         "     VBO2    "       "       "
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
@@ -138,7 +138,7 @@ var ANGLE_STEP = 45.0;		// Rotation angle rate (degrees/second)
 	var currentAngle = 0.0;
 
 	// Initialize eye position
-	var eye_position = [5, 5, 3];
+	var eye_position = [-5, 0, 0];
 
 	// Initialize look at position
 	var lookat_position = [0, 0, 0];
@@ -173,7 +173,7 @@ function main() {
 	
   gl.clearColor(0.2, 0.2, 0.2, 1);	  // RGBA color for clearing <canvas>
 
-  gl.enable(gl.DEPTH_TEST);
+  //gl.enable(gl.DEPTH_TEST);
 
   /*
 //----------------SOLVE THE 'REVERSED DEPTH' PROBLEM:------------------------
