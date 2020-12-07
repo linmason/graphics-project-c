@@ -505,8 +505,10 @@ function VBObox1() {
 // easily WITHOUT disrupting any other code, ever!
   
 	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
-  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_MVPMatrix;\n' +
+  //'uniform mat4 u_ModelMatrix;\n' +
   'uniform mat4 u_NormalMatrix;\n' +
+  'uniform vec4 u_LightPosition;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
   'attribute vec3 a_Normal;\n' +
@@ -514,45 +516,11 @@ function VBObox1() {
   'void main() {\n' +
   'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 0.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
-  'vec3 lightVec = vec3(0.0, 3.0, 0.0);\n' +
-  //'vec3 L_Vec = normalize(lightVec - (u_ModelMatrix*a_Position));\n' + 
-  '  gl_Position = u_ModelMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.3*a_Color + 0.7*dot(normVec,lightVec), 1.0);\n' +
+  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_MVPMatrix * a_Position).xyz);\n' +
+  '  gl_Position = u_MVPMatrix * a_Position;\n' +
+  '  v_Colr = vec4(0.0*a_Color + 0.7*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
-/*
- // SQUARE dots:
-	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
-  'precision mediump float;\n' +
-  'varying vec3 v_Colr1;\n' +
-  'void main() {\n' +
-  '  gl_FragColor = vec4(v_Colr1, 1.0);\n' +  
-  '}\n';
-*/
-/*
- // ROUND FLAT dots:
-	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
-  'precision mediump float;\n' +
-  'varying vec3 v_Colr1;\n' +
-  'void main() {\n' +
-  '  float dist = distance(gl_PointCoord, vec2(0.5, 0.5)); \n' + 
-  '  if(dist < 0.5) {\n' +
-  '    gl_FragColor = vec4(v_Colr1, 1.0);\n' +  
-  '    } else {discard;};' +
-  '}\n';
-*/
 
-/*
- // SHADED, sphere-like dots:
-	this.FRAG_SRC = //---------------------- FRAGMENT SHADER source code 
-  'precision mediump float;\n' +
-  'varying vec3 v_Colr1;\n' +
-  'void main() {\n' +
-  '  float dist = distance(gl_PointCoord, vec2(0.5, 0.5)); \n' + 
-  '  if(dist < 0.5) {\n' + 
- 	'  	gl_FragColor = vec4((1.0-2.0*dist)*v_Colr1.rgb, 1.0);\n' +
-  '    } else {discard;};' +
-  '}\n';
-  */
   this.FRAG_SRC = 
   'precision mediump float;\n' +
   'varying vec4 v_Colr;\n' +
@@ -644,10 +612,14 @@ function VBObox1() {
 	this.a_NormalLoc;
 	
 	            //---------------------- Uniform locations &values in our shaders
-	this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
+	this.MVPMatrix = new Matrix4();
+  this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
 	this.NormalMatrix = new Matrix4();
+  this.LightPosition = new Vector4();
+  this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
+  this.u_LightPositionLoc;
 };
 
 
@@ -738,18 +710,32 @@ VBObox1.prototype.init = function() {
   }
   // c2) Find All Uniforms:-----------------------------------------------------
   //Get GPU storage location for each uniform var used in our shader programs: 
- this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
-  if (!this.u_ModelMatrixLoc) { 
+
+  this.u_MVPMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_MVPMatrix');
+  if (!this.u_MVPMatrixLoc) { 
     console.log(this.constructor.name + 
-    						'.init() failed to get GPU location for u_ModelMatrix uniform');
+                '.init() failed to get GPU location for u_MVPMatrix uniform');
     return;
   }
 
-  	this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
+  //this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
+  //if (!this.u_ModelMatrixLoc) { 
+    //console.log(this.constructor.name + 
+    						//'.init() failed to get GPU location for u_ModelMatrix uniform');
+    //return;
+  //}
+
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
 	if(!this.u_NormalMatrixLoc) {	
 		console.log('Failed to get GPU storage location for u_NormalMatrix');	
 		return	
 	}
+
+  this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
+  if(!this.u_LightPositionLoc) { 
+    console.log('Failed to get GPU storage location for u_NormalMatrix'); 
+    return  
+  }
 }
 
 VBObox1.prototype.switchToMe = function () {
@@ -852,24 +838,30 @@ VBObox1.prototype.adjust = function() {
         console.log('ERROR! before' + this.constructor.name + 
   						'.adjust() call you needed to call this.switchToMe()!!');
   }
-	// Adjust values for our uniforms,
-   this.ModelMatrix.setIdentity();
-// THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
-  this.ModelMatrix.set(g_worldMat);
-  //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
 
-  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+	// Adjust values for our uniforms,
+   this.MVPMatrix.setIdentity();
+   //this.ModelMatrix.setIdentity();
+// THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
+  this.MVPMatrix.set(g_worldMat);
+  //this.MVPMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
+  //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);  // -spin drawing axes,
+
+  this.NormalMatrix.setInverseOf(this.MVPMatrix);	
   this.NormalMatrix.transpose();
 
-
+  // Set Light Position
+  this.LightPosition = new Vector4(0.0, 10.0, 0.0, 1.0);
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
-  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
-  										false, 										// use matrix transpose instead?
-  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  //gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										//false, 										// use matrix transpose instead?
+  										//this.ModelMatrix.elements);	// send data from Javascript.
 
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
 }
 
 VBObox1.prototype.draw = function() {
@@ -1310,13 +1302,13 @@ function makeAxes() {
   axesVerts = new Float32Array([
 
     0.0, 0.0, 0.0, 1.0,   1.0, 0.0, 0.0,
-    2.0, 0.0, 0.0, 1.0,    1.0, 0.0, 0.0,
+    3.0, 0.0, 0.0, 1.0,    1.0, 0.0, 0.0,
 
     0.0,  0.0, 0.0, 1.0,   0.0, 1.0, 0.0,
-    0.0,  2.0, 0.0, 1.0,  0.0, 1.0, 0.0,
+    0.0,  3.0, 0.0, 1.0,  0.0, 1.0, 0.0,
 
     0.0, 0.0,  0.0, 1.0,   0.0, 0.0, 1.0,
-    0.0, 0.0,  2.0, 1.0,  0.0, 0.0, 1.0,
+    0.0, 0.0,  3.0, 1.0,  0.0, 0.0, 1.0,
 
   ])
 }

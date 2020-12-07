@@ -138,7 +138,7 @@ var ANGLE_STEP = 45.0;		// Rotation angle rate (degrees/second)
 	var currentAngle = 0.0;
 
 	// Initialize eye position
-	var eye_position = [-5, 0, 0];
+	var eye_position = [-5, 0, 1];
 
 	// Initialize look at position
 	var lookat_position = [0, 0, 0];
@@ -361,7 +361,7 @@ function setCamera() {
     g_canvasID.width,     // viewport width,
     g_canvasID.height);     // viewport height in pixels.
 
-  var vpAspect = (g_canvasID.width/2) / g_canvasID.height;  // onscreen aspect ratio for this camera: width/height.
+  var vpAspect = (g_canvasID.width) / g_canvasID.height;  // onscreen aspect ratio for this camera: width/height.
 
   g_worldMat.setIdentity();    // DEFINE 'world-space' coords.
   
@@ -432,8 +432,8 @@ function resizeCanvas() {
   
   // Report our current browser-window contents:
   
-  console.log('g_Canvas width,height=', g_canvasID.width, g_canvasID.height);   
-  console.log('Browser window: innerWidth,innerHeight=', innerWidth, innerHeight);
+  //console.log('g_Canvas width,height=', g_canvasID.width, g_canvasID.height);   
+  //console.log('Browser window: innerWidth,innerHeight=', innerWidth, innerHeight);
   
   // Make canvas fill the top 70% of our browser window:
   var xtraMargin = 16;    // keep a margin (otherwise, browser adds scroll-bars)
