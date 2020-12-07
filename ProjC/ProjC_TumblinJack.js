@@ -228,6 +228,7 @@ function main() {
 		updateCameraPositions(eye_position, lookat_position);
 		currentAngle = animate(currentAngle);  // Update the rotation angle
 		setCamera();
+    resizeCanvas();
 
     requestAnimationFrame(tick, g_canvasID); // browser callback request; wait
                                 // til browser is ready to re-draw canvas, then
@@ -235,6 +236,9 @@ function main() {
     drawAll();                // Draw all the VBObox contents
     };
   //------------------------------------
+  // Resize canvas as window size updates
+  resizeCanvas();
+
   tick();                       // do it again!
 }
 
@@ -351,11 +355,24 @@ function setCamera() {
 // PLACEHOLDER:  sets a fixed camera at a fixed position for use by
 // ALL VBObox objects.  REPLACE This with your own camera-control code.
 
-	g_worldMat.setIdentity();
-	g_worldMat.perspective(42.0,   // FOVY: top-to-bottom vertical image angle, in degrees
-  										1.0,   // Image Aspect Ratio: camera lens width/height
-                      1.0,   // camera z-near distance (always positive; frustum begins at z = -znear)
-                      200.0);  // camera z-far distance (always positive; frustum ends at z = -zfar)
+  //----------------------Create, fill viewport------------------------
+  gl.viewport(0,
+    0,            // location(in pixels)
+    g_canvasID.width,     // viewport width,
+    g_canvasID.height);     // viewport height in pixels.
+
+  var vpAspect = (g_canvasID.width/2) / g_canvasID.height;  // onscreen aspect ratio for this camera: width/height.
+
+  g_worldMat.setIdentity();    // DEFINE 'world-space' coords.
+  
+  // Define 'camera lens':
+  var fovy = 40.0;
+  var near = 1.0;
+  var far = 100.0;
+  g_worldMat.perspective(fovy,   // FOVY: top-to-bottom vertical image angle, in degrees
+    vpAspect,   // Image Aspect Ratio: camera lens width/height
+    near,   // camera z-near distance (always positive; frustum begins at z = -znear)
+    far);  // camera z-far distance (always positive; frustum ends at z = -zfar)
 
   g_worldMat.lookAt( eye_position[0], eye_position[1], eye_position[2],	// center of projection
 		lookat_position[0], lookat_position[1], lookat_position[2],	// look-at point 
@@ -406,6 +423,24 @@ function animate(angle) {
 	var newAngle = angle + (ANGLE_STEP * elapsed) / 1000.0;
 	return newAngle %= 360;
 }
+
+
+function resizeCanvas() {
+  //==============================================================================
+  // Called when user re-sizes their browser window and on load, because our HTML file
+  // contains:  <body onload="main()" onresize="winResize()">
+  
+  // Report our current browser-window contents:
+  
+  console.log('g_Canvas width,height=', g_canvasID.width, g_canvasID.height);   
+  console.log('Browser window: innerWidth,innerHeight=', innerWidth, innerHeight);
+  
+  // Make canvas fill the top 70% of our browser window:
+  var xtraMargin = 16;    // keep a margin (otherwise, browser adds scroll-bars)
+  g_canvasID.width = innerWidth - xtraMargin;
+  g_canvasID.height = (innerHeight*.7) - xtraMargin;
+}
+
 
 function myKeyDown(kev) {
 	//===============================================================================

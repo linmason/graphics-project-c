@@ -102,7 +102,6 @@ As each 'VBObox' object can contain:
 //=============================================================================
 
 floatsPerVertex = 7;
-makeGroundGrid();				// create, fill the gndVerts array
 makeSphere()
 makeGouraudSphere()
 //=============================================================================
@@ -143,9 +142,11 @@ function VBObox0() {
 
 
   //New Stuff: Make each 3D shape in its own array of vertices:
+  makeGroundGrid();				// create, fill the gndVerts array
+  makeAxes();
 
     // how many floats total needed to store all shapes?
-	var mySiz = (gndVerts.length);
+	var mySiz = (gndVerts.length + axesVerts.length);
 
 	// How many vertices total?
 	var nn = mySiz / floatsPerVertex;
@@ -158,6 +159,11 @@ function VBObox0() {
   	for(i=0,j=0; j< gndVerts.length; i++,j++) {
   		colorShapes[i] = gndVerts[j];
 		}
+
+  axesStart = i;
+  for(j=0; j< gndVerts.length; i++,j++) {
+    colorShapes[i] = axesVerts[j];
+  }
 
 	this.vboContents = colorShapes;
 
@@ -432,8 +438,11 @@ VBObox0.prototype.draw = function() {
   gl.drawArrays(gl.LINES, 	    // select the drawing primitive to draw,
                   // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
                   //          gl.TRIANGLES, gl.TRIANGLE_STRIP, ...
-  								0, 								// location of 1st vertex to draw;
-  								this.vboVerts);		// number of vertices to draw on-screen.
+  								gndStart/floatsPerVertex, 								// location of 1st vertex to draw;
+  								gndVerts.length/floatsPerVertex);		// number of vertices to draw on-screen.
+
+  // Draw x,y,z axes
+  gl.drawArrays(gl.LINES, axesStart/floatsPerVertex, axesVerts.length/floatsPerVertex);
 }
 
 VBObox0.prototype.reload = function() {
@@ -1296,6 +1305,21 @@ VBObox2.prototype.restore = function() {
 //=============================================================================
 //=============================================================================
 //=============================================================================
+function makeAxes() {
+
+  axesVerts = new Float32Array([
+
+    0.0, 0.0, 0.0, 1.0,   1.0, 0.0, 0.0,
+    2.0, 0.0, 0.0, 1.0,    1.0, 0.0, 0.0,
+
+    0.0,  0.0, 0.0, 1.0,   0.0, 1.0, 0.0,
+    0.0,  2.0, 0.0, 1.0,  0.0, 1.0, 0.0,
+
+    0.0, 0.0,  0.0, 1.0,   0.0, 0.0, 1.0,
+    0.0, 0.0,  2.0, 1.0,  0.0, 0.0, 1.0,
+
+  ])
+}
 
 function makeGroundGrid() {
 //==============================================================================
