@@ -509,16 +509,39 @@ function VBObox1() {
   'uniform mat4 u_ModelMatrix;\n' +
   'uniform mat4 u_NormalMatrix;\n' +
   'uniform vec4 u_LightPosition;\n' +
+  'uniform vec4 u_EyePosition;\n' +
+  'uniform float u_LightOn;\n' +
+  'uniform vec3 u_IA;\n' +
+  'uniform vec3 u_ID;\n' +
+  'uniform vec3 u_IS;\n' +
+  'uniform vec3 u_KA;\n' +
+  'uniform vec3 u_KD;\n' +
+  'uniform vec3 u_KS;\n' +
+  'uniform vec3 u_KE;\n' +
+  'uniform float u_SE;\n' +
+  'uniform int u_isBlinn;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
   'attribute vec3 a_Normal;\n' +
   'varying vec4 v_Colr;\n' +
+
   'void main() {\n' +
   'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
   'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.0*a_Color + 1.0*dot(normVec,lightVec), 1.0);\n' +
+  '  if (u_isBlinn == 1) {\n' +
+  '    vec3 halfVec = normalize(lightVec + eyeVec);\n' +
+  '    v_Colr = vec4(0.0*a_Color + u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(normVec, halfVec)), u_SE)), 1.0);\n' +
+  //'    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '  }\n' +
+  '  else {\n' +
+  '    vec3 reflectVec = -1.0 * reflect(lightVec, normVec);\n' +
+  '    v_Colr = vec4(u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE)), 1.0);\n' +
+  '  }\n' +
+  //'    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
   this.FRAG_SRC = 
@@ -616,10 +639,32 @@ function VBObox1() {
   this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
 	this.NormalMatrix = new Matrix4();
   this.LightPosition = new Vector4();
+  this.EyePosition = new Vector4();
+  this.LightOn = 1.0;
+  this.IA = new Vector3();
+  this.ID = new Vector3();
+  this.IS = new Vector3();
+  this.KA = new Vector3();
+  this.KD = new Vector3();
+  this.KS = new Vector3();
+  this.KE = new Vector3();
+  this.isBlinn = 1;
+  this.SE = 1.0;
   this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
   this.u_LightPositionLoc;
+  this.u_EyePositionLoc;
+  this.u_LightOnLoc;
+  this.u_IALoc;
+  this.u_IDLoc;
+  this.u_ISLoc;
+  this.u_KALoc;
+  this.u_KDLoc;
+  this.u_KSLoc;
+  this.u_KELoc;
+  this.u_isBlinnLoc;
+  this.u_SELoc
 };
 
 
@@ -736,6 +781,72 @@ VBObox1.prototype.init = function() {
     console.log('Failed to get GPU storage location for u_LightPosition'); 
     return  
   }
+
+  this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
+  if(!this.u_EyePositionLoc) { 
+    console.log('Failed to get GPU storage location for u_EyePosition'); 
+    return  
+  }
+
+  this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
+  if(!this.u_LightOnLoc) { 
+    console.log('Failed to get GPU storage location for u_LightOn'); 
+    return  
+  }
+
+  this.u_IALoc = gl.getUniformLocation(this.shaderLoc, 'u_IA'); 
+  if(!this.u_IALoc) { 
+    console.log('Failed to get GPU storage location for u_IA'); 
+    return  
+  }
+
+  this.u_IDLoc = gl.getUniformLocation(this.shaderLoc, 'u_ID'); 
+  if(!this.u_IDLoc) { 
+    console.log('Failed to get GPU storage location for u_ID'); 
+    return  
+  }
+
+  this.u_ISLoc = gl.getUniformLocation(this.shaderLoc, 'u_IS'); 
+  if(!this.u_ISLoc) { 
+    console.log('Failed to get GPU storage location for u_IS'); 
+    return  
+  }
+
+  this.u_KALoc = gl.getUniformLocation(this.shaderLoc, 'u_KA'); 
+  if(!this.u_KALoc) { 
+    console.log('Failed to get GPU storage location for u_KA'); 
+    return  
+  }
+
+  this.u_KDLoc = gl.getUniformLocation(this.shaderLoc, 'u_KD'); 
+  if(!this.u_KDLoc) { 
+    console.log('Failed to get GPU storage location for u_KD'); 
+    return  
+  }
+
+  this.u_KSLoc = gl.getUniformLocation(this.shaderLoc, 'u_KS'); 
+  if(!this.u_KSLoc) { 
+    console.log('Failed to get GPU storage location for u_KS'); 
+    return  
+  }
+
+  this.u_KELoc = gl.getUniformLocation(this.shaderLoc, 'u_KE'); 
+  if(!this.u_KELoc) { 
+    console.log('Failed to get GPU storage location for u_KE'); 
+    return  
+  }
+
+  this.u_isBlinnLoc = gl.getUniformLocation(this.shaderLoc, 'u_isBlinn'); 
+  if(!this.u_isBlinnLoc) { 
+    console.log('Failed to get GPU storage location for u_isBlinn'); 
+    return  
+  }
+
+  this.u_SELoc = gl.getUniformLocation(this.shaderLoc, 'u_SE'); 
+  if(!this.u_SELoc) { 
+    console.log('Failed to get GPU storage location for u_SE'); 
+    return  
+  }
 }
 
 VBObox1.prototype.switchToMe = function () {
@@ -844,17 +955,58 @@ VBObox1.prototype.adjust = function() {
    this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
-  //this.MVPMatrix.rotate(g_angleNow1, 0, 0, 1);	// -spin drawing axes,
-  //this.ModelMatrix.rotate(g_angleNow1, 0, 0, 1);  // -spin drawing axes,
+  this.MVPMatrix.rotate(g_angleNow0, 0, 0, 1);	// -spin drawing axes,
+  this.ModelMatrix.rotate(g_angleNow0, 0, 0, 1);  // -spin drawing axes,
 
   this.NormalMatrix.setInverseOf(this.ModelMatrix);	
   this.NormalMatrix.transpose();
 
   // Set Light Position
-  this.LightPosition.elements[0] = 0.0;
-  this.LightPosition.elements[1] = 0.0;
-  this.LightPosition.elements[2] = 10.0;
+  this.LightPosition.elements[0] = g_light_x;
+  this.LightPosition.elements[1] = g_light_y;
+  this.LightPosition.elements[2] = g_light_z;
   this.LightPosition.elements[3] = 0.0;
+
+  // Set Eye Position
+  this.EyePosition.elements[0] = eye_position[0];
+  this.EyePosition.elements[1] = eye_position[1];
+  this.EyePosition.elements[2] = eye_position[2];
+  this.EyePosition.elements[3] = 0.0;
+
+  // Set light on or off
+  if (g_lightSwitch) {this.LightOn = 1.0;}
+  else {this.LightOn = 0.0;}
+  
+  this.IA.elements[0] = g_IA_r;
+  this.IA.elements[1] = g_IA_g;
+  this.IA.elements[2] = g_IA_b;
+
+  this.ID.elements[0] = g_ID_r;
+  this.ID.elements[1] = g_ID_g;
+  this.ID.elements[2] = g_ID_b;
+  
+  this.IS.elements[0] = g_IS_r;
+  this.IS.elements[1] = g_IS_g;
+  this.IS.elements[2] = g_IS_b;
+
+  this.KA.elements[0] = g_KA_r;
+  this.KA.elements[1] = g_KA_g;
+  this.KA.elements[2] = g_KA_b;
+
+  this.KD.elements[0] = g_KD_r;
+  this.KD.elements[1] = g_KD_g;
+  this.KD.elements[2] = g_KD_b;
+  
+  this.KS.elements[0] = g_KS_r;
+  this.KS.elements[1] = g_KS_g;
+  this.KS.elements[2] = g_KS_b;
+
+  this.KE.elements[0] = g_KE_r;
+  this.KE.elements[1] = g_KE_g;
+  this.KE.elements[2] = g_KE_b;
+
+  this.isBlinn = 0;
+  this.SE = g_SE;
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
@@ -865,6 +1017,18 @@ VBObox1.prototype.adjust = function() {
 
   gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
+  gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform3fv(this.u_IALoc, this.IA.elements);
+  gl.uniform3fv(this.u_IDLoc, this.ID.elements);
+  gl.uniform3fv(this.u_ISLoc, this.IS.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform1i(this.u_isBlinnLoc, this.isBlinn);
+  gl.uniform3fv(this.u_KALoc, this.KA.elements);
+  gl.uniform3fv(this.u_KDLoc, this.KD.elements);
+  gl.uniform3fv(this.u_KSLoc, this.KS.elements);
+  gl.uniform3fv(this.u_KELoc, this.KE.elements);
+  gl.uniform1f(this.u_SELoc, this.SE);
 }
 
 VBObox1.prototype.draw = function() {
@@ -1471,6 +1635,7 @@ function makeGouraudSphere() {
 	var topColr = new Float32Array([0.7, 0.7, 0.7]);	// North Pole: light gray
 	var equColr = new Float32Array([0.3, 0.7, 0.3]);	// Equator:    bright green
 	var botColr = new Float32Array([0.9, 0.9, 0.9]);	// South Pole: brightest gray.
+  var redColr = new Float32Array([1.0, 0.0, 0.0]);  // North Pole: light gray
 	var sliceAngle = Math.PI/slices;	// lattitude angle spanned by one slice.
 
 		// Create a (global) array to hold this sphere's vertices:
@@ -1536,16 +1701,25 @@ function makeGouraudSphere() {
 				gsphVerts[j+4]=topColr[0]; 
 				gsphVerts[j+5]=topColr[1]; 
 				gsphVerts[j+6]=topColr[2];	
+        //gsphVerts[j+4]=redColr[0]; 
+        //gsphVerts[j+5]=redColr[1]; 
+        //gsphVerts[j+6]=redColr[2];  
 				}
 			else if(s==slices-1) {
 				gsphVerts[j+4]=botColr[0]; 
 				gsphVerts[j+5]=botColr[1]; 
 				gsphVerts[j+6]=botColr[2];	
+        //gsphVerts[j+4]=redColr[0]; 
+        //gsphVerts[j+5]=redColr[1]; 
+        //gsphVerts[j+6]=redColr[2];  
 			}
 			else {
-					gsphVerts[j+4]=Math.random();// equColr[0]; 
-					gsphVerts[j+5]=Math.random();// equColr[1]; 
-					gsphVerts[j+6]=Math.random();// equColr[2];					
+					///gsphVerts[j+4]=Math.random();// equColr[0]; 
+					///gsphVerts[j+5]=Math.random();// equColr[1]; 
+					///gsphVerts[j+6]=Math.random();// equColr[2];					
+          gsphVerts[j+4]=redColr[0];
+          gsphVerts[j+5]=redColr[1];
+          gsphVerts[j+6]=redColr[2];
 			}
 			
 			gsphVerts[j+7] = gsphVerts[j];

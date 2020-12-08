@@ -91,7 +91,7 @@ var g_lastMS = Date.now();			// Timestamp (in milliseconds) for our
                                 // time-varying params for our webGL drawings.
   // All time-dependent params (you can add more!)
 var g_angleNow0  =  0.0; 			  // Current rotation angle, in degrees.
-var g_angleRate0 = 45.0;				// Rotation angle rate, in degrees/second.
+var g_angleRate0 = 900.0;				// Rotation angle rate, in degrees/second.
                                 //---------------
 var g_angleNow1  = 100.0;       // current angle, in degrees
 var g_angleRate1 =  95.0;        // rotation angle rate, degrees/sec
@@ -117,6 +117,547 @@ var g_posMin1 = -1.0;
 var g_show0 = 1;								// 0==Show, 1==Hide VBO0 contents on-screen.
 var g_show1 = 1;								// 	"					"			VBO1		"				"				" 
 var g_show2 = 0;                //  "         "     VBO2    "       "       "
+
+// Save slider values for light position
+var html_xSlider = document.getElementById("Light_xSlider");
+var html_xOutput = document.getElementById("Light_xValue");
+var g_light_x = html_xSlider.value;
+html_xOutput.innerHTML = html_xSlider.value;
+html_xSlider.oninput = function() {
+  html_xOutput.innerHTML = this.value;
+  g_light_x = this.value;
+}
+// Save slider values move all but g_light_y in function main?
+var html_ySlider = document.getElementById("Light_ySlider");
+var html_yOutput = document.getElementById("Light_yValue");
+var g_light_y = html_ySlider.value;
+html_yOutput.innerHTML = html_ySlider.value;
+html_ySlider.oninput = function() {
+  html_yOutput.innerHTML = this.value;
+  g_light_y = this.value;
+}
+// Save slider values move all but g_light_y in function main?
+var html_zSlider = document.getElementById("Light_zSlider");
+var html_zOutput = document.getElementById("Light_zValue");
+var g_light_z = html_zSlider.value;
+html_zOutput.innerHTML = html_zSlider.value;
+html_zSlider.oninput = function() {
+  html_zOutput.innerHTML = this.value;
+  g_light_z = this.value;
+}
+
+// Save slider values move all but g_light_y in function main?
+var html_lightSwitch = document.getElementById("Light_Switch");
+var g_lightSwitch = html_lightSwitch.checked;
+html_lightSwitch.oninput = function() {
+  g_lightSwitch = this.checked;
+  console.log(g_lightSwitch);
+}
+
+// Save slider values for IA values
+var html_IA_rSlider = document.getElementById("IA_rSlider");
+var html_IA_rOutput = document.getElementById("IA_rValue");
+var g_IA_r = html_IA_rSlider.value/255;
+html_IA_rOutput.innerHTML = html_IA_rSlider.value;
+html_IA_rSlider.oninput = function() {
+  html_IA_rOutput.innerHTML = this.value;
+  g_IA_r = this.value/255;
+}
+// Save slider values for IA values
+var html_IA_gSlider = document.getElementById("IA_gSlider");
+var html_IA_gOutput = document.getElementById("IA_gValue");
+var g_IA_g = html_IA_gSlider.value/255;
+html_IA_gOutput.innerHTML = html_IA_gSlider.value;
+html_IA_gSlider.oninput = function() {
+  html_IA_gOutput.innerHTML = this.value;
+  g_IA_g = this.value/255;
+}
+// Save slider values for IA values
+var html_IA_bSlider = document.getElementById("IA_bSlider");
+var html_IA_bOutput = document.getElementById("IA_bValue");
+var g_IA_b = html_IA_bSlider.value/255;
+html_IA_bOutput.innerHTML = html_IA_bSlider.value;
+html_IA_bSlider.oninput = function() {
+  html_IA_bOutput.innerHTML = this.value;
+  g_IA_b = this.value/255;
+}
+
+/*
+const setupSlider = (sliderID, valueID, globalVal) => {
+  var html_Slider = document.getElementById(sliderID);
+  var html_Output = document.getElementById(valueID);
+  globalVal = html_Slider.value/255;
+  html_Output.innerHTML = html_Slider.value;
+  html_Slider.oninput = function() {
+    html_Output.innerHTML = this.value;
+    globalVal = this.value/255;
+  }
+}
+var g_ID_r = 0.0;
+setupSlider("ID_rSlider", "ID_rValue", g_ID_r)
+var g_ID_g = 0.0;
+setupSlider("ID_gSlider", "ID_gValue", g_ID_g)
+var g_ID_b = 0.0;
+setupSlider("ID_bSlider", "ID_bValue", g_ID_b)
+*/
+
+// Save slider values for ID values
+var html_ID_rSlider = document.getElementById("ID_rSlider");
+var html_ID_rOutput = document.getElementById("ID_rValue");
+var g_ID_r = html_ID_rSlider.value/255;
+html_ID_rOutput.innerHTML = html_ID_rSlider.value;
+html_ID_rSlider.oninput = function() {
+  html_ID_rOutput.innerHTML = this.value;
+  g_ID_r = this.value/255;
+}
+// Save slider values for ID values
+var html_ID_gSlider = document.getElementById("ID_gSlider");
+var html_ID_gOutput = document.getElementById("ID_gValue");
+var g_ID_g = html_ID_gSlider.value/255;
+html_ID_gOutput.innerHTML = html_ID_gSlider.value;
+html_ID_gSlider.oninput = function() {
+  html_ID_gOutput.innerHTML = this.value;
+  g_ID_g = this.value/255;
+}
+// Save slider values for ID values
+var html_ID_bSlider = document.getElementById("ID_bSlider");
+var html_ID_bOutput = document.getElementById("ID_bValue");
+var g_ID_b = html_ID_bSlider.value/255;
+html_ID_bOutput.innerHTML = html_ID_bSlider.value;
+html_ID_bSlider.oninput = function() {
+  html_ID_bOutput.innerHTML = this.value;
+  g_ID_b = this.value/255;
+}
+
+// Save slider values for IS values
+var html_IS_rSlider = document.getElementById("IS_rSlider");
+var html_IS_rOutput = document.getElementById("IS_rValue");
+var g_IS_r = html_IS_rSlider.value/255;
+html_IS_rOutput.innerHTML = html_IS_rSlider.value;
+html_IS_rSlider.oninput = function() {
+  html_IS_rOutput.innerHTML = this.value;
+  g_IS_r = this.value/255;
+}
+// Save slider values for IS values
+var html_IS_gSlider = document.getElementById("IS_gSlider");
+var html_IS_gOutput = document.getElementById("IS_gValue");
+var g_IS_g = html_IS_gSlider.value/255;
+html_IS_gOutput.innerHTML = html_IS_gSlider.value;
+html_IS_gSlider.oninput = function() {
+  html_IS_gOutput.innerHTML = this.value;
+  g_IS_g = this.value/255;
+}
+// Save slider values for IS values
+var html_IS_bSlider = document.getElementById("IS_bSlider");
+var html_IS_bOutput = document.getElementById("IS_bValue");
+var g_IS_b = html_IS_bSlider.value/255;
+html_IS_bOutput.innerHTML = html_IS_bSlider.value;
+html_IS_bSlider.oninput = function() {
+  html_IS_bOutput.innerHTML = this.value;
+  g_IS_b = this.value/255;
+}
+
+// Save slider values for KA values
+var html_KA_rSlider = document.getElementById("KA_rSlider");
+var html_KA_rOutput = document.getElementById("KA_rValue");
+var g_KA_r = html_KA_rSlider.value/255;
+html_KA_rOutput.innerHTML = html_KA_rSlider.value;
+html_KA_rSlider.oninput = function() {
+  html_KA_rOutput.innerHTML = this.value;
+  g_KA_r = this.value/255;
+}
+// Save slider values for KA values
+var html_KA_gSlider = document.getElementById("KA_gSlider");
+var html_KA_gOutput = document.getElementById("KA_gValue");
+var g_KA_g = html_KA_gSlider.value/255;
+html_KA_gOutput.innerHTML = html_KA_gSlider.value;
+html_KA_gSlider.oninput = function() {
+  html_KA_gOutput.innerHTML = this.value;
+  g_KA_g = this.value/255;
+}
+// Save slider values for KA values
+var html_KA_bSlider = document.getElementById("KA_bSlider");
+var html_KA_bOutput = document.getElementById("KA_bValue");
+var g_KA_b = html_KA_bSlider.value/255;
+html_KA_bOutput.innerHTML = html_KA_bSlider.value;
+html_KA_bSlider.oninput = function() {
+  html_KA_bOutput.innerHTML = this.value;
+  g_KA_b = this.value/255;
+}
+
+// Save slider values for KD values
+var html_KD_rSlider = document.getElementById("KD_rSlider");
+var html_KD_rOutput = document.getElementById("KD_rValue");
+var g_KD_r = html_KD_rSlider.value/255;
+html_KD_rOutput.innerHTML = html_KD_rSlider.value;
+html_KD_rSlider.oninput = function() {
+  html_KD_rOutput.innerHTML = this.value;
+  g_KD_r = this.value/255;
+}
+// Save slider values for KD values
+var html_KD_gSlider = document.getElementById("KD_gSlider");
+var html_KD_gOutput = document.getElementById("KD_gValue");
+var g_KD_g = html_KD_gSlider.value/255;
+html_KD_gOutput.innerHTML = html_KD_gSlider.value;
+html_KD_gSlider.oninput = function() {
+  html_KD_gOutput.innerHTML = this.value;
+  g_KD_g = this.value/255;
+}
+// Save slider values for KD values
+var html_KD_bSlider = document.getElementById("KD_bSlider");
+var html_KD_bOutput = document.getElementById("KD_bValue");
+var g_KD_b = html_KD_bSlider.value/255;
+html_KD_bOutput.innerHTML = html_KD_bSlider.value;
+html_KD_bSlider.oninput = function() {
+  html_KD_bOutput.innerHTML = this.value;
+  g_KD_b = this.value/255;
+}
+
+// Save slider values for KS values
+var html_KS_rSlider = document.getElementById("KS_rSlider");
+var html_KS_rOutput = document.getElementById("KS_rValue");
+var g_KS_r = html_KS_rSlider.value/255;
+html_KS_rOutput.innerHTML = html_KS_rSlider.value;
+html_KS_rSlider.oninput = function() {
+  html_KS_rOutput.innerHTML = this.value;
+  g_KS_r = this.value/255;
+}
+// Save slider values for KS values
+var html_KS_gSlider = document.getElementById("KS_gSlider");
+var html_KS_gOutput = document.getElementById("KS_gValue");
+var g_KS_g = html_KS_gSlider.value/255;
+html_KS_gOutput.innerHTML = html_KS_gSlider.value;
+html_KS_gSlider.oninput = function() {
+  html_KS_gOutput.innerHTML = this.value;
+  g_KS_g = this.value/255;
+}
+// Save slider values for KS values
+var html_KS_bSlider = document.getElementById("KS_bSlider");
+var html_KS_bOutput = document.getElementById("KS_bValue");
+var g_KS_b = html_KS_bSlider.value/255;
+html_KS_bOutput.innerHTML = html_KS_bSlider.value;
+html_KS_bSlider.oninput = function() {
+  html_KS_bOutput.innerHTML = this.value;
+  g_KS_b = this.value/255;
+}
+
+// Save slider values for KE values
+var html_KE_rSlider = document.getElementById("KE_rSlider");
+var html_KE_rOutput = document.getElementById("KE_rValue");
+var g_KE_r = html_KE_rSlider.value/255;
+html_KE_rOutput.innerHTML = html_KE_rSlider.value;
+html_KE_rSlider.oninput = function() {
+  html_KE_rOutput.innerHTML = this.value;
+  g_KE_r = this.value/255;
+}
+// Save slider values for KE values
+var html_KE_gSlider = document.getElementById("KE_gSlider");
+var html_KE_gOutput = document.getElementById("KE_gValue");
+var g_KE_g = html_KE_gSlider.value/255;
+html_KE_gOutput.innerHTML = html_KE_gSlider.value;
+html_KE_gSlider.oninput = function() {
+  html_KE_gOutput.innerHTML = this.value;
+  g_KE_g = this.value/255;
+}
+// Save slider values for KE values
+var html_KE_bSlider = document.getElementById("KE_bSlider");
+var html_KE_bOutput = document.getElementById("KE_bValue");
+var g_KE_b = html_KE_bSlider.value/255;
+html_KE_bOutput.innerHTML = html_KE_bSlider.value;
+html_KE_bSlider.oninput = function() {
+  html_KE_bOutput.innerHTML = this.value;
+  g_KE_b = this.value/255;
+}
+
+// Save slider values for SE values
+var html_SE_Slider = document.getElementById("SE_Slider");
+var html_SE_Output = document.getElementById("SE_Value");
+var g_SE = html_SE_Slider.value/255;
+html_SE_Output.innerHTML = html_SE_Slider.value;
+html_SE_Slider.oninput = function() {
+  html_SE_Output.innerHTML = this.value;
+  g_SE = this.value/255;
+}
+
+
+var MATL_RED_PLASTIC =    1;
+var MATL_GRN_PLASTIC =    2;
+var MATL_BLU_PLASTIC =    3;
+var MATL_BLACK_PLASTIC =  4;
+var MATL_BLACK_RUBBER =   5;
+var MATL_BRASS =          6;
+var MATL_BRONZE_DULL =    7;
+var MATL_BRONZE_SHINY =   8;
+var MATL_CHROME =         9;
+var MATL_COPPER_DULL =   10;
+var MATL_COPPER_SHINY =  11;
+var MATL_GOLD_DULL =     12;
+var MATL_GOLD_SHINY =    13;
+var MATL_PEWTER =        14;
+var MATL_SILVER_DULL =   15;
+var MATL_SILVER_SHINY =  16;
+var MATL_EMERALD =       17;
+var MATL_JADE =          18;
+var MATL_OBSIDIAN =      19;
+var MATL_PEARL =         20;
+var MATL_RUBY =          21;
+var MATL_TURQUOISE =     22;
+var MATL_DEFAULT =       23;    // (used for unrecognized material names)
+
+function Material(opt_Matl) {
+//==============================================================================
+// Constructor:  use these defaults:
+
+  this.K_emit = [];   // JS arrays that hold 4 (not 3!) reflectance values: 
+                      // r,g,b,a where 'a'==alpha== opacity; usually 1.0.
+                      // (Opacity is part of this set of measured materials)
+  this.K_ambi = [];
+  this.K_diff = [];
+  this.K_spec = [];
+  this.K_shiny = 0.0;
+  this.K_name = "Undefined Material";   // text string with material name.
+  this.K_matlNum =  MATL_DEFAULT;       // material number.
+  
+  // GPU location values for GLSL struct-member uniforms (LampT struct) needed
+  // to transfer K values above to the GPU. Get these values using the
+  // webGL fcn 'gl.getUniformLocation()'.  False for 'not initialized'.
+  this.uLoc_Ke = false;
+  this.uLoc_Ka = false;
+  this.uLoc_Kd = false;
+  this.uLoc_Ks = false;
+  this.uLoc_Kshiny = false;
+  // THEN: ?Did the user specified a valid material?
+  if(   opt_Matl && opt_Matl >=0 && opt_Matl < MATL_DEFAULT)  {   
+    this.setMatl(opt_Matl);     // YES! set the reflectance values (K_xx)
+  }
+  return this;
+}
+
+
+
+Material.prototype.setMatl = function(nuMatl) {
+//==============================================================================
+// Call this member function to change the Ke,Ka,Kd,Ks members of this object 
+// to describe the material whose identifying number is 'nuMatl' (see list of
+// these numbers and material names at the top of this file).
+// This function DOES NOT CHANGE values of any of its uLoc_XX member variables.
+
+  console.log('Called Material.setMatl( ', nuMatl,');'); 
+  this.K_emit = [];     // DISCARD any current material reflectance values.
+  this.K_ambi = [];
+  this.K_diff = [];
+  this.K_spec = [];
+  this.K_name = [];
+  this.K_shiny = 0.0;
+  //  Set new values ONLY for material reflectances:
+  switch(nuMatl)
+  {
+    case MATL_RED_PLASTIC: // 1
+      this.K_emit.push(0.0,     0.0,    0.0,    1.0);
+      this.K_ambi.push(0.1,     0.1,    0.1,    1.0);
+      this.K_diff.push(0.6,     0.0,    0.0,    1.0);
+      this.K_spec.push(0.6,     0.6,    0.6,    1.0);   
+      this.K_shiny = 100.0;
+      this.K_name = "MATL_RED_PLASTIC";
+      break;
+    case MATL_GRN_PLASTIC: // 2
+      this.K_emit.push(0.0,     0.0,    0.0,    1.0);
+      this.K_ambi.push(0.05,    0.05,   0.05,   1.0);
+      this.K_diff.push(0.0,     0.6,    0.0,    1.0);
+      this.K_spec.push(0.2,     0.2,    0.2,    1.0);   
+      this.K_shiny = 60.0;
+      this.K_name = "MATL_GRN_PLASTIC";
+      break;
+    case MATL_BLU_PLASTIC: // 3
+      this.K_emit.push(0.0,     0.0,    0.0,    1.0);
+      this.K_ambi.push(0.05,    0.05,   0.05,   1.0);
+      this.K_diff.push(0.0,     0.2,    0.6,    1.0);
+      this.K_spec.push(0.1,     0.2,    0.3,    1.0);   
+      this.K_shiny = 5.0;
+      this.K_name = "MATL_BLU_PLASTIC";
+      break;
+    case MATL_BLACK_PLASTIC:
+      this.K_emit.push(0.0,     0.0,    0.0,    1.0);
+      this.K_ambi.push(0.0,     0.0,    0.0,    1.0);
+      this.K_diff.push(0.01,    0.01,   0.01,   1.0);
+      this.K_spec.push(0.5,     0.5,    0.5,    1.0);   
+      this.K_shiny = 32.0;
+      this.K_name = "MATL_BLACK_PLASTIC";
+      break;
+    case MATL_BLACK_RUBBER:
+      this.K_emit.push(0.0,     0.0,    0.0,    1.0);
+      this.K_ambi.push(0.02,    0.02,   0.02,   1.0);
+      this.K_diff.push(0.01,    0.01,   0.01,   1.0);
+      this.K_spec.push(0.4,     0.4,    0.4,    1.0);   
+      this.K_shiny = 10.0;
+      this.K_name = "MATL_BLACK_RUBBER";
+      break;
+    case MATL_BRASS:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.329412, 0.223529, 0.027451, 1.0);
+      this.K_diff.push(0.780392, 0.568627, 0.113725, 1.0);
+      this.K_spec.push(0.992157, 0.941176, 0.807843, 1.0);   
+      this.K_shiny = 27.8974;
+      this.K_name = "MATL_BRASS";
+      break;
+    case MATL_BRONZE_DULL:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.2125,   0.1275,   0.054,    1.0);
+      this.K_diff.push(0.714,    0.4284,   0.18144,  1.0);
+      this.K_spec.push(0.393548, 0.271906, 0.166721, 1.0);  
+      this.K_shiny = 25.6;
+      this.K_name = "MATL_BRONZE_DULL";
+      break;
+    case MATL_BRONZE_SHINY:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.25,     0.148,    0.06475,  1.0);
+      this.K_diff.push(0.4,      0.2368,   0.1036,   1.0);
+      this.K_spec.push(0.774597, 0.458561, 0.200621, 1.0);  
+      this.K_shiny = 76.8;
+      this.K_name = "MATL_BRONZE_SHINY";
+      break;
+    case MATL_CHROME:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.25,     0.25,     0.25,     1.0);
+      this.K_diff.push(0.4,      0.4,      0.4,      1.0);
+      this.K_spec.push(0.774597, 0.774597, 0.774597, 1.0);  
+      this.K_shiny = 76.8;
+      this.K_name = "MATL_CHROME";
+      break;
+    case MATL_COPPER_DULL:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.19125,  0.0735,   0.0225,   1.0);
+      this.K_diff.push(0.7038,   0.27048,  0.0828,   1.0);
+      this.K_spec.push(0.256777, 0.137622, 0.086014, 1.0);  
+      this.K_shiny = 12.8;
+      this.K_name = "MATL_COPPER_DULL";
+      break;
+    case MATL_COPPER_SHINY:
+      this.K_emit.push(0.0,      0.0,      0.0,       1.0);
+      this.K_ambi.push(0.2295,   0.08825,  0.0275,    1.0);
+      this.K_diff.push(0.5508,   0.2118,   0.066,     1.0);
+      this.K_spec.push(0.580594, 0.223257, 0.0695701, 1.0);  
+      this.K_shiny = 51.2;
+      this.K_name = "MATL_COPPER_SHINY";
+      break;
+    case MATL_GOLD_DULL:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.24725,  0.1995,   0.0745,   1.0);
+      this.K_diff.push(0.75164,  0.60648,  0.22648,  1.0);
+      this.K_spec.push(0.628281, 0.555802, 0.366065, 1.0);  
+      this.K_shiny = 51.2;
+      this.K_name = "MATL_GOLD_DULL";
+      break;
+    case MATL_GOLD_SHINY:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.24725,  0.2245,   0.0645,   1.0);
+      this.K_diff.push(0.34615,  0.3143,   0.0903,   1.0);
+      this.K_spec.push(0.797357, 0.723991, 0.208006, 1.0);  
+      this.K_shiny = 83.2;
+      this.K_name = "MATL_GOLD_SHINY";
+      break;
+    case MATL_PEWTER:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.105882, 0.058824, 0.113725, 1.0);
+      this.K_diff.push(0.427451, 0.470588, 0.541176, 1.0);
+      this.K_spec.push(0.333333, 0.333333, 0.521569, 1.0);  
+      this.K_shiny = 9.84615;
+      this.K_name = "MATL_PEWTER";
+      break;
+    case MATL_SILVER_DULL:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.19225,  0.19225,  0.19225,  1.0);
+      this.K_diff.push(0.50754,  0.50754,  0.50754,  1.0);
+      this.K_spec.push(0.508273, 0.508273, 0.508273, 1.0);  
+      this.K_shiny = 51.2;
+      this.K_name = "MATL_SILVER_DULL";
+      break;
+    case MATL_SILVER_SHINY:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.23125,  0.23125,  0.23125,  1.0);
+      this.K_diff.push(0.2775,   0.2775,   0.2775,   1.0);
+      this.K_spec.push(0.773911, 0.773911, 0.773911, 1.0);  
+      this.K_shiny = 89.6;
+      this.K_name = "MATL_SILVER_SHINY";
+      break;
+    case MATL_EMERALD:
+      this.K_emit.push(0.0,     0.0,      0.0,     1.0);
+      this.K_ambi.push(0.0215,  0.1745,   0.0215,  0.55);
+      this.K_diff.push(0.07568, 0.61424,  0.07568, 0.55);
+      this.K_spec.push(0.633,   0.727811, 0.633,   0.55);   
+      this.K_shiny = 76.8;
+      this.K_name = "MATL_EMERALD";
+      break;
+    case MATL_JADE:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.135,    0.2225,   0.1575,   0.95);
+      this.K_diff.push(0.54,     0.89,     0.63,     0.95);
+      this.K_spec.push(0.316228, 0.316228, 0.316228, 0.95);   
+      this.K_shiny = 12.8;
+      this.K_name = "MATL_JADE";
+      break;
+    case MATL_OBSIDIAN:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.05375,  0.05,     0.06625,  0.82);
+      this.K_diff.push(0.18275,  0.17,     0.22525,  0.82);
+      this.K_spec.push(0.332741, 0.328634, 0.346435, 0.82);   
+      this.K_shiny = 38.4;
+      this.K_name = "MATL_OBSIDIAN";
+      break;
+    case MATL_PEARL:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.25,     0.20725,  0.20725,  0.922);
+      this.K_diff.push(1.0,      0.829,    0.829,    0.922);
+      this.K_spec.push(0.296648, 0.296648, 0.296648, 0.922);   
+      this.K_shiny = 11.264;
+      this.K_name = "MATL_PEARL";
+      break;
+    case MATL_RUBY:
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.1745,   0.01175,  0.01175,  0.55);
+      this.K_diff.push(0.61424,  0.04136,  0.04136,  0.55);
+      this.K_spec.push(0.727811, 0.626959, 0.626959, 0.55);   
+      this.K_shiny = 76.8;
+      this.K_name = "MATL_RUBY";
+      break;
+    case MATL_TURQUOISE: // 22
+      this.K_emit.push(0.0,      0.0,      0.0,      1.0);
+      this.K_ambi.push(0.1,      0.18725,  0.1745,   0.8);
+      this.K_diff.push(0.396,    0.74151,  0.69102,  0.8);
+      this.K_spec.push(0.297254, 0.30829,  0.306678, 0.8);   
+      this.K_shiny = 12.8;
+      this.K_name = "MATL_TURQUOISE";
+      break;
+    default:
+      // ugly featureless (emissive-only) red:
+      this.K_emit.push(0.5, 0.0, 0.0, 1.0); // DEFAULT: ugly RED emissive light only
+      this.K_ambi.push(0.0, 0.0, 0.0, 1.0); // r,g,b,alpha  ambient reflectance
+      this.K_diff.push(0.0, 0.0, 0.0, 1.0); //              diffuse reflectance
+      this.K_spec.push(0.0, 0.0, 0.0, 1.0); //              specular reflectance
+      this.K_shiny = 1.0;       // Default (don't set specular exponent to zero!)
+      this.K_name = "DEFAULT_RED";
+      break;
+  }
+  console.log('set to:', this.K_name, '\n');
+  return this;
+}
+
+var material_num = 1;
+var mt = new Material(material_num);
+g_KE_r = mt.K_emit[0];
+g_KE_g = mt.K_emit[1];
+g_KE_b = mt.K_emit[2];
+g_KA_r = mt.K_ambi[0];
+g_KA_g = mt.K_ambi[1];
+g_KA_b = mt.K_ambi[2];
+g_KD_r = mt.K_diff[0];
+g_KD_g = mt.K_diff[1];
+g_KD_b = mt.K_diff[2];
+g_KS_r = mt.K_spec[0];
+g_KS_g = mt.K_spec[1];
+g_KS_b = mt.K_spec[2];
+g_SE = mt.K_shiny;
+
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
@@ -530,6 +1071,58 @@ function myKeyUp(kev) {
 			g_lookatTranslate = 0;
 			console.log(g_lookatTranslate);
 			break;
+    case "KeyM":
+      if (material_num >= 23) {
+        material_num = 1;
+      }
+      else {
+        material_num += 1;
+      }
+      var mt = new Material(material_num);
+      g_KE_r = mt.K_emit[0];
+      g_KE_g = mt.K_emit[1];
+      g_KE_b = mt.K_emit[2];
+      g_KA_r = mt.K_ambi[0];
+      g_KA_g = mt.K_ambi[1];
+      g_KA_b = mt.K_ambi[2];
+      g_KD_r = mt.K_diff[0];
+      g_KD_g = mt.K_diff[1];
+      g_KD_b = mt.K_diff[2];
+      g_KS_r = mt.K_spec[0];
+      g_KS_g = mt.K_spec[1];
+      g_KS_b = mt.K_spec[2];
+      g_SE = mt.K_shiny;
+      html_KE_rSlider.value = Math.round(g_KE_r*255);
+      html_KE_rOutput.innerHTML = Math.round(g_KE_r*255);
+      html_KE_gSlider.value = Math.round(g_KE_g*255);
+      html_KE_gOutput.innerHTML = Math.round(g_KE_g*255);
+      html_KE_bSlider.value = Math.round(g_KE_b*255);
+      html_KE_bOutput.innerHTML = Math.round(g_KE_b*255);
+
+      html_KA_rSlider.value = Math.round(g_KA_r*255);
+      html_KA_rOutput.innerHTML = Math.round(g_KA_r*255);
+      html_KA_gSlider.value = Math.round(g_KA_g*255);
+      html_KA_gOutput.innerHTML = Math.round(g_KA_g*255);
+      html_KA_bSlider.value = Math.round(g_KA_b*255);
+      html_KA_bOutput.innerHTML = Math.round(g_KA_b*255);
+
+      html_KD_rSlider.value = Math.round(g_KD_r*255);
+      html_KD_rOutput.innerHTML = Math.round(g_KD_r*255);
+      html_KD_gSlider.value = Math.round(g_KD_g*255);
+      html_KD_gOutput.innerHTML = Math.round(g_KD_g*255);
+      html_KD_bSlider.value = Math.round(g_KD_b*255);
+      html_KD_bOutput.innerHTML = Math.round(g_KD_b*255);      
+
+      html_KS_rSlider.value = Math.round(g_KS_r*255);
+      html_KS_rOutput.innerHTML = Math.round(g_KS_r*255);
+      html_KS_gSlider.value = Math.round(g_KS_g*255);
+      html_KS_gOutput.innerHTML = Math.round(g_KS_g*255);
+      html_KS_bSlider.value = Math.round(g_KS_b*255);
+      html_KS_bOutput.innerHTML = Math.round(g_KS_b*255);      
+
+      html_SE_Slider.value = g_SE;
+      html_SE_Output.innerHTML = g_SE;
+      break;
 		//----------------Arrow keys------------------------
 		case "ArrowLeft": 	
 			g_thetaRate = 0;
