@@ -127,7 +127,6 @@ html_xSlider.oninput = function() {
   html_xOutput.innerHTML = this.value;
   g_light_x = this.value;
 }
-
 // Save slider values move all but g_light_y in function main?
 var html_ySlider = document.getElementById("Light_ySlider");
 var html_yOutput = document.getElementById("Light_yValue");
@@ -137,7 +136,6 @@ html_ySlider.oninput = function() {
   html_yOutput.innerHTML = this.value;
   g_light_y = this.value;
 }
-
 // Save slider values move all but g_light_y in function main?
 var html_zSlider = document.getElementById("Light_zSlider");
 var html_zOutput = document.getElementById("Light_zValue");
@@ -154,6 +152,109 @@ var g_lightSwitch = html_lightSwitch.checked;
 html_lightSwitch.oninput = function() {
   g_lightSwitch = this.checked;
   console.log(g_lightSwitch);
+}
+
+// Save slider values for IA values
+var html_IA_rSlider = document.getElementById("IA_rSlider");
+var html_IA_rOutput = document.getElementById("IA_rValue");
+var g_IA_r = html_IA_rSlider.value/255;
+html_IA_rOutput.innerHTML = html_IA_rSlider.value;
+html_IA_rSlider.oninput = function() {
+  html_IA_rOutput.innerHTML = this.value;
+  g_IA_r = this.value/255;
+}
+// Save slider values for IA values
+var html_IA_gSlider = document.getElementById("IA_gSlider");
+var html_IA_gOutput = document.getElementById("IA_gValue");
+var g_IA_g = html_IA_gSlider.value/255;
+html_IA_gOutput.innerHTML = html_IA_gSlider.value;
+html_IA_gSlider.oninput = function() {
+  html_IA_gOutput.innerHTML = this.value;
+  g_IA_g = this.value/255;
+}
+// Save slider values for IA values
+var html_IA_bSlider = document.getElementById("IA_bSlider");
+var html_IA_bOutput = document.getElementById("IA_bValue");
+var g_IA_b = html_IA_bSlider.value/255;
+html_IA_bOutput.innerHTML = html_IA_bSlider.value;
+html_IA_bSlider.oninput = function() {
+  html_IA_bOutput.innerHTML = this.value;
+  g_IA_b = this.value/255;
+}
+
+/*
+const setupSlider = (sliderID, valueID, globalVal) => {
+  var html_Slider = document.getElementById(sliderID);
+  var html_Output = document.getElementById(valueID);
+  globalVal = html_Slider.value/255;
+  html_Output.innerHTML = html_Slider.value;
+  html_Slider.oninput = function() {
+    html_Output.innerHTML = this.value;
+    globalVal = this.value/255;
+  }
+}
+var g_ID_r = 0.0;
+setupSlider("ID_rSlider", "ID_rValue", g_ID_r)
+var g_ID_g = 0.0;
+setupSlider("ID_gSlider", "ID_gValue", g_ID_g)
+var g_ID_b = 0.0;
+setupSlider("ID_bSlider", "ID_bValue", g_ID_b)
+*/
+
+// Save slider values for ID values
+var html_ID_rSlider = document.getElementById("ID_rSlider");
+var html_ID_rOutput = document.getElementById("ID_rValue");
+var g_ID_r = html_ID_rSlider.value/255;
+html_ID_rOutput.innerHTML = html_ID_rSlider.value;
+html_ID_rSlider.oninput = function() {
+  html_ID_rOutput.innerHTML = this.value;
+  g_ID_r = this.value/255;
+}
+// Save slider values for ID values
+var html_ID_gSlider = document.getElementById("ID_gSlider");
+var html_ID_gOutput = document.getElementById("ID_gValue");
+var g_ID_g = html_ID_gSlider.value/255;
+html_ID_gOutput.innerHTML = html_ID_gSlider.value;
+html_ID_gSlider.oninput = function() {
+  html_ID_gOutput.innerHTML = this.value;
+  g_ID_g = this.value/255;
+}
+// Save slider values for ID values
+var html_ID_bSlider = document.getElementById("ID_bSlider");
+var html_ID_bOutput = document.getElementById("ID_bValue");
+var g_ID_b = html_ID_bSlider.value/255;
+html_ID_bOutput.innerHTML = html_ID_bSlider.value;
+html_ID_bSlider.oninput = function() {
+  html_ID_bOutput.innerHTML = this.value;
+  g_ID_b = this.value/255;
+}
+
+// Save slider values for IS values
+var html_IS_rSlider = document.getElementById("IS_rSlider");
+var html_IS_rOutput = document.getElementById("IS_rValue");
+var g_IS_r = html_IS_rSlider.value/255;
+html_IS_rOutput.innerHTML = html_IS_rSlider.value;
+html_IS_rSlider.oninput = function() {
+  html_IS_rOutput.innerHTML = this.value;
+  g_IS_r = this.value/255;
+}
+// Save slider values for IS values
+var html_IS_gSlider = document.getElementById("IS_gSlider");
+var html_IS_gOutput = document.getElementById("IS_gValue");
+var g_IS_g = html_IS_gSlider.value/255;
+html_IS_gOutput.innerHTML = html_IS_gSlider.value;
+html_IS_gSlider.oninput = function() {
+  html_IS_gOutput.innerHTML = this.value;
+  g_IS_g = this.value/255;
+}
+// Save slider values for IS values
+var html_IS_bSlider = document.getElementById("IS_bSlider");
+var html_IS_bOutput = document.getElementById("IS_bValue");
+var g_IS_b = html_IS_bSlider.value/255;
+html_IS_bOutput.innerHTML = html_IS_bSlider.value;
+html_IS_bSlider.oninput = function() {
+  html_IS_bOutput.innerHTML = this.value;
+  g_IS_b = this.value/255;
 }
 
 // GLOBAL CAMERA CONTROL:					// 

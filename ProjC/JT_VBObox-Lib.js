@@ -511,17 +511,26 @@ function VBObox1() {
   'uniform vec4 u_LightPosition;\n' +
   'uniform vec4 u_EyePosition;\n' +
   'uniform float u_LightOn;\n' +
+  'uniform vec3 u_IA;\n' +
+  'uniform vec3 u_ID;\n' +
+  'uniform vec3 u_IS;\n' +
+  'uniform int u_isBlinn;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
   'attribute vec3 a_Normal;\n' +
   'varying vec4 v_Colr;\n' +
+
   'void main() {\n' +
   'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
   'vec3 normVec = normalize(transVec.xyz);\n' +
   'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  //'vec3 reflectVec = reflect(lightVec, normVec);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
-  '  v_Colr = vec4(0.3*a_Color + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '  if (u_isBlinn == 1) {\n' +
+  '    v_Colr = vec4(0.3*a_Color + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  '  else {\n' +
+  '    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
   //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
   '}\n';
 
@@ -622,12 +631,20 @@ function VBObox1() {
   this.LightPosition = new Vector4();
   this.EyePosition = new Vector4();
   this.LightOn = 1.0;
+  this.IA = new Vector3();
+  this.ID = new Vector3();
+  this.IS = new Vector3();
+  this.isBlinn = 1;
   this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
   this.u_LightPositionLoc;
   this.u_EyePositionLoc;
   this.u_LightOnLoc;
+  this.u_IALoc;
+  this.u_IDLoc;
+  this.u_ISLoc;
+  this.u_isBlinnLoc;
 };
 
 
@@ -754,6 +771,30 @@ VBObox1.prototype.init = function() {
   this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
   if(!this.u_LightOnLoc) { 
     console.log('Failed to get GPU storage location for u_LightOn'); 
+    return  
+  }
+
+  this.u_IALoc = gl.getUniformLocation(this.shaderLoc, 'u_IA'); 
+  if(!this.u_IALoc) { 
+    console.log('Failed to get GPU storage location for u_IA'); 
+    return  
+  }
+
+  this.u_IDLoc = gl.getUniformLocation(this.shaderLoc, 'u_ID'); 
+  if(!this.u_IDLoc) { 
+    console.log('Failed to get GPU storage location for u_ID'); 
+    return  
+  }
+
+  this.u_ISLoc = gl.getUniformLocation(this.shaderLoc, 'u_IS'); 
+  if(!this.u_ISLoc) { 
+    console.log('Failed to get GPU storage location for u_IS'); 
+    return  
+  }
+
+  this.u_isBlinnLoc = gl.getUniformLocation(this.shaderLoc, 'u_isBlinn'); 
+  if(!this.u_isBlinnLoc) { 
+    console.log('Failed to get GPU storage location for u_isBlinn'); 
     return  
   }
 }
@@ -885,6 +926,20 @@ VBObox1.prototype.adjust = function() {
   // Set light on or off
   if (g_lightSwitch) {this.LightOn = 1.0;}
   else {this.LightOn = 0.0;}
+  
+  this.IA.elements[0] = g_IA_r;
+  this.IA.elements[1] = g_IA_g;
+  this.IA.elements[2] = g_IA_b;
+
+  this.ID.elements[0] = g_ID_r;
+  this.ID.elements[1] = g_ID_g;
+  this.ID.elements[2] = g_ID_b;
+  
+  this.IS.elements[0] = g_IS_r;
+  this.IS.elements[1] = g_IS_g;
+  this.IS.elements[2] = g_IS_b;
+
+  this.isBlinn = 0;
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
@@ -897,6 +952,11 @@ VBObox1.prototype.adjust = function() {
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
   gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
   gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform3fv(this.u_IALoc, this.IA.elements);
+  gl.uniform3fv(this.u_IDLoc, this.ID.elements);
+  gl.uniform3fv(this.u_ISLoc, this.IS.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform1i(this.u_isBlinnLoc, this.isBlinn);
 }
 
 VBObox1.prototype.draw = function() {

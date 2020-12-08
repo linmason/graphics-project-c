@@ -75,26 +75,76 @@
       <button type="button" onclick="VBO1toggle()">VBO-1 hide/show</button>
       <button type="button" onclick="VBO2toggle()">VBO-2 hide/show</button>
     </p>
-    <div width="600" height="200">
-      <div style="display:flex; flex-direction:row;">
-        <h3>Light Switch:</h3>
-        <label class="switch">
-          <input id="Light_Switch"type="checkbox" checked>
-          <span class="slider round"></span>
-        </label>
+    <div style="display:flex; flex-direction:row;">
+          <h3>Light:</h3>
+          <label class="switch">
+            <input id="Light_Switch"type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+    <div id = "Light Controls" style="display:flex; flex-direction:row;">
+      <div id="Light Position" width="600" height="200">
+        <h4>Position:</h4>
+        <div style="display:flex; flex-direction:row;">
+          x:<input id="Light_xSlider" type="range" min="-10" max="10" value="10">
+          <p id="Light_xValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          y:<input id="Light_ySlider" type="range" min="-10" max="10" value="10">
+          <p id="Light_yValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          z:<input id="Light_zSlider" type="range" min="-10" max="10" value="10">
+          <p id="Light_zValue"></p>
+        </div>
       </div>
-      <h3>Light Position:</h3>
-      <div style="display:flex; flex-direction:row;">
-        x:<input id="Light_xSlider" type="range" min="-10" max="10" value="10">
-        <p id="Light_xValue"></p>
+
+      <div id="IA" width="600" height="200" style="margin-left: 50px;">
+        <h4>IA:</h4>
+        <div style="display:flex; flex-direction:row;">
+          R:<input id="IA_rSlider" type="range" min="0" max="255" value="255">
+          <p id="IA_rValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          G:<input id="IA_gSlider" type="range" min="0" max="255" value="255">
+          <p id="IA_gValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          B:<input id="IA_bSlider" type="range" min="0" max="255" value="255">
+          <p id="IA_bValue"></p>
+        </div>
       </div>
-      <div style="display:flex; flex-direction:row;">
-        x:<input id="Light_ySlider" type="range" min="-10" max="10" value="10">
-        <p id="Light_yValue"></p>
+
+      <div id="ID" width="600" height="200" style="margin-left: 50px;">
+        <h4>ID:</h4>
+        <div style="display:flex; flex-direction:row;">
+          R:<input id="ID_rSlider" type="range" min="0" max="255" value="255">
+          <p id="ID_rValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          G:<input id="ID_gSlider" type="range" min="0" max="255" value="255">
+          <p id="ID_gValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          B:<input id="ID_bSlider" type="range" min="0" max="255" value="255">
+          <p id="ID_bValue"></p>
+        </div>
       </div>
-      <div style="display:flex; flex-direction:row;">
-        x:<input id="Light_zSlider" type="range" min="-10" max="10" value="10">
-        <p id="Light_zValue"></p>
+
+      <div id="IS" width="600" height="200" style="margin-left: 50px;">
+        <h4>IS:</h4>
+        <div style="display:flex; flex-direction:row;">
+          R:<input id="IS_rSlider" type="range" min="0" max="255" value="255">
+          <p id="IS_rValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          G:<input id="IS_gSlider" type="range" min="0" max="255" value="255">
+          <p id="IS_gValue"></p>
+        </div>
+        <div style="display:flex; flex-direction:row;">
+          B:<input id="IS_bSlider" type="range" min="0" max="255" value="255">
+          <p id="IS_bValue"></p>
+        </div>
       </div>
     </div>
     <script src="../lib/webgl-utils.js"></script>
