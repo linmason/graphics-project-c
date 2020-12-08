@@ -3665,8 +3665,8 @@ VBObox4.prototype.draw = function() {
 
 this.MVPMatrix.translate(0.0, 1, 0.0);
 this.ModelMatrix.translate(0.0, 1, 0.0);
-  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 0);
-  this.ModelMatrix.rotate(g_angleNow1, 1, 0, 0);
+  this.MVPMatrix.rotate(g_angleNow1, 0, 1, 0);
+  this.ModelMatrix.rotate(g_angleNow1, 0, 1, 0);
 
   //update stuff
   this.NormalMatrix.setInverseOf(this.ModelMatrix);	
@@ -3687,8 +3687,8 @@ this.ModelMatrix.translate(0.0, 1, 0.0);
   
   this.MVPMatrix.translate(0.0, 1, 0.0);
   this.ModelMatrix.translate(0.0, 1, 0.0);
-  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 1);
-  this.ModelMatrix.rotate(g_angleNow1, -1, 0, -1);
+  this.MVPMatrix.rotate(g_angleNow0, 1, 0, 1);
+  this.ModelMatrix.rotate(g_angleNow0, -1, 0, -1);
 
   //update stuff
   this.NormalMatrix.setInverseOf(this.ModelMatrix);	
