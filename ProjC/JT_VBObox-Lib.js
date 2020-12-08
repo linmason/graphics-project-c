@@ -532,11 +532,13 @@ function VBObox1() {
   'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
   '  if (u_isBlinn == 1) {\n' +
-  '    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '    vec3 halfVec = normalize(lightVec + eyeVec);\n' +
+  '    v_Colr = vec4(0.0*a_Color + u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(normVec, halfVec)), u_SE)), 1.0);\n' +
+  //'    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
   '  }\n' +
   '  else {\n' +
   '    vec3 reflectVec = -1.0 * reflect(lightVec, normVec);\n' +
-  '    v_Colr = vec4(u_KE + u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE), 1.0);\n' +
+  '    v_Colr = vec4(u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE)), 1.0);\n' +
   '  }\n' +
   //'    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
   //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +

@@ -70,11 +70,15 @@
     <canvas id="webgl" width="600" height="600">
     Please use a browser that supports "canvas"
     </canvas>
-    <p>
+    <div style="display:flex; flex-direction:row;">
       <button type="button" onclick="VBO0toggle()">VBO-0 hide/show</button>
       <button type="button" onclick="VBO1toggle()">VBO-1 hide/show</button>
       <button type="button" onclick="VBO2toggle()">VBO-2 hide/show</button>
-    </p>
+      <h4>Lighting:</h4>
+      <button id="LightingSwitch" type="button" onclick="SwitchLighting()">Gouraud</button>
+      <h4>Shading:</h4>
+      <button id="ShadingSwitch" type="button" onclick="SwitchShading()">Phong</button>
+    </div>
     <div style="display:flex; flex-direction:row;">
           <h3>Light:</h3>
           <label class="switch">
