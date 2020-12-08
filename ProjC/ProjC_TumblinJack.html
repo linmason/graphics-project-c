@@ -66,27 +66,28 @@
     </style>
   </head>
 
-  <body onload="main()">
+  <body onload="main()" >
     <canvas id="webgl" width="600" height="600">
     Please use a browser that supports "canvas"
     </canvas>
-    <div style="display:flex; flex-direction:row;">
+    <div style="display:flex; flex-direction:row; height: 30px;">
       <button type="button" onclick="VBO0toggle()">VBO-0 hide/show</button>
-      <h4>Shading:</h4>
+      <p>Shading:</p>
       <button id="ShadingSwitch" type="button" onclick="SwitchShading()">Gouraud</button>
-      <h4>Lighting:</h4>
-      <button id="LightingSwitch" type="button" onclick="SwitchLighting()">Blinn-Phong</buttonwa>
+      <p>Lighting:</p>
+      <button id="LightingSwitch" type="button" onclick="SwitchLighting()">Blinn-Phong</button>
+      <div style="display:flex; flex-direction:row;">
+        <p>Light:</p>
+        <label class="switch">
+          <input id="Light_Switch"type="checkbox" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
-    <div style="display:flex; flex-direction:row;">
-          <h3>Light:</h3>
-          <label class="switch">
-            <input id="Light_Switch"type="checkbox" checked>
-            <span class="slider round"></span>
-          </label>
-        </div>
-    <div id = "Light Controls" style="display:flex; flex-direction:row;">
-      <div id="Light Position" width="600" height="200">
-        <h4>Position:</h4>
+
+    <div id = "Light Controls" style="display:flex; flex-direction:row; height:calc(30vh - 16px - 30px) !important; overflow: scroll;">
+      <div id="Light Position" >
+        <p style="line-height:10px;">Position:</p>
         <div style="display:flex; flex-direction:row;">
           x:<input id="Light_xSlider" type="range" min="-10" max="10" value="10">
           <p id="Light_xValue"></p>
@@ -102,7 +103,7 @@
       </div>
 
       <div id="IA" width="600" height="200" style="margin-left: 50px;">
-        <h4>IA:</h4>
+        <p>IA:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="IA_rSlider" type="range" min="0" max="255" value="255">
           <p id="IA_rValue"></p>
@@ -118,7 +119,7 @@
       </div>
 
       <div id="ID" width="600" height="200" style="margin-left: 50px;">
-        <h4>ID:</h4>
+        <p>ID:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="ID_rSlider" type="range" min="0" max="255" value="255">
           <p id="ID_rValue"></p>
@@ -134,7 +135,7 @@
       </div>
 
       <div id="IS" width="600" height="200" style="margin-left: 50px;">
-        <h4>IS:</h4>
+        <p>IS:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="IS_rSlider" type="range" min="0" max="255" value="255">
           <p id="IS_rValue"></p>
@@ -150,7 +151,7 @@
       </div>
 
       <div id="KA" width="600" height="200" style="margin-left: 50px;">
-        <h4>KA:</h4>
+        <p>KA:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="KA_rSlider" type="range" min="0" max="255" value="255">
           <p id="KA_rValue"></p>
@@ -166,7 +167,7 @@
       </div>
 
       <div id="KD" width="600" height="200" style="margin-left: 50px;">
-        <h4>KD:</h4>
+        <p>KD:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="KD_rSlider" type="range" min="0" max="255" value="255">
           <p id="KD_rValue"></p>
@@ -182,7 +183,7 @@
       </div>
 
       <div id="KS" width="600" height="200" style="margin-left: 50px;">
-        <h4>KS:</h4>
+        <p>KS:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="KS_rSlider" type="range" min="0" max="255" value="255">
           <p id="KS_rValue"></p>
@@ -198,7 +199,7 @@
       </div>
 
       <div id="KE" width="600" height="200" style="margin-left: 50px;">
-        <h4>KE:</h4>
+        <p>KE:</p>
         <div style="display:flex; flex-direction:row;">
           R:<input id="KE_rSlider" type="range" min="0" max="255" value="255">
           <p id="KE_rValue"></p>
@@ -214,7 +215,7 @@
       </div>
 
       <div id="SE" width="600" height="200" style="margin-left: 50px;">
-        <h4>SE:</h4>
+        <p>SE:</p>
         <div style="display:flex; flex-direction:row;">
           <input id="SE_Slider" type="range" min="0" max="100" value="50">
           <p id="SE_Value"></p>
