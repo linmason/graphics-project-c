@@ -1103,14 +1103,13 @@ function SwitchShading() {
   if (g_show1 == 0 && g_show2 == 1) {
     g_show1 = 1;
     g_show2 = 0;
-
-    lightbutton.innerHTML = "Gouraud";
+    shadebutton.innerHTML = "Gouraud";
     console.log(g_isGouraud);
   }
   else if (g_show1 == 1 && g_show2 == 0) {
     g_show1 = 0;
     g_show2 = 1;
-    lightbutton.innerHTML = "Phong";
+    shadebutton.innerHTML = "Phong";
     console.log(g_isGouraud);
   }
   else {
