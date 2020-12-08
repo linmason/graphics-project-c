@@ -1100,13 +1100,16 @@ function SwitchLighting() {
 
 function SwitchShading() {
   var shadebutton = document.getElementById("ShadingSwitch");
-  if (g_isGouraud == 0) {
-    g_isGouraud = 1;
+  if (g_show1 == 0 && g_show2 == 1) {
+    g_show1 = 1;
+    g_show2 = 0;
+
     lightbutton.innerHTML = "Gouraud";
     console.log(g_isGouraud);
   }
-  else if (g_isGouraud == 1) {
-    g_isGouraud = 0;
+  else if (g_show1 == 1 && g_show2 == 0) {
+    g_show1 = 0;
+    g_show2 = 1;
     lightbutton.innerHTML = "Phong";
     console.log(g_isGouraud);
   }
