@@ -359,7 +359,7 @@ html_KE_gSlider.oninput = function() {
   html_KE_gOutput.innerHTML = this.value;
   g_KE_g = this.value/255;
 }
-// Save slider values for KS values
+// Save slider values for KE values
 var html_KE_bSlider = document.getElementById("KE_bSlider");
 var html_KE_bOutput = document.getElementById("KE_bValue");
 var g_KE_b = html_KE_bSlider.value/255;
@@ -367,6 +367,16 @@ html_KE_bOutput.innerHTML = html_KE_bSlider.value;
 html_KE_bSlider.oninput = function() {
   html_KE_bOutput.innerHTML = this.value;
   g_KE_b = this.value/255;
+}
+
+// Save slider values for SE values
+var html_SE_Slider = document.getElementById("SE_Slider");
+var html_SE_Output = document.getElementById("SE_Value");
+var g_SE = html_SE_Slider.value/255;
+html_SE_Output.innerHTML = html_SE_Slider.value;
+html_SE_Slider.oninput = function() {
+  html_SE_Output.innerHTML = this.value;
+  g_SE = this.value/255;
 }
 
 // GLOBAL CAMERA CONTROL:					// 

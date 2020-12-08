@@ -518,7 +518,7 @@ function VBObox1() {
   'uniform vec3 u_KD;\n' +
   'uniform vec3 u_KS;\n' +
   'uniform vec3 u_KE;\n' +
-  //'uniform int u_SE;\n' +
+  'uniform float u_SE;\n' +
   'uniform int u_isBlinn;\n' +
   'attribute vec4 a_Position;\n' +
   'attribute vec3 a_Color;\n' +
@@ -533,7 +533,7 @@ function VBObox1() {
   //'vec3 reflectVec = reflect(lightVec, normVec);\n' +
   '  gl_Position = u_MVPMatrix * a_Position;\n' +
   '  if (u_isBlinn == 1) {\n' +
-  '    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  '    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
   '  else {\n' +
   '    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
   //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
@@ -644,6 +644,7 @@ function VBObox1() {
   this.KS = new Vector3();
   this.KE = new Vector3();
   this.isBlinn = 1;
+  this.SE = 1.0;
   this.u_MVPMatrixLoc;
 	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
 	this.u_NormalMatrixLoc;
@@ -658,6 +659,7 @@ function VBObox1() {
   this.u_KSLoc;
   this.u_KELoc;
   this.u_isBlinnLoc;
+  this.u_SELoc
 };
 
 
@@ -834,6 +836,12 @@ VBObox1.prototype.init = function() {
     console.log('Failed to get GPU storage location for u_isBlinn'); 
     return  
   }
+
+  this.u_SELoc = gl.getUniformLocation(this.shaderLoc, 'u_SE'); 
+  if(!this.u_SELoc) { 
+    console.log('Failed to get GPU storage location for u_SE'); 
+    return  
+  }
 }
 
 VBObox1.prototype.switchToMe = function () {
@@ -993,6 +1001,7 @@ VBObox1.prototype.adjust = function() {
   this.KE.elements[2] = g_KE_b;
 
   this.isBlinn = 1;
+  this.SE = g_SE;
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
@@ -1014,6 +1023,7 @@ VBObox1.prototype.adjust = function() {
   gl.uniform3fv(this.u_KDLoc, this.KD.elements);
   gl.uniform3fv(this.u_KSLoc, this.KS.elements);
   gl.uniform3fv(this.u_KELoc, this.KE.elements);
+  gl.uniform1f(this.u_SELoc, this.SE);
 }
 
 VBObox1.prototype.draw = function() {
