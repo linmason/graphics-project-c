@@ -1728,3 +1728,2086 @@ function makeGouraudSphere() {
 		}
 	}
 }
+
+function makeDiamond() {
+//==============================================================================
+// Make a diamond-like shape from two adjacent tetrahedra, aligned with Z axis.
+diamondVerts = new Float32Array([
+
+// Triangle 1: this normal and normals below are unchecked
+	0.0, 0.0, 0.0, 1.0,			1.0, 1.0, 1.0,		.125, -.0625, -.125,//Node 1
+	0.25, 0.5, 0.0, 1.0,		0.0, 0.0, 1.0,		.125, -.0625, -.125,//Node 2
+	0.0, 0.5, -0.25, 1.0,		1.0, 1.0, 0.0,		.125, -.0625, -.125,//Node 5
+
+	// Triangle 2 
+	0.0, 0.0, 0.0, 1.0,			1.0, 1.0, 1.0,		-.125, -.0625, -.125,//Node 1
+	-0.25, 0.5, 0.0, 1.0,		1.0, 0.0, 0.0,		-.125, -.0625, -.125,//Node 4
+	0.0, 0.5, -0.25, 1.0,		1.0, 1.0, 0.0,		-.125, -.0625, -.125,//Node 5
+
+	// Triangle 3
+	0.0, 0.0, 0.0, 1.0,			1.0, 1.0, 1.0,		-.125, -.0625, 0.125,//Node 1
+	0.0, 0.5, 0.25, 1.0,		0.0, 1.0, 0.0,		-.125, -.0625, 0.125,//Node 3
+	-0.25, 0.5, 0.0, 1.0,		1.0, 0.0, 0.0,		-.125, -.0625, 0.125,//Node 4
+
+	// Triangle 4
+	0.0, 0.0, 0.0, 1.0,			1.0, 1.0, 1.0,		-.125, -.0625, 0.125,//Node 1
+	0.25, 0.5, 0.0, 1.0,		0.0, 0.0, 1.0,		-.125, -.0625, 0.125,//Node 2
+	0.0, 0.5, 0.25, 1.0,		0.0, 1.0, 0.0,		-.125, -.0625, 0.125,//Node 3
+
+	// Triangle 5
+	0.0, 1.0, 0.0, 1.0,			0.0, 0.0, 0.0,		.125, .0625, -.125,//Node 0
+	0.25, 0.5, 0.0, 1.0,		0.0, 0.0, 1.0,		.125, .0625, -.125,//Node 2
+	0.0, 0.5, -0.25, 1.0,		1.0, 1.0, 0.0,		.125, .0625, -.125,//Node 5
+
+	// Triangle 6
+	0.0, 1.0, 0.0, 1.0,			0.0, 0.0, 0.0,		-.125, .0625, -.125,//Node 0
+	-0.25, 0.5, 0.0, 1.0,		1.0, 0.0, 0.0,		-.125, .0625, -.125,//Node 4
+	0.0, 0.5, -0.25, 1.0,		1.0, 1.0, 0.0,		-.125, .0625, -.125,//Node 5
+
+	// Triangle 7
+	0.0, 1.0, 0.0, 1.0,			0.0, 0.0, 0.0,		-.125, .0625, .125,//Node 0
+	0.0, 0.5, 0.25, 1.0,		0.0, 1.0, 0.0,		-.125, .0625, .125,//Node 3
+	-0.25, 0.5, 0.0, 1.0,		1.0, 0.0, 0.0,		-.125, .0625, .125,//Node 4
+
+	// Triangle 8
+	0.0, 1.0, 0.0, 1.0,			0.0, 0.0, 0.0,		.125, .0625, .125,//Node 0
+	0.25, 0.5, 0.0, 1.0,		0.0, 0.0, 1.0,		.125, .0625, .125,//Node 2
+	0.0, 0.5, 0.25, 1.0,		0.0, 1.0, 0.0,		.125, .0625, .125,//Node 3
+
+])
+	// YOU write this one...
+	
+}
+
+function makeHouse() {
+houseVerts = new Float32Array([ 
+	// Triangle 1
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		0.0, 0.0, 1.0,//Node F
+     -0.5, 0.5, 0.5,1.0,		1.0, 0.0, 0.0,		0.0, 0.0, 1.0,//Node A
+     0.5, 0.5, 0.5,	1.0,		0.0, 1.0, 0.0,		0.0, 0.0, 1.0,//Node B
+
+     // Triangle 2
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		0.0, 0.0, 1.0,//Node F
+     0.5, -0.5, 0.5,1.0,		1.0, 1.0, 0.0,		0.0, 0.0, 1.0,//Node G
+     0.5, 0.5, 0.5,	1.0,		0.0, 1.0, 0.0,		0.0, 0.0, 1.0,//Node B
+
+     // Triangle 3
+     -0.5, -0.5, -0.5,1.0,		0.0, 1.0, 0.0,		0.0, 0.0, -1.0,//Node I
+     -0.5, 0.5, -0.5,1.0,		1.0, 1.0, 0.0,		0.0, 0.0, -1.0,//Node D
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		0.0, 0.0, -1.0,//Node C
+
+     // Triangle 4
+     -0.5, -0.5, -0.5,1.0,		0.0, 1.0, 0.0,		0.0, 0.0, -1.0,//Node I
+     0.5, -0.5, -0.5,1.0,		1.0, 0.0, 0.0,		0.0, 0.0, -1.0,//Node H
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		0.0, 0.0, -1.0,//Node C
+
+     // Triangle 5
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		0.0, -1.0, 0.0,//Node F
+     -0.5, -0.5, -0.5,1.0,		0.0, 1.0, 0.0,		0.0, -1.0, 0.0,//Node I
+     0.5, -0.5, -0.5,1.0,		1.0, 0.0, 0.0,		0.0, -1.0, 0.0,//Node H
+
+     // Triangle 6
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		0.0, -1.0, 0.0,//Node F
+     0.5, -0.5, 0.5,1.0,		1.0, 1.0, 0.0,		0.0, -1.0, 0.0,//Node G
+     0.5, -0.5, -0.5,1.0,		1.0, 0.0, 0.0,		0.0, -1.0, 0.0,//Node H
+
+     // Triangle 7
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		-1.0, 0.0, 0.0,//Node F
+     -0.5, 0.5, 0.5,1.0,		1.0, 0.0, 0.0,		-1.0, 0.0, 0.0,//Node A
+     -0.5, 0.5, -0.5,1.0,		1.0, 1.0, 0.0,		-1.0, 0.0, 0.0,//Node D
+
+     // Triangle 8
+     -0.5, -0.5, 0.5,1.0,		0.0, 0.0, 1.0,		-1.0, 0.0, 0.0,//Node F
+     -0.5, -0.5, -0.5,1.0,		0.0, 1.0, 0.0,		-1.0, 0.0, 0.0,//Node I
+     -0.5, 0.5, -0.5,1.0,		1.0, 1.0, 0.0,		-1.0, 0.0, 0.0,//Node D
+
+     // Triangle 9
+     0.5, -0.5, 0.5,1.0,		1.0, 1.0, 0.0,		1.0, 0.0, 0.0,//Node G
+     0.5, 0.5, 0.5,	1.0,		0.0, 1.0, 0.0,		1.0, 0.0, 0.0,//Node B
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		1.0, 0.0, 0.0,//Node C
+
+     // Triangle 10
+     0.5, -0.5, 0.5,1.0,		1.0, 1.0, 0.0,		1.0, 0.0, 0.0,//Node G
+     0.5, -0.5, -0.5,1.0,		1.0, 0.0, 0.0,		1.0, 0.0, 0.0,//Node H
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		1.0, 0.0, 0.0,//Node C
+
+     // Triangle 11
+     -0.5, 0.5, 0.5,1.0,		1.0, 0.0, 0.0,		-.45, 1.0, .45,//Node A
+     0.5, 0.5, 0.5,	1.0,		0.0, 1.0, 0.0,		-.45, 1.0, .45,//Node B
+     0.0, 0.95, 0.0,1.0,		1.0, 1.0, 1.0,		-.45, 1.0, .45,//Node E
+
+     // Triangle 12
+     0.5, 0.5, 0.5,	1.0,		0.0, 1.0, 0.0,		.45, .5, 0.0,//Node B
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		.45, .5, 0.0,//Node C
+     0.0, 0.95, 0.0,1.0,		1.0, 1.0, 1.0,		.45, .5, 0.0,//Node E
+
+     // Triangle 13
+     0.5, 0.5, -0.5,1.0,		0.0, 0.0, 1.0,		-0.45, 0.5, -.45,//Node C
+     -0.5, 0.5, -0.5,1.0,		1.0, 1.0, 0.0,		-0.45, 0.5, -.45,//Node D
+     0.0, 0.95, 0.0,1.0,		1.0, 1.0, 1.0,		-0.45, 0.5, -.45,//Node E
+
+     // Triangle 14
+     -0.5, 0.5, -0.5,1.0,		1.0, 1.0, 0.0,		-.45, 0.5, 0.0,//Node D
+     -0.5, 0.5, 0.5,1.0,		1.0, 0.0, 0.0,		-.45, 0.5, 0.0,//Node A
+     0.0, 0.95, 0.0,1.0,		1.0, 1.0, 1.0,		-.45, 0.5, 0.0,//Node E
+])
+
+}
+
+
+//VBObox3 for an object
+
+function VBObox3() {
+//=============================================================================
+//=============================================================================
+// CONSTRUCTOR for one re-usable 'VBObox1' object that holds all data and fcns
+// needed to render vertices from one Vertex Buffer Object (VBO) using one 
+// separate shader program (a vertex-shader & fragment-shader pair) and one
+// set of 'uniform' variables.
+
+// Constructor goal: 
+// Create and set member vars that will ELIMINATE ALL LITERALS (numerical values 
+// written into code) in all other VBObox functions. Keeping all these (initial)
+// values here, in this one coonstrutor function, ensures we can change them 
+// easily WITHOUT disrupting any other code, ever!
+  
+	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
+  'uniform mat4 u_MVPMatrix;\n' +
+  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_NormalMatrix;\n' +
+  'uniform vec4 u_LightPosition;\n' +
+  'uniform vec4 u_EyePosition;\n' +
+  'uniform float u_LightOn;\n' +
+  'uniform vec3 u_IA;\n' +
+  'uniform vec3 u_ID;\n' +
+  'uniform vec3 u_IS;\n' +
+  'uniform vec3 u_KA;\n' +
+  'uniform vec3 u_KD;\n' +
+  'uniform vec3 u_KS;\n' +
+  'uniform vec3 u_KE;\n' +
+  'uniform float u_SE;\n' +
+  'uniform int u_isBlinn;\n' +
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Colr;\n' +
+
+  'void main() {\n' +
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
+  'vec3 normVec = normalize(transVec.xyz);\n' +
+  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  '  gl_Position = u_MVPMatrix * a_Position;\n' +
+  '  if (u_isBlinn == 1) {\n' +
+  '    vec3 halfVec = normalize(lightVec + eyeVec);\n' +
+  '    v_Colr = vec4(0.0*a_Color + u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(normVec, halfVec)), u_SE)), 1.0);\n' +
+  //'    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '  }\n' +
+  '  else {\n' +
+  '    vec3 reflectVec = -1.0 * reflect(lightVec, normVec);\n' +
+  '    v_Colr = vec4(u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE)), 1.0);\n' +
+  '  }\n' +
+  //'    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
+  '}\n';
+
+  this.FRAG_SRC = 
+  'precision mediump float;\n' +
+  'varying vec4 v_Colr;\n' +
+  'void main() {\n' +
+  '  gl_FragColor = v_Colr;\n' +
+  '}\n';
+
+
+ //New Stuff: Make each 3D shape in its own array of vertices:
+ makeDiamond();
+ makeHouse();
+    // how many floats total needed to store all shapes?
+	var mySiz = (diamondVerts.length + houseVerts.length);
+
+	// How many vertices total?
+	var nn = mySiz / (floatsPerVertex+3);
+	console.log('nn is', nn, 'mySiz is', mySiz, 'floatsPerVertex is', floatsPerVertex+3);
+	// Copy all shapes into one big Float32 array:
+  	var colorShapes = new Float32Array(mySiz);
+	this.vboContents = new Float32Array(mySiz)
+	// Copy them:  remember where to start for each shape:
+	diamondStart = 0;							// we stored the cylinder first.
+  	for(i=0,j=0; j< diamondVerts.length; i++,j++) {
+  		colorShapes[i] = diamondVerts[j];
+		}
+
+	houseStart = i;							// we stored the cylinder first.
+  	for(j=0; j< houseVerts.length; i++,j++) {
+  		colorShapes[i] = houseVerts[j];
+		}
+
+	this.vboContents = colorShapes;
+		
+
+  //Back to Old Stuff:
+	/*
+
+	this.vboContents = //---------------------------------------------------------
+		new Float32Array ([					// Array of vertex attribute values we will
+  															// transfer to GPU's vertex buffer object (VBO)
+			// 1 vertex per line: pos1 x,y,z,w;   colr1; r,g,b;   ptSiz1; 
+  	-0.3,  0.7,	0.0, 1.0,		0.0, 1.0, 1.0,  17.0,
+    -0.3, -0.3, 0.0, 1.0,		1.0, 0.0, 1.0,  20.0,
+     0.3, -0.3, 0.0, 1.0,		1.0, 1.0, 0.0,  33.0,
+  ]);	*/
+  
+	this.vboVerts = nn;							// # of vertices held in 'vboContents' array;
+	this.FSIZE = this.vboContents.BYTES_PER_ELEMENT;  
+	                              // bytes req'd by 1 vboContents array element;
+																// (why? used to compute stride and offset 
+																// in bytes for vertexAttribPointer() calls)
+    this.vboBytes = this.vboContents.length * this.FSIZE;               
+                                // (#  of floats in vboContents array) * 
+                                // (# of bytes/float).
+	this.vboStride = this.vboBytes / this.vboVerts;     
+	                              // (== # of bytes to store one complete vertex).
+	                              // From any attrib in a given vertex in the VBO, 
+	                              // move forward by 'vboStride' bytes to arrive 
+	                              // at the same attrib for the next vertex.
+	                               
+	            //----------------------Attribute sizes
+  this.vboFcount_a_Pos1 =  4;    // # of floats in the VBO needed to store the
+                                // attribute named a_Pos1. (4: x,y,z,w values)
+  this.vboFcount_a_Colr1 = 3;   // # of floats for this attrib (r,g,b values)
+  this.vboFcount_a_PtSiz1 = 1;  // # of floats for this attrib (just one!)   
+  this.vboFcount_a_Normal = 3;
+  console.assert((this.vboFcount_a_Pos1 +     // check the size of each and
+                  this.vboFcount_a_Colr1 +
+                  this.vboFcount_a_Normal) *   // every attribute in our VBO
+                  this.FSIZE == this.vboStride, // for agreeement with'stride'
+                  "Uh oh! VBObox3.vboStride disagrees with attribute-size values!");
+                  
+              //----------------------Attribute offsets
+	this.vboOffset_a_Pos1 = 0;    //# of bytes from START of vbo to the START
+	                              // of 1st a_Pos1 attrib value in vboContents[]
+  this.vboOffset_a_Colr1 = (this.vboFcount_a_Pos1) * this.FSIZE;  
+                                // == 4 floats * bytes/float
+                                //# of bytes from START of vbo to the START
+                                // of 1st a_Colr1 attrib value in vboContents[]
+  this.vboOffset_a_Normal =(this.vboFcount_a_Pos1 +
+                            this.vboFcount_a_Colr1) * this.FSIZE; 
+                                // == 7 floats * bytes/float
+                                // # of bytes from START of vbo to the START
+                                // of 1st a_PtSize attrib value in vboContents[]
+
+	            //-----------------------GPU memory locations:                                
+	this.vboLoc;									// GPU Location for Vertex Buffer Object, 
+	                              // returned by gl.createBuffer() function call
+	this.shaderLoc;								// GPU Location for compiled Shader-program  
+	                            	// set by compile/link of VERT_SRC and FRAG_SRC.
+								          //------Attribute locations in our shaders:
+	this.a_Pos1Loc;							  // GPU location: shader 'a_Pos1' attribute
+	this.a_Colr1Loc;							// GPU location: shader 'a_Colr1' attribute
+	this.a_PtSiz1Loc;							// GPU location: shader 'a_PtSiz1' attribute
+	this.a_NormalLoc;
+	
+	            //---------------------- Uniform locations &values in our shaders
+	this.MVPMatrix = new Matrix4();
+  this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
+	this.NormalMatrix = new Matrix4();
+  this.LightPosition = new Vector4();
+  this.EyePosition = new Vector4();
+  this.LightOn = 1.0;
+  this.IA = new Vector3();
+  this.ID = new Vector3();
+  this.IS = new Vector3();
+  this.KA = new Vector3();
+  this.KD = new Vector3();
+  this.KS = new Vector3();
+  this.KE = new Vector3();
+  this.isBlinn = 1;
+  this.SE = 1.0;
+  this.u_MVPMatrixLoc;
+	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
+	this.u_NormalMatrixLoc;
+  this.u_LightPositionLoc;
+  this.u_EyePositionLoc;
+  this.u_LightOnLoc;
+  this.u_IALoc;
+  this.u_IDLoc;
+  this.u_ISLoc;
+  this.u_KALoc;
+  this.u_KDLoc;
+  this.u_KSLoc;
+  this.u_KELoc;
+  this.u_isBlinnLoc;
+  this.u_SELoc
+};
+
+
+VBObox3.prototype.init = function() {
+//==============================================================================
+// Prepare the GPU to use all vertices, GLSL shaders, attributes, & uniforms 
+// kept in this VBObox. (This function usually called only once, within main()).
+// Specifically:
+// a) Create, compile, link our GLSL vertex- and fragment-shaders to form an 
+//  executable 'program' stored and ready to use inside the GPU.  
+// b) create a new VBO object in GPU memory and fill it by transferring in all
+//  the vertex data held in our Float32array member 'VBOcontents'. 
+// c) Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (needed by switchToMe(), adjust(), draw(), reload(), etc.)
+// -------------------
+// CAREFUL!  before you can draw pictures using this VBObox contents, 
+//  you must call this VBObox object's switchToMe() function too!
+//--------------------
+// a) Compile,link,upload shaders-----------------------------------------------
+	this.shaderLoc = createProgram(gl, this.VERT_SRC, this.FRAG_SRC);
+	if (!this.shaderLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create executable Shaders on the GPU. Bye!');
+    return;
+  }
+// CUTE TRICK: let's print the NAME of this VBObox object: tells us which one!
+//  else{console.log('You called: '+ this.constructor.name + '.init() fcn!');}
+
+	gl.program = this.shaderLoc;		// (to match cuon-utils.js -- initShaders())
+
+// b) Create VBO on GPU, fill it------------------------------------------------
+	this.vboLoc = gl.createBuffer();	
+  if (!this.vboLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create VBO in GPU. Bye!'); 
+    return;
+  }
+  
+  // Specify the purpose of our newly-created VBO on the GPU.  Your choices are:
+  //	== "gl.ARRAY_BUFFER" : the VBO holds vertices, each made of attributes 
+  // (positions, colors, normals, etc), or 
+  //	== "gl.ELEMENT_ARRAY_BUFFER" : the VBO holds indices only; integer values 
+  // that each select one vertex from a vertex array stored in another VBO.
+  gl.bindBuffer(gl.ARRAY_BUFFER,	      // GLenum 'target' for this GPU buffer 
+  								this.vboLoc);				  // the ID# the GPU uses for this buffer.
+  											
+  // Fill the GPU's newly-created VBO object with the vertex data we stored in
+  //  our 'vboContents' member (JavaScript Float32Array object).
+  //  (Recall gl.bufferData() will evoke GPU's memory allocation & management: 
+  //	 use gl.bufferSubData() to modify VBO contents without changing VBO size)
+  gl.bufferData(gl.ARRAY_BUFFER, 			  // GLenum target(same as 'bindBuffer()')
+ 					 				this.vboContents, 		// JavaScript Float32Array
+  							 	gl.STATIC_DRAW);			// Usage hint.  
+  //	The 'hint' helps GPU allocate its shared memory for best speed & efficiency
+  //	(see OpenGL ES specification for more info).  Your choices are:
+  //		--STATIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents rarely or never change.
+  //		--DYNAMIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents may change often as our program runs.
+  //		--STREAM_DRAW is for vertex buffers that are rendered a small number of 
+  // 			times and then discarded; for rapidly supplied & consumed VBOs.
+
+// c1) Find All Attributes:-----------------------------------------------------
+//  Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (for switchToMe(), adjust(), draw(), reload(), etc.)
+  this.a_Pos1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Position');
+  if(this.a_Pos1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() Failed to get GPU location of attribute a_Position');
+    return -1;	// error exit.
+  }
+ 	this.a_Colr1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Color');
+  if(this.a_Colr1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() failed to get the GPU location of attribute a_Color');
+    return -1;	// error exit.
+  }
+  /*this.a_PtSiz1Loc = gl.getAttribLocation(this.shaderLoc, 'a_PtSiz1');
+  if(this.a_PtSiz1Loc < 0) {
+    console.log(this.constructor.name + 
+	    					'.init() failed to get the GPU location of attribute a_PtSiz1');
+	  return -1;	// error exit.
+  }*/
+  this.a_NormalLoc = gl.getAttribLocation(this.shaderLoc, 'a_Normal');
+  if(this.a_Normal < 0) {
+    console.log('Failed to get the storage location of a_Normal');
+    return -1;
+  }
+  // c2) Find All Uniforms:-----------------------------------------------------
+  //Get GPU storage location for each uniform var used in our shader programs: 
+
+  this.u_MVPMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_MVPMatrix');
+  if (!this.u_MVPMatrixLoc) { 
+    console.log(this.constructor.name + 
+                '.init() failed to get GPU location for u_MVPMatrix uniform');
+    return;
+  }
+
+  this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
+  if (!this.u_ModelMatrixLoc) { 
+    console.log(this.constructor.name + 
+    						'.init() failed to get GPU location for u_ModelMatrix uniform');
+    return;
+  }
+
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
+	if(!this.u_NormalMatrixLoc) {	
+		console.log('Failed to get GPU storage location for u_NormalMatrix');	
+		return	
+	}
+
+  this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
+  if(!this.u_LightPositionLoc) { 
+    console.log('Failed to get GPU storage location for u_LightPosition'); 
+    return  
+  }
+
+  this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
+  if(!this.u_EyePositionLoc) { 
+    console.log('Failed to get GPU storage location for u_EyePosition'); 
+    return  
+  }
+
+  this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
+  if(!this.u_LightOnLoc) { 
+    console.log('Failed to get GPU storage location for u_LightOn'); 
+    return  
+  }
+
+  this.u_IALoc = gl.getUniformLocation(this.shaderLoc, 'u_IA'); 
+  if(!this.u_IALoc) { 
+    console.log('Failed to get GPU storage location for u_IA'); 
+    return  
+  }
+
+  this.u_IDLoc = gl.getUniformLocation(this.shaderLoc, 'u_ID'); 
+  if(!this.u_IDLoc) { 
+    console.log('Failed to get GPU storage location for u_ID'); 
+    return  
+  }
+
+  this.u_ISLoc = gl.getUniformLocation(this.shaderLoc, 'u_IS'); 
+  if(!this.u_ISLoc) { 
+    console.log('Failed to get GPU storage location for u_IS'); 
+    return  
+  }
+
+  this.u_KALoc = gl.getUniformLocation(this.shaderLoc, 'u_KA'); 
+  if(!this.u_KALoc) { 
+    console.log('Failed to get GPU storage location for u_KA'); 
+    return  
+  }
+
+  this.u_KDLoc = gl.getUniformLocation(this.shaderLoc, 'u_KD'); 
+  if(!this.u_KDLoc) { 
+    console.log('Failed to get GPU storage location for u_KD'); 
+    return  
+  }
+
+  this.u_KSLoc = gl.getUniformLocation(this.shaderLoc, 'u_KS'); 
+  if(!this.u_KSLoc) { 
+    console.log('Failed to get GPU storage location for u_KS'); 
+    return  
+  }
+
+  this.u_KELoc = gl.getUniformLocation(this.shaderLoc, 'u_KE'); 
+  if(!this.u_KELoc) { 
+    console.log('Failed to get GPU storage location for u_KE'); 
+    return  
+  }
+
+  this.u_isBlinnLoc = gl.getUniformLocation(this.shaderLoc, 'u_isBlinn'); 
+  if(!this.u_isBlinnLoc) { 
+    console.log('Failed to get GPU storage location for u_isBlinn'); 
+    return  
+  }
+
+  this.u_SELoc = gl.getUniformLocation(this.shaderLoc, 'u_SE'); 
+  if(!this.u_SELoc) { 
+    console.log('Failed to get GPU storage location for u_SE'); 
+    return  
+  }
+}
+
+VBObox3.prototype.switchToMe = function () {
+//==============================================================================
+// Set GPU to use this VBObox's contents (VBO, shader, attributes, uniforms...)
+//
+// We only do this AFTER we called the init() function, which does the one-time-
+// only setup tasks to put our VBObox contents into GPU memory.  !SURPRISE!
+// even then, you are STILL not ready to draw our VBObox's contents onscreen!
+// We must also first complete these steps:
+//  a) tell the GPU to use our VBObox's shader program (already in GPU memory),
+//  b) tell the GPU to use our VBObox's VBO  (already in GPU memory),
+//  c) tell the GPU to connect the shader program's attributes to that VBO.
+
+// a) select our shader program:
+  gl.useProgram(this.shaderLoc);	
+//		Each call to useProgram() selects a shader program from the GPU memory,
+// but that's all -- it does nothing else!  Any previously used shader program's 
+// connections to attributes and uniforms are now invalid, and thus we must now
+// establish new connections between our shader program's attributes and the VBO
+// we wish to use.  
+  
+// b) call bindBuffer to disconnect the GPU from its currently-bound VBO and
+//  instead connect to our own already-created-&-filled VBO.  This new VBO can 
+//    supply values to use as attributes in our newly-selected shader program:
+	gl.bindBuffer(gl.ARRAY_BUFFER,	    // GLenum 'target' for this GPU buffer 
+										this.vboLoc);			// the ID# the GPU uses for our VBO.
+
+// c) connect our newly-bound VBO to supply attribute variable values for each
+// vertex to our SIMD shader program, using 'vertexAttribPointer()' function.
+// this sets up data paths from VBO to our shader units:
+  // 	Here's how to use the almost-identical OpenGL version of this function:
+	//		http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribPointer.xml )
+
+
+  gl.vertexAttribPointer(
+		this.a_Pos1Loc,//index == ID# for the attribute var in GLSL shader pgm;
+		this.vboFcount_a_Pos1, // # of floats used by this attribute: 1,2,3 or 4?
+		gl.FLOAT,		  // type == what data type did we use for those numbers?
+		false,				// isNormalized == are these fixed-point values that we need
+									//									normalize before use? true or false
+		this.vboStride,// Stride == #bytes we must skip in the VBO to move from the
+		              // stored attrib for this vertex to the same stored attrib
+		              //  for the next vertex in our VBO.  This is usually the 
+									// number of bytes used to store one complete vertex.  If set 
+									// to zero, the GPU gets attribute values sequentially from 
+									// VBO, starting at 'Offset'.	
+									// (Our vertex size in bytes: 4 floats for pos + 3 for color)
+		this.vboOffset_a_Pos1);						
+		              // Offset == how many bytes from START of buffer to the first
+  								// value we will actually use?  (we start with position).
+  gl.vertexAttribPointer(this.a_Colr1Loc, this.vboFcount_a_Colr1,
+                         gl.FLOAT, false, 
+  						           this.vboStride,  this.vboOffset_a_Colr1);
+  /*gl.vertexAttribPointer(this.a_PtSiz1Loc,this.vboFcount_a_PtSiz1, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_PtSiz1);	*/
+  gl.vertexAttribPointer(this.a_NormalLoc,this.vboFcount_a_Normal, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_Normal);	
+  //-- Enable this assignment of the attribute to its' VBO source:
+  gl.enableVertexAttribArray(this.a_Pos1Loc);
+  gl.enableVertexAttribArray(this.a_Colr1Loc);
+  //gl.enableVertexAttribArray(this.a_PtSiz1Loc);
+  gl.enableVertexAttribArray(this.a_NormalLoc);
+
+
+  //NEW port Stuff
+  
+}
+
+VBObox3.prototype.isReady = function() {
+//==============================================================================
+// Returns 'true' if our WebGL rendering context ('gl') is ready to render using
+// this objects VBO and shader program; else return false.
+// see: https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getParameter
+
+var isOK = true;
+
+  if(gl.getParameter(gl.CURRENT_PROGRAM) != this.shaderLoc)  {
+    console.log(this.constructor.name + 
+    						'.isReady() false: shader program at this.shaderLoc not in use!');
+    isOK = false;
+  }
+  if(gl.getParameter(gl.ARRAY_BUFFER_BINDING) != this.vboLoc) {
+      console.log(this.constructor.name + 
+  						'.isReady() false: vbo at this.vboLoc not in use!');
+    isOK = false;
+  }
+  return isOK;
+}
+
+VBObox3.prototype.adjust = function() {
+//==============================================================================
+// Update the GPU to newer, current values we now store for 'uniform' vars on 
+// the GPU; and (if needed) update each attribute's stride and offset in VBO.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.adjust() call you needed to call this.switchToMe()!!');
+  }
+
+	// Adjust values for our uniforms,
+   this.MVPMatrix.setIdentity();
+   this.ModelMatrix.setIdentity();
+// THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
+  this.MVPMatrix.set(g_worldMat);
+  this.MVPMatrix.translate(-3.5, 0, 0, 1);
+
+  this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  //this.MVPMatrix
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+
+  // Set Light Position
+  this.LightPosition.elements[0] = g_light_x;
+  this.LightPosition.elements[1] = g_light_y;
+  this.LightPosition.elements[2] = g_light_z;
+  this.LightPosition.elements[3] = 0.0;
+
+  // Set Eye Position
+  this.EyePosition.elements[0] = eye_position[0];
+  this.EyePosition.elements[1] = eye_position[1];
+  this.EyePosition.elements[2] = eye_position[2];
+  this.EyePosition.elements[3] = 0.0;
+
+  // Set light on or off
+  if (g_lightSwitch) {this.LightOn = 1.0;}
+  else {this.LightOn = 0.0;}
+  
+  this.IA.elements[0] = g_IA_r;
+  this.IA.elements[1] = g_IA_g;
+  this.IA.elements[2] = g_IA_b;
+
+  this.ID.elements[0] = g_ID_r;
+  this.ID.elements[1] = g_ID_g;
+  this.ID.elements[2] = g_ID_b;
+  
+  this.IS.elements[0] = g_IS_r;
+  this.IS.elements[1] = g_IS_g;
+  this.IS.elements[2] = g_IS_b;
+
+  this.KA.elements[0] = .135;
+  this.KA.elements[1] = .22;
+  this.KA.elements[2] = .16;
+
+  this.KD.elements[0] = .54;
+  this.KD.elements[1] = .89;
+  this.KD.elements[2] = .63;
+  
+  this.KS.elements[0] = .32;
+  this.KS.elements[1] = .32;
+  this.KS.elements[2] = .32;
+
+  this.KE.elements[0] = 0.0;
+  this.KE.elements[1] = 0.0;
+  this.KE.elements[2] = 0.0;
+
+  this.isBlinn = 0;
+  this.SE = 12.8;
+
+  //  Transfer new uniforms' values to the GPU:-------------
+  // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
+  gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform3fv(this.u_IALoc, this.IA.elements);
+  gl.uniform3fv(this.u_IDLoc, this.ID.elements);
+  gl.uniform3fv(this.u_ISLoc, this.IS.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform1i(this.u_isBlinnLoc, this.isBlinn);
+  gl.uniform3fv(this.u_KALoc, this.KA.elements);
+  gl.uniform3fv(this.u_KDLoc, this.KD.elements);
+  gl.uniform3fv(this.u_KSLoc, this.KS.elements);
+  gl.uniform3fv(this.u_KELoc, this.KE.elements);
+  gl.uniform1f(this.u_SELoc, this.SE);
+}
+
+VBObox3.prototype.draw = function() {
+//=============================================================================
+// Send commands to GPU to select and render current VBObox contents.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.draw() call you needed to call this.switchToMe()!!');
+  }
+  
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							houseStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							houseVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+this.MVPMatrix.translate(0.0, 0.95, 0.0);
+this.ModelMatrix.translate(0.0, 0.95, 0.0);
+  this.MVPMatrix.rotate(g_angleNow1, 0, 1, 0);
+  this.ModelMatrix.rotate(g_angleNow1, 0, 1, 0);
+
+  //update stuff
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
+
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+
+}
+
+
+VBObox3.prototype.reload = function() {
+//=============================================================================
+// Over-write current values in the GPU for our already-created VBO: use 
+// gl.bufferSubData() call to re-transfer some or all of our Float32Array 
+// contents to our VBO without changing any GPU memory allocations.
+
+ gl.bufferSubData(gl.ARRAY_BUFFER, 	// GLenum target(same as 'bindBuffer()')
+                  0,                  // byte offset to where data replacement
+                                      // begins in the VBO.
+ 					 				this.vboContents);   // the JS source-data array used to fill VBO
+}
+
+/*
+VBObox1.prototype.empty = function() {
+//=============================================================================
+// Remove/release all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  However, make sure this step is reversible by a call to 
+// 'restoreMe()': be sure to retain all our Float32Array data, all values for 
+// uniforms, all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+
+VBObox1.prototype.restore = function() {
+//=============================================================================
+// Replace/restore all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  Use our retained Float32Array data, all values for  uniforms, 
+// all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+*/
+
+function VBObox4() {
+//=============================================================================
+//=============================================================================
+// CONSTRUCTOR for one re-usable 'VBObox1' object that holds all data and fcns
+// needed to render vertices from one Vertex Buffer Object (VBO) using one 
+// separate shader program (a vertex-shader & fragment-shader pair) and one
+// set of 'uniform' variables.
+
+// Constructor goal: 
+// Create and set member vars that will ELIMINATE ALL LITERALS (numerical values 
+// written into code) in all other VBObox functions. Keeping all these (initial)
+// values here, in this one coonstrutor function, ensures we can change them 
+// easily WITHOUT disrupting any other code, ever!
+  
+	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
+  'uniform mat4 u_MVPMatrix;\n' +
+  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_NormalMatrix;\n' +
+  'uniform vec4 u_LightPosition;\n' +
+  'uniform vec4 u_EyePosition;\n' +
+  'uniform float u_LightOn;\n' +
+  'uniform vec3 u_IA;\n' +
+  'uniform vec3 u_ID;\n' +
+  'uniform vec3 u_IS;\n' +
+  'uniform vec3 u_KA;\n' +
+  'uniform vec3 u_KD;\n' +
+  'uniform vec3 u_KS;\n' +
+  'uniform vec3 u_KE;\n' +
+  'uniform float u_SE;\n' +
+  'uniform int u_isBlinn;\n' +
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Colr;\n' +
+
+  'void main() {\n' +
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
+  'vec3 normVec = normalize(transVec.xyz);\n' +
+  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  '  gl_Position = u_MVPMatrix * a_Position;\n' +
+  '  if (u_isBlinn == 1) {\n' +
+  '    vec3 halfVec = normalize(lightVec + eyeVec);\n' +
+  '    v_Colr = vec4(0.0*a_Color + u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(normVec, halfVec)), u_SE)), 1.0);\n' +
+  //'    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '  }\n' +
+  '  else {\n' +
+  '    vec3 reflectVec = -1.0 * reflect(lightVec, normVec);\n' +
+  '    v_Colr = vec4(u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE)), 1.0);\n' +
+  '  }\n' +
+  //'    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
+  '}\n';
+
+  this.FRAG_SRC = 
+  'precision mediump float;\n' +
+  'varying vec4 v_Colr;\n' +
+  'void main() {\n' +
+  '  gl_FragColor = v_Colr;\n' +
+  '}\n';
+
+
+ //New Stuff: Make each 3D shape in its own array of vertices:
+ makeDiamond();
+ makeHouse();
+    // how many floats total needed to store all shapes?
+	var mySiz = (diamondVerts.length + houseVerts.length);
+
+	// How many vertices total?
+	var nn = mySiz / (floatsPerVertex+3);
+	console.log('nn is', nn, 'mySiz is', mySiz, 'floatsPerVertex is', floatsPerVertex+3);
+	// Copy all shapes into one big Float32 array:
+  	var colorShapes = new Float32Array(mySiz);
+	this.vboContents = new Float32Array(mySiz)
+	// Copy them:  remember where to start for each shape:
+	diamondStart = 0;							// we stored the cylinder first.
+  	for(i=0,j=0; j< diamondVerts.length; i++,j++) {
+  		colorShapes[i] = diamondVerts[j];
+		}
+
+	houseStart = i;							// we stored the cylinder first.
+  	for(j=0; j< houseVerts.length; i++,j++) {
+  		colorShapes[i] = houseVerts[j];
+		}
+
+	this.vboContents = colorShapes;
+		
+
+  //Back to Old Stuff:
+	/*
+
+	this.vboContents = //---------------------------------------------------------
+		new Float32Array ([					// Array of vertex attribute values we will
+  															// transfer to GPU's vertex buffer object (VBO)
+			// 1 vertex per line: pos1 x,y,z,w;   colr1; r,g,b;   ptSiz1; 
+  	-0.3,  0.7,	0.0, 1.0,		0.0, 1.0, 1.0,  17.0,
+    -0.3, -0.3, 0.0, 1.0,		1.0, 0.0, 1.0,  20.0,
+     0.3, -0.3, 0.0, 1.0,		1.0, 1.0, 0.0,  33.0,
+  ]);	*/
+  
+	this.vboVerts = nn;							// # of vertices held in 'vboContents' array;
+	this.FSIZE = this.vboContents.BYTES_PER_ELEMENT;  
+	                              // bytes req'd by 1 vboContents array element;
+																// (why? used to compute stride and offset 
+																// in bytes for vertexAttribPointer() calls)
+    this.vboBytes = this.vboContents.length * this.FSIZE;               
+                                // (#  of floats in vboContents array) * 
+                                // (# of bytes/float).
+	this.vboStride = this.vboBytes / this.vboVerts;     
+	                              // (== # of bytes to store one complete vertex).
+	                              // From any attrib in a given vertex in the VBO, 
+	                              // move forward by 'vboStride' bytes to arrive 
+	                              // at the same attrib for the next vertex.
+	                               
+	            //----------------------Attribute sizes
+  this.vboFcount_a_Pos1 =  4;    // # of floats in the VBO needed to store the
+                                // attribute named a_Pos1. (4: x,y,z,w values)
+  this.vboFcount_a_Colr1 = 3;   // # of floats for this attrib (r,g,b values)
+  this.vboFcount_a_PtSiz1 = 1;  // # of floats for this attrib (just one!)   
+  this.vboFcount_a_Normal = 3;
+  console.assert((this.vboFcount_a_Pos1 +     // check the size of each and
+                  this.vboFcount_a_Colr1 +
+                  this.vboFcount_a_Normal) *   // every attribute in our VBO
+                  this.FSIZE == this.vboStride, // for agreeement with'stride'
+                  "Uh oh! VBObox3.vboStride disagrees with attribute-size values!");
+                  
+              //----------------------Attribute offsets
+	this.vboOffset_a_Pos1 = 0;    //# of bytes from START of vbo to the START
+	                              // of 1st a_Pos1 attrib value in vboContents[]
+  this.vboOffset_a_Colr1 = (this.vboFcount_a_Pos1) * this.FSIZE;  
+                                // == 4 floats * bytes/float
+                                //# of bytes from START of vbo to the START
+                                // of 1st a_Colr1 attrib value in vboContents[]
+  this.vboOffset_a_Normal =(this.vboFcount_a_Pos1 +
+                            this.vboFcount_a_Colr1) * this.FSIZE; 
+                                // == 7 floats * bytes/float
+                                // # of bytes from START of vbo to the START
+                                // of 1st a_PtSize attrib value in vboContents[]
+
+	            //-----------------------GPU memory locations:                                
+	this.vboLoc;									// GPU Location for Vertex Buffer Object, 
+	                              // returned by gl.createBuffer() function call
+	this.shaderLoc;								// GPU Location for compiled Shader-program  
+	                            	// set by compile/link of VERT_SRC and FRAG_SRC.
+								          //------Attribute locations in our shaders:
+	this.a_Pos1Loc;							  // GPU location: shader 'a_Pos1' attribute
+	this.a_Colr1Loc;							// GPU location: shader 'a_Colr1' attribute
+	this.a_PtSiz1Loc;							// GPU location: shader 'a_PtSiz1' attribute
+	this.a_NormalLoc;
+	
+	            //---------------------- Uniform locations &values in our shaders
+	this.MVPMatrix = new Matrix4();
+  this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
+	this.NormalMatrix = new Matrix4();
+  this.LightPosition = new Vector4();
+  this.EyePosition = new Vector4();
+  this.LightOn = 1.0;
+  this.IA = new Vector3();
+  this.ID = new Vector3();
+  this.IS = new Vector3();
+  this.KA = new Vector3();
+  this.KD = new Vector3();
+  this.KS = new Vector3();
+  this.KE = new Vector3();
+  this.isBlinn = 1;
+  this.SE = 1.0;
+  this.u_MVPMatrixLoc;
+	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
+	this.u_NormalMatrixLoc;
+  this.u_LightPositionLoc;
+  this.u_EyePositionLoc;
+  this.u_LightOnLoc;
+  this.u_IALoc;
+  this.u_IDLoc;
+  this.u_ISLoc;
+  this.u_KALoc;
+  this.u_KDLoc;
+  this.u_KSLoc;
+  this.u_KELoc;
+  this.u_isBlinnLoc;
+  this.u_SELoc
+};
+
+
+VBObox4.prototype.init = function() {
+//==============================================================================
+// Prepare the GPU to use all vertices, GLSL shaders, attributes, & uniforms 
+// kept in this VBObox. (This function usually called only once, within main()).
+// Specifically:
+// a) Create, compile, link our GLSL vertex- and fragment-shaders to form an 
+//  executable 'program' stored and ready to use inside the GPU.  
+// b) create a new VBO object in GPU memory and fill it by transferring in all
+//  the vertex data held in our Float32array member 'VBOcontents'. 
+// c) Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (needed by switchToMe(), adjust(), draw(), reload(), etc.)
+// -------------------
+// CAREFUL!  before you can draw pictures using this VBObox contents, 
+//  you must call this VBObox object's switchToMe() function too!
+//--------------------
+// a) Compile,link,upload shaders-----------------------------------------------
+	this.shaderLoc = createProgram(gl, this.VERT_SRC, this.FRAG_SRC);
+	if (!this.shaderLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create executable Shaders on the GPU. Bye!');
+    return;
+  }
+// CUTE TRICK: let's print the NAME of this VBObox object: tells us which one!
+//  else{console.log('You called: '+ this.constructor.name + '.init() fcn!');}
+
+	gl.program = this.shaderLoc;		// (to match cuon-utils.js -- initShaders())
+
+// b) Create VBO on GPU, fill it------------------------------------------------
+	this.vboLoc = gl.createBuffer();	
+  if (!this.vboLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create VBO in GPU. Bye!'); 
+    return;
+  }
+  
+  // Specify the purpose of our newly-created VBO on the GPU.  Your choices are:
+  //	== "gl.ARRAY_BUFFER" : the VBO holds vertices, each made of attributes 
+  // (positions, colors, normals, etc), or 
+  //	== "gl.ELEMENT_ARRAY_BUFFER" : the VBO holds indices only; integer values 
+  // that each select one vertex from a vertex array stored in another VBO.
+  gl.bindBuffer(gl.ARRAY_BUFFER,	      // GLenum 'target' for this GPU buffer 
+  								this.vboLoc);				  // the ID# the GPU uses for this buffer.
+  											
+  // Fill the GPU's newly-created VBO object with the vertex data we stored in
+  //  our 'vboContents' member (JavaScript Float32Array object).
+  //  (Recall gl.bufferData() will evoke GPU's memory allocation & management: 
+  //	 use gl.bufferSubData() to modify VBO contents without changing VBO size)
+  gl.bufferData(gl.ARRAY_BUFFER, 			  // GLenum target(same as 'bindBuffer()')
+ 					 				this.vboContents, 		// JavaScript Float32Array
+  							 	gl.STATIC_DRAW);			// Usage hint.  
+  //	The 'hint' helps GPU allocate its shared memory for best speed & efficiency
+  //	(see OpenGL ES specification for more info).  Your choices are:
+  //		--STATIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents rarely or never change.
+  //		--DYNAMIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents may change often as our program runs.
+  //		--STREAM_DRAW is for vertex buffers that are rendered a small number of 
+  // 			times and then discarded; for rapidly supplied & consumed VBOs.
+
+// c1) Find All Attributes:-----------------------------------------------------
+//  Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (for switchToMe(), adjust(), draw(), reload(), etc.)
+  this.a_Pos1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Position');
+  if(this.a_Pos1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() Failed to get GPU location of attribute a_Position');
+    return -1;	// error exit.
+  }
+ 	this.a_Colr1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Color');
+  if(this.a_Colr1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() failed to get the GPU location of attribute a_Color');
+    return -1;	// error exit.
+  }
+  /*this.a_PtSiz1Loc = gl.getAttribLocation(this.shaderLoc, 'a_PtSiz1');
+  if(this.a_PtSiz1Loc < 0) {
+    console.log(this.constructor.name + 
+	    					'.init() failed to get the GPU location of attribute a_PtSiz1');
+	  return -1;	// error exit.
+  }*/
+  this.a_NormalLoc = gl.getAttribLocation(this.shaderLoc, 'a_Normal');
+  if(this.a_Normal < 0) {
+    console.log('Failed to get the storage location of a_Normal');
+    return -1;
+  }
+  // c2) Find All Uniforms:-----------------------------------------------------
+  //Get GPU storage location for each uniform var used in our shader programs: 
+
+  this.u_MVPMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_MVPMatrix');
+  if (!this.u_MVPMatrixLoc) { 
+    console.log(this.constructor.name + 
+                '.init() failed to get GPU location for u_MVPMatrix uniform');
+    return;
+  }
+
+  this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
+  if (!this.u_ModelMatrixLoc) { 
+    console.log(this.constructor.name + 
+    						'.init() failed to get GPU location for u_ModelMatrix uniform');
+    return;
+  }
+
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
+	if(!this.u_NormalMatrixLoc) {	
+		console.log('Failed to get GPU storage location for u_NormalMatrix');	
+		return	
+	}
+
+  this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
+  if(!this.u_LightPositionLoc) { 
+    console.log('Failed to get GPU storage location for u_LightPosition'); 
+    return  
+  }
+
+  this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
+  if(!this.u_EyePositionLoc) { 
+    console.log('Failed to get GPU storage location for u_EyePosition'); 
+    return  
+  }
+
+  this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
+  if(!this.u_LightOnLoc) { 
+    console.log('Failed to get GPU storage location for u_LightOn'); 
+    return  
+  }
+
+  this.u_IALoc = gl.getUniformLocation(this.shaderLoc, 'u_IA'); 
+  if(!this.u_IALoc) { 
+    console.log('Failed to get GPU storage location for u_IA'); 
+    return  
+  }
+
+  this.u_IDLoc = gl.getUniformLocation(this.shaderLoc, 'u_ID'); 
+  if(!this.u_IDLoc) { 
+    console.log('Failed to get GPU storage location for u_ID'); 
+    return  
+  }
+
+  this.u_ISLoc = gl.getUniformLocation(this.shaderLoc, 'u_IS'); 
+  if(!this.u_ISLoc) { 
+    console.log('Failed to get GPU storage location for u_IS'); 
+    return  
+  }
+
+  this.u_KALoc = gl.getUniformLocation(this.shaderLoc, 'u_KA'); 
+  if(!this.u_KALoc) { 
+    console.log('Failed to get GPU storage location for u_KA'); 
+    return  
+  }
+
+  this.u_KDLoc = gl.getUniformLocation(this.shaderLoc, 'u_KD'); 
+  if(!this.u_KDLoc) { 
+    console.log('Failed to get GPU storage location for u_KD'); 
+    return  
+  }
+
+  this.u_KSLoc = gl.getUniformLocation(this.shaderLoc, 'u_KS'); 
+  if(!this.u_KSLoc) { 
+    console.log('Failed to get GPU storage location for u_KS'); 
+    return  
+  }
+
+  this.u_KELoc = gl.getUniformLocation(this.shaderLoc, 'u_KE'); 
+  if(!this.u_KELoc) { 
+    console.log('Failed to get GPU storage location for u_KE'); 
+    return  
+  }
+
+  this.u_isBlinnLoc = gl.getUniformLocation(this.shaderLoc, 'u_isBlinn'); 
+  if(!this.u_isBlinnLoc) { 
+    console.log('Failed to get GPU storage location for u_isBlinn'); 
+    return  
+  }
+
+  this.u_SELoc = gl.getUniformLocation(this.shaderLoc, 'u_SE'); 
+  if(!this.u_SELoc) { 
+    console.log('Failed to get GPU storage location for u_SE'); 
+    return  
+  }
+}
+
+VBObox4.prototype.switchToMe = function () {
+//==============================================================================
+// Set GPU to use this VBObox's contents (VBO, shader, attributes, uniforms...)
+//
+// We only do this AFTER we called the init() function, which does the one-time-
+// only setup tasks to put our VBObox contents into GPU memory.  !SURPRISE!
+// even then, you are STILL not ready to draw our VBObox's contents onscreen!
+// We must also first complete these steps:
+//  a) tell the GPU to use our VBObox's shader program (already in GPU memory),
+//  b) tell the GPU to use our VBObox's VBO  (already in GPU memory),
+//  c) tell the GPU to connect the shader program's attributes to that VBO.
+
+// a) select our shader program:
+  gl.useProgram(this.shaderLoc);	
+//		Each call to useProgram() selects a shader program from the GPU memory,
+// but that's all -- it does nothing else!  Any previously used shader program's 
+// connections to attributes and uniforms are now invalid, and thus we must now
+// establish new connections between our shader program's attributes and the VBO
+// we wish to use.  
+  
+// b) call bindBuffer to disconnect the GPU from its currently-bound VBO and
+//  instead connect to our own already-created-&-filled VBO.  This new VBO can 
+//    supply values to use as attributes in our newly-selected shader program:
+	gl.bindBuffer(gl.ARRAY_BUFFER,	    // GLenum 'target' for this GPU buffer 
+										this.vboLoc);			// the ID# the GPU uses for our VBO.
+
+// c) connect our newly-bound VBO to supply attribute variable values for each
+// vertex to our SIMD shader program, using 'vertexAttribPointer()' function.
+// this sets up data paths from VBO to our shader units:
+  // 	Here's how to use the almost-identical OpenGL version of this function:
+	//		http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribPointer.xml )
+
+
+  gl.vertexAttribPointer(
+		this.a_Pos1Loc,//index == ID# for the attribute var in GLSL shader pgm;
+		this.vboFcount_a_Pos1, // # of floats used by this attribute: 1,2,3 or 4?
+		gl.FLOAT,		  // type == what data type did we use for those numbers?
+		false,				// isNormalized == are these fixed-point values that we need
+									//									normalize before use? true or false
+		this.vboStride,// Stride == #bytes we must skip in the VBO to move from the
+		              // stored attrib for this vertex to the same stored attrib
+		              //  for the next vertex in our VBO.  This is usually the 
+									// number of bytes used to store one complete vertex.  If set 
+									// to zero, the GPU gets attribute values sequentially from 
+									// VBO, starting at 'Offset'.	
+									// (Our vertex size in bytes: 4 floats for pos + 3 for color)
+		this.vboOffset_a_Pos1);						
+		              // Offset == how many bytes from START of buffer to the first
+  								// value we will actually use?  (we start with position).
+  gl.vertexAttribPointer(this.a_Colr1Loc, this.vboFcount_a_Colr1,
+                         gl.FLOAT, false, 
+  						           this.vboStride,  this.vboOffset_a_Colr1);
+  /*gl.vertexAttribPointer(this.a_PtSiz1Loc,this.vboFcount_a_PtSiz1, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_PtSiz1);	*/
+  gl.vertexAttribPointer(this.a_NormalLoc,this.vboFcount_a_Normal, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_Normal);	
+  //-- Enable this assignment of the attribute to its' VBO source:
+  gl.enableVertexAttribArray(this.a_Pos1Loc);
+  gl.enableVertexAttribArray(this.a_Colr1Loc);
+  //gl.enableVertexAttribArray(this.a_PtSiz1Loc);
+  gl.enableVertexAttribArray(this.a_NormalLoc);
+
+
+  //NEW port Stuff
+  
+}
+
+VBObox4.prototype.isReady = function() {
+//==============================================================================
+// Returns 'true' if our WebGL rendering context ('gl') is ready to render using
+// this objects VBO and shader program; else return false.
+// see: https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getParameter
+
+var isOK = true;
+
+  if(gl.getParameter(gl.CURRENT_PROGRAM) != this.shaderLoc)  {
+    console.log(this.constructor.name + 
+    						'.isReady() false: shader program at this.shaderLoc not in use!');
+    isOK = false;
+  }
+  if(gl.getParameter(gl.ARRAY_BUFFER_BINDING) != this.vboLoc) {
+      console.log(this.constructor.name + 
+  						'.isReady() false: vbo at this.vboLoc not in use!');
+    isOK = false;
+  }
+  return isOK;
+}
+
+VBObox4.prototype.adjust = function() {
+//==============================================================================
+// Update the GPU to newer, current values we now store for 'uniform' vars on 
+// the GPU; and (if needed) update each attribute's stride and offset in VBO.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.adjust() call you needed to call this.switchToMe()!!');
+  }
+
+	// Adjust values for our uniforms,
+   this.MVPMatrix.setIdentity();
+   this.ModelMatrix.setIdentity();
+// THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
+  this.MVPMatrix.set(g_worldMat);
+  this.MVPMatrix.translate(5.5, 0, 0, 1);
+
+  this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  //this.MVPMatrix
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+
+  // Set Light Position
+  this.LightPosition.elements[0] = g_light_x;
+  this.LightPosition.elements[1] = g_light_y;
+  this.LightPosition.elements[2] = g_light_z;
+  this.LightPosition.elements[3] = 0.0;
+
+  // Set Eye Position
+  this.EyePosition.elements[0] = eye_position[0];
+  this.EyePosition.elements[1] = eye_position[1];
+  this.EyePosition.elements[2] = eye_position[2];
+  this.EyePosition.elements[3] = 0.0;
+
+  // Set light on or off
+  if (g_lightSwitch) {this.LightOn = 1.0;}
+  else {this.LightOn = 0.0;}
+  
+  this.IA.elements[0] = g_IA_r;
+  this.IA.elements[1] = g_IA_g;
+  this.IA.elements[2] = g_IA_b;
+
+  this.ID.elements[0] = g_ID_r;
+  this.ID.elements[1] = g_ID_g;
+  this.ID.elements[2] = g_ID_b;
+  
+  this.IS.elements[0] = g_IS_r;
+  this.IS.elements[1] = g_IS_g;
+  this.IS.elements[2] = g_IS_b;
+
+  this.KA.elements[0] =.25;
+  this.KA.elements[1] = .148;
+  this.KA.elements[2] = .06475;
+
+  this.KD.elements[0] = .4;
+  this.KD.elements[1] = .2368;
+  this.KD.elements[2] = .1036;
+  
+  this.KS.elements[0] = .77;
+  this.KS.elements[1] = .46;
+  this.KS.elements[2] = .20;
+
+  this.KE.elements[0] = 0.0;
+  this.KE.elements[1] = 0.0;
+  this.KE.elements[2] = 0.0;
+  this.isBlinn = 0;
+  this.SE = 76.8;
+
+  //  Transfer new uniforms' values to the GPU:-------------
+  // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
+  gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform3fv(this.u_IALoc, this.IA.elements);
+  gl.uniform3fv(this.u_IDLoc, this.ID.elements);
+  gl.uniform3fv(this.u_ISLoc, this.IS.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform1i(this.u_isBlinnLoc, this.isBlinn);
+  gl.uniform3fv(this.u_KALoc, this.KA.elements);
+  gl.uniform3fv(this.u_KDLoc, this.KD.elements);
+  gl.uniform3fv(this.u_KSLoc, this.KS.elements);
+  gl.uniform3fv(this.u_KELoc, this.KE.elements);
+  gl.uniform1f(this.u_SELoc, this.SE);
+}
+
+VBObox4.prototype.draw = function() {
+//=============================================================================
+// Send commands to GPU to select and render current VBObox contents.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.draw() call you needed to call this.switchToMe()!!');
+  }
+  
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+this.MVPMatrix.translate(0.0, 1, 0.0);
+this.ModelMatrix.translate(0.0, 1, 0.0);
+  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 0);
+  this.ModelMatrix.rotate(g_angleNow1, 1, 0, 0);
+
+  //update stuff
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
+
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+  
+  this.MVPMatrix.translate(0.0, 1, 0.0);
+  this.ModelMatrix.translate(0.0, 1, 0.0);
+  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 1);
+  this.ModelMatrix.rotate(g_angleNow1, -1, 0, -1);
+
+  //update stuff
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
+
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+}
+
+
+VBObox4.prototype.reload = function() {
+//=============================================================================
+// Over-write current values in the GPU for our already-created VBO: use 
+// gl.bufferSubData() call to re-transfer some or all of our Float32Array 
+// contents to our VBO without changing any GPU memory allocations.
+
+ gl.bufferSubData(gl.ARRAY_BUFFER, 	// GLenum target(same as 'bindBuffer()')
+                  0,                  // byte offset to where data replacement
+                                      // begins in the VBO.
+ 					 				this.vboContents);   // the JS source-data array used to fill VBO
+}
+
+/*
+VBObox1.prototype.empty = function() {
+//=============================================================================
+// Remove/release all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  However, make sure this step is reversible by a call to 
+// 'restoreMe()': be sure to retain all our Float32Array data, all values for 
+// uniforms, all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+
+VBObox1.prototype.restore = function() {
+//=============================================================================
+// Replace/restore all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  Use our retained Float32Array data, all values for  uniforms, 
+// all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+*/
+
+function VBObox5() {
+//=============================================================================
+//=============================================================================
+// CONSTRUCTOR for one re-usable 'VBObox1' object that holds all data and fcns
+// needed to render vertices from one Vertex Buffer Object (VBO) using one 
+// separate shader program (a vertex-shader & fragment-shader pair) and one
+// set of 'uniform' variables.
+
+// Constructor goal: 
+// Create and set member vars that will ELIMINATE ALL LITERALS (numerical values 
+// written into code) in all other VBObox functions. Keeping all these (initial)
+// values here, in this one coonstrutor function, ensures we can change them 
+// easily WITHOUT disrupting any other code, ever!
+  
+	this.VERT_SRC =	//--------------------- VERTEX SHADER source code 
+  'uniform mat4 u_MVPMatrix;\n' +
+  'uniform mat4 u_ModelMatrix;\n' +
+  'uniform mat4 u_NormalMatrix;\n' +
+  'uniform vec4 u_LightPosition;\n' +
+  'uniform vec4 u_EyePosition;\n' +
+  'uniform float u_LightOn;\n' +
+  'uniform vec3 u_IA;\n' +
+  'uniform vec3 u_ID;\n' +
+  'uniform vec3 u_IS;\n' +
+  'uniform vec3 u_KA;\n' +
+  'uniform vec3 u_KD;\n' +
+  'uniform vec3 u_KS;\n' +
+  'uniform vec3 u_KE;\n' +
+  'uniform float u_SE;\n' +
+  'uniform int u_isBlinn;\n' +
+  'attribute vec4 a_Position;\n' +
+  'attribute vec3 a_Color;\n' +
+  'attribute vec3 a_Normal;\n' +
+  'varying vec4 v_Colr;\n' +
+
+  'void main() {\n' +
+  'vec4 transVec = u_NormalMatrix * vec4(a_Normal, 1.0);\n' +
+  'vec3 normVec = normalize(transVec.xyz);\n' +
+  'vec3 lightVec = normalize((u_LightPosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  'vec3 eyeVec = normalize((u_EyePosition.xyz) - (u_ModelMatrix * a_Position).xyz);\n' +
+  '  gl_Position = u_MVPMatrix * a_Position;\n' +
+  '  if (u_isBlinn == 1) {\n' +
+  '    vec3 halfVec = normalize(lightVec + eyeVec);\n' +
+  '    v_Colr = vec4(0.0*a_Color + u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(normVec, halfVec)), u_SE)), 1.0);\n' +
+  //'    v_Colr = vec4(0.3*a_Color + 0.0*u_KA + 0.0*u_KD + 0.0*u_KS + 0.0*u_KE + 0.0*u_IA + 0.0*u_ID + 1.0*u_IS + pow(0.6, u_SE) * u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);\n' +
+  '  }\n' +
+  '  else {\n' +
+  '    vec3 reflectVec = -1.0 * reflect(lightVec, normVec);\n' +
+  '    v_Colr = vec4(u_KE + u_LightOn * (u_IA*u_KA + u_ID*u_KD*max(0.0, dot(normVec,lightVec)) + u_IS*u_KS*pow(max(0.0, dot(reflectVec, eyeVec)), u_SE)), 1.0);\n' +
+  '  }\n' +
+  //'    v_Colr = vec4(0.3*a_Color  + 0.0*u_IA + 1.0*u_ID + 0.0*u_IS + u_LightOn * (1.0*dot(normVec,lightVec)+ 0.0*eyeVec), 1.0);}\n' +
+  //'  v_Colr = vec4(0.2*a_Color + 0.8*dot(normVec,lightVec), 1.0);\n' +
+  '}\n';
+
+  this.FRAG_SRC = 
+  'precision mediump float;\n' +
+  'varying vec4 v_Colr;\n' +
+  'void main() {\n' +
+  '  gl_FragColor = v_Colr;\n' +
+  '}\n';
+
+
+ //New Stuff: Make each 3D shape in its own array of vertices:
+ makeDiamond();
+ makeHouse();
+    // how many floats total needed to store all shapes?
+	var mySiz = (diamondVerts.length + houseVerts.length);
+
+	// How many vertices total?
+	var nn = mySiz / (floatsPerVertex+3);
+	console.log('nn is', nn, 'mySiz is', mySiz, 'floatsPerVertex is', floatsPerVertex+3);
+	// Copy all shapes into one big Float32 array:
+  	var colorShapes = new Float32Array(mySiz);
+	this.vboContents = new Float32Array(mySiz)
+	// Copy them:  remember where to start for each shape:
+	diamondStart = 0;							// we stored the cylinder first.
+  	for(i=0,j=0; j< diamondVerts.length; i++,j++) {
+  		colorShapes[i] = diamondVerts[j];
+		}
+
+	houseStart = i;							// we stored the cylinder first.
+  	for(j=0; j< houseVerts.length; i++,j++) {
+  		colorShapes[i] = houseVerts[j];
+		}
+
+	this.vboContents = colorShapes;
+		
+
+  //Back to Old Stuff:
+	/*
+
+	this.vboContents = //---------------------------------------------------------
+		new Float32Array ([					// Array of vertex attribute values we will
+  															// transfer to GPU's vertex buffer object (VBO)
+			// 1 vertex per line: pos1 x,y,z,w;   colr1; r,g,b;   ptSiz1; 
+  	-0.3,  0.7,	0.0, 1.0,		0.0, 1.0, 1.0,  17.0,
+    -0.3, -0.3, 0.0, 1.0,		1.0, 0.0, 1.0,  20.0,
+     0.3, -0.3, 0.0, 1.0,		1.0, 1.0, 0.0,  33.0,
+  ]);	*/
+  
+	this.vboVerts = nn;							// # of vertices held in 'vboContents' array;
+	this.FSIZE = this.vboContents.BYTES_PER_ELEMENT;  
+	                              // bytes req'd by 1 vboContents array element;
+																// (why? used to compute stride and offset 
+																// in bytes for vertexAttribPointer() calls)
+    this.vboBytes = this.vboContents.length * this.FSIZE;               
+                                // (#  of floats in vboContents array) * 
+                                // (# of bytes/float).
+	this.vboStride = this.vboBytes / this.vboVerts;     
+	                              // (== # of bytes to store one complete vertex).
+	                              // From any attrib in a given vertex in the VBO, 
+	                              // move forward by 'vboStride' bytes to arrive 
+	                              // at the same attrib for the next vertex.
+	                               
+	            //----------------------Attribute sizes
+  this.vboFcount_a_Pos1 =  4;    // # of floats in the VBO needed to store the
+                                // attribute named a_Pos1. (4: x,y,z,w values)
+  this.vboFcount_a_Colr1 = 3;   // # of floats for this attrib (r,g,b values)
+  this.vboFcount_a_PtSiz1 = 1;  // # of floats for this attrib (just one!)   
+  this.vboFcount_a_Normal = 3;
+  console.assert((this.vboFcount_a_Pos1 +     // check the size of each and
+                  this.vboFcount_a_Colr1 +
+                  this.vboFcount_a_Normal) *   // every attribute in our VBO
+                  this.FSIZE == this.vboStride, // for agreeement with'stride'
+                  "Uh oh! VBObox3.vboStride disagrees with attribute-size values!");
+                  
+              //----------------------Attribute offsets
+	this.vboOffset_a_Pos1 = 0;    //# of bytes from START of vbo to the START
+	                              // of 1st a_Pos1 attrib value in vboContents[]
+  this.vboOffset_a_Colr1 = (this.vboFcount_a_Pos1) * this.FSIZE;  
+                                // == 4 floats * bytes/float
+                                //# of bytes from START of vbo to the START
+                                // of 1st a_Colr1 attrib value in vboContents[]
+  this.vboOffset_a_Normal =(this.vboFcount_a_Pos1 +
+                            this.vboFcount_a_Colr1) * this.FSIZE; 
+                                // == 7 floats * bytes/float
+                                // # of bytes from START of vbo to the START
+                                // of 1st a_PtSize attrib value in vboContents[]
+
+	            //-----------------------GPU memory locations:                                
+	this.vboLoc;									// GPU Location for Vertex Buffer Object, 
+	                              // returned by gl.createBuffer() function call
+	this.shaderLoc;								// GPU Location for compiled Shader-program  
+	                            	// set by compile/link of VERT_SRC and FRAG_SRC.
+								          //------Attribute locations in our shaders:
+	this.a_Pos1Loc;							  // GPU location: shader 'a_Pos1' attribute
+	this.a_Colr1Loc;							// GPU location: shader 'a_Colr1' attribute
+	this.a_PtSiz1Loc;							// GPU location: shader 'a_PtSiz1' attribute
+	this.a_NormalLoc;
+	
+	            //---------------------- Uniform locations &values in our shaders
+	this.MVPMatrix = new Matrix4();
+  this.ModelMatrix = new Matrix4();	// Transforms CVV axes to model axes.
+	this.NormalMatrix = new Matrix4();
+  this.LightPosition = new Vector4();
+  this.EyePosition = new Vector4();
+  this.LightOn = 1.0;
+  this.IA = new Vector3();
+  this.ID = new Vector3();
+  this.IS = new Vector3();
+  this.KA = new Vector3();
+  this.KD = new Vector3();
+  this.KS = new Vector3();
+  this.KE = new Vector3();
+  this.isBlinn = 1;
+  this.SE = 1.0;
+  this.u_MVPMatrixLoc;
+	this.u_ModelMatrixLoc;						// GPU location for u_ModelMat uniform
+	this.u_NormalMatrixLoc;
+  this.u_LightPositionLoc;
+  this.u_EyePositionLoc;
+  this.u_LightOnLoc;
+  this.u_IALoc;
+  this.u_IDLoc;
+  this.u_ISLoc;
+  this.u_KALoc;
+  this.u_KDLoc;
+  this.u_KSLoc;
+  this.u_KELoc;
+  this.u_isBlinnLoc;
+  this.u_SELoc
+};
+
+
+VBObox5.prototype.init = function() {
+//==============================================================================
+// Prepare the GPU to use all vertices, GLSL shaders, attributes, & uniforms 
+// kept in this VBObox. (This function usually called only once, within main()).
+// Specifically:
+// a) Create, compile, link our GLSL vertex- and fragment-shaders to form an 
+//  executable 'program' stored and ready to use inside the GPU.  
+// b) create a new VBO object in GPU memory and fill it by transferring in all
+//  the vertex data held in our Float32array member 'VBOcontents'. 
+// c) Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (needed by switchToMe(), adjust(), draw(), reload(), etc.)
+// -------------------
+// CAREFUL!  before you can draw pictures using this VBObox contents, 
+//  you must call this VBObox object's switchToMe() function too!
+//--------------------
+// a) Compile,link,upload shaders-----------------------------------------------
+	this.shaderLoc = createProgram(gl, this.VERT_SRC, this.FRAG_SRC);
+	if (!this.shaderLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create executable Shaders on the GPU. Bye!');
+    return;
+  }
+// CUTE TRICK: let's print the NAME of this VBObox object: tells us which one!
+//  else{console.log('You called: '+ this.constructor.name + '.init() fcn!');}
+
+	gl.program = this.shaderLoc;		// (to match cuon-utils.js -- initShaders())
+
+// b) Create VBO on GPU, fill it------------------------------------------------
+	this.vboLoc = gl.createBuffer();	
+  if (!this.vboLoc) {
+    console.log(this.constructor.name + 
+    						'.init() failed to create VBO in GPU. Bye!'); 
+    return;
+  }
+  
+  // Specify the purpose of our newly-created VBO on the GPU.  Your choices are:
+  //	== "gl.ARRAY_BUFFER" : the VBO holds vertices, each made of attributes 
+  // (positions, colors, normals, etc), or 
+  //	== "gl.ELEMENT_ARRAY_BUFFER" : the VBO holds indices only; integer values 
+  // that each select one vertex from a vertex array stored in another VBO.
+  gl.bindBuffer(gl.ARRAY_BUFFER,	      // GLenum 'target' for this GPU buffer 
+  								this.vboLoc);				  // the ID# the GPU uses for this buffer.
+  											
+  // Fill the GPU's newly-created VBO object with the vertex data we stored in
+  //  our 'vboContents' member (JavaScript Float32Array object).
+  //  (Recall gl.bufferData() will evoke GPU's memory allocation & management: 
+  //	 use gl.bufferSubData() to modify VBO contents without changing VBO size)
+  gl.bufferData(gl.ARRAY_BUFFER, 			  // GLenum target(same as 'bindBuffer()')
+ 					 				this.vboContents, 		// JavaScript Float32Array
+  							 	gl.STATIC_DRAW);			// Usage hint.  
+  //	The 'hint' helps GPU allocate its shared memory for best speed & efficiency
+  //	(see OpenGL ES specification for more info).  Your choices are:
+  //		--STATIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents rarely or never change.
+  //		--DYNAMIC_DRAW is for vertex buffers rendered many times, but whose 
+  //				contents may change often as our program runs.
+  //		--STREAM_DRAW is for vertex buffers that are rendered a small number of 
+  // 			times and then discarded; for rapidly supplied & consumed VBOs.
+
+// c1) Find All Attributes:-----------------------------------------------------
+//  Find & save the GPU location of all our shaders' attribute-variables and 
+//  uniform-variables (for switchToMe(), adjust(), draw(), reload(), etc.)
+  this.a_Pos1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Position');
+  if(this.a_Pos1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() Failed to get GPU location of attribute a_Position');
+    return -1;	// error exit.
+  }
+ 	this.a_Colr1Loc = gl.getAttribLocation(this.shaderLoc, 'a_Color');
+  if(this.a_Colr1Loc < 0) {
+    console.log(this.constructor.name + 
+    						'.init() failed to get the GPU location of attribute a_Color');
+    return -1;	// error exit.
+  }
+  /*this.a_PtSiz1Loc = gl.getAttribLocation(this.shaderLoc, 'a_PtSiz1');
+  if(this.a_PtSiz1Loc < 0) {
+    console.log(this.constructor.name + 
+	    					'.init() failed to get the GPU location of attribute a_PtSiz1');
+	  return -1;	// error exit.
+  }*/
+  this.a_NormalLoc = gl.getAttribLocation(this.shaderLoc, 'a_Normal');
+  if(this.a_Normal < 0) {
+    console.log('Failed to get the storage location of a_Normal');
+    return -1;
+  }
+  // c2) Find All Uniforms:-----------------------------------------------------
+  //Get GPU storage location for each uniform var used in our shader programs: 
+
+  this.u_MVPMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_MVPMatrix');
+  if (!this.u_MVPMatrixLoc) { 
+    console.log(this.constructor.name + 
+                '.init() failed to get GPU location for u_MVPMatrix uniform');
+    return;
+  }
+
+  this.u_ModelMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_ModelMatrix');
+  if (!this.u_ModelMatrixLoc) { 
+    console.log(this.constructor.name + 
+    						'.init() failed to get GPU location for u_ModelMatrix uniform');
+    return;
+  }
+
+  this.u_NormalMatrixLoc = gl.getUniformLocation(this.shaderLoc, 'u_NormalMatrix');	
+	if(!this.u_NormalMatrixLoc) {	
+		console.log('Failed to get GPU storage location for u_NormalMatrix');	
+		return	
+	}
+
+  this.u_LightPositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightPosition'); 
+  if(!this.u_LightPositionLoc) { 
+    console.log('Failed to get GPU storage location for u_LightPosition'); 
+    return  
+  }
+
+  this.u_EyePositionLoc = gl.getUniformLocation(this.shaderLoc, 'u_EyePosition'); 
+  if(!this.u_EyePositionLoc) { 
+    console.log('Failed to get GPU storage location for u_EyePosition'); 
+    return  
+  }
+
+  this.u_LightOnLoc = gl.getUniformLocation(this.shaderLoc, 'u_LightOn'); 
+  if(!this.u_LightOnLoc) { 
+    console.log('Failed to get GPU storage location for u_LightOn'); 
+    return  
+  }
+
+  this.u_IALoc = gl.getUniformLocation(this.shaderLoc, 'u_IA'); 
+  if(!this.u_IALoc) { 
+    console.log('Failed to get GPU storage location for u_IA'); 
+    return  
+  }
+
+  this.u_IDLoc = gl.getUniformLocation(this.shaderLoc, 'u_ID'); 
+  if(!this.u_IDLoc) { 
+    console.log('Failed to get GPU storage location for u_ID'); 
+    return  
+  }
+
+  this.u_ISLoc = gl.getUniformLocation(this.shaderLoc, 'u_IS'); 
+  if(!this.u_ISLoc) { 
+    console.log('Failed to get GPU storage location for u_IS'); 
+    return  
+  }
+
+  this.u_KALoc = gl.getUniformLocation(this.shaderLoc, 'u_KA'); 
+  if(!this.u_KALoc) { 
+    console.log('Failed to get GPU storage location for u_KA'); 
+    return  
+  }
+
+  this.u_KDLoc = gl.getUniformLocation(this.shaderLoc, 'u_KD'); 
+  if(!this.u_KDLoc) { 
+    console.log('Failed to get GPU storage location for u_KD'); 
+    return  
+  }
+
+  this.u_KSLoc = gl.getUniformLocation(this.shaderLoc, 'u_KS'); 
+  if(!this.u_KSLoc) { 
+    console.log('Failed to get GPU storage location for u_KS'); 
+    return  
+  }
+
+  this.u_KELoc = gl.getUniformLocation(this.shaderLoc, 'u_KE'); 
+  if(!this.u_KELoc) { 
+    console.log('Failed to get GPU storage location for u_KE'); 
+    return  
+  }
+
+  this.u_isBlinnLoc = gl.getUniformLocation(this.shaderLoc, 'u_isBlinn'); 
+  if(!this.u_isBlinnLoc) { 
+    console.log('Failed to get GPU storage location for u_isBlinn'); 
+    return  
+  }
+
+  this.u_SELoc = gl.getUniformLocation(this.shaderLoc, 'u_SE'); 
+  if(!this.u_SELoc) { 
+    console.log('Failed to get GPU storage location for u_SE'); 
+    return  
+  }
+}
+
+VBObox5.prototype.switchToMe = function () {
+//==============================================================================
+// Set GPU to use this VBObox's contents (VBO, shader, attributes, uniforms...)
+//
+// We only do this AFTER we called the init() function, which does the one-time-
+// only setup tasks to put our VBObox contents into GPU memory.  !SURPRISE!
+// even then, you are STILL not ready to draw our VBObox's contents onscreen!
+// We must also first complete these steps:
+//  a) tell the GPU to use our VBObox's shader program (already in GPU memory),
+//  b) tell the GPU to use our VBObox's VBO  (already in GPU memory),
+//  c) tell the GPU to connect the shader program's attributes to that VBO.
+
+// a) select our shader program:
+  gl.useProgram(this.shaderLoc);	
+//		Each call to useProgram() selects a shader program from the GPU memory,
+// but that's all -- it does nothing else!  Any previously used shader program's 
+// connections to attributes and uniforms are now invalid, and thus we must now
+// establish new connections between our shader program's attributes and the VBO
+// we wish to use.  
+  
+// b) call bindBuffer to disconnect the GPU from its currently-bound VBO and
+//  instead connect to our own already-created-&-filled VBO.  This new VBO can 
+//    supply values to use as attributes in our newly-selected shader program:
+	gl.bindBuffer(gl.ARRAY_BUFFER,	    // GLenum 'target' for this GPU buffer 
+										this.vboLoc);			// the ID# the GPU uses for our VBO.
+
+// c) connect our newly-bound VBO to supply attribute variable values for each
+// vertex to our SIMD shader program, using 'vertexAttribPointer()' function.
+// this sets up data paths from VBO to our shader units:
+  // 	Here's how to use the almost-identical OpenGL version of this function:
+	//		http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribPointer.xml )
+
+
+  gl.vertexAttribPointer(
+		this.a_Pos1Loc,//index == ID# for the attribute var in GLSL shader pgm;
+		this.vboFcount_a_Pos1, // # of floats used by this attribute: 1,2,3 or 4?
+		gl.FLOAT,		  // type == what data type did we use for those numbers?
+		false,				// isNormalized == are these fixed-point values that we need
+									//									normalize before use? true or false
+		this.vboStride,// Stride == #bytes we must skip in the VBO to move from the
+		              // stored attrib for this vertex to the same stored attrib
+		              //  for the next vertex in our VBO.  This is usually the 
+									// number of bytes used to store one complete vertex.  If set 
+									// to zero, the GPU gets attribute values sequentially from 
+									// VBO, starting at 'Offset'.	
+									// (Our vertex size in bytes: 4 floats for pos + 3 for color)
+		this.vboOffset_a_Pos1);						
+		              // Offset == how many bytes from START of buffer to the first
+  								// value we will actually use?  (we start with position).
+  gl.vertexAttribPointer(this.a_Colr1Loc, this.vboFcount_a_Colr1,
+                         gl.FLOAT, false, 
+  						           this.vboStride,  this.vboOffset_a_Colr1);
+  /*gl.vertexAttribPointer(this.a_PtSiz1Loc,this.vboFcount_a_PtSiz1, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_PtSiz1);	*/
+  gl.vertexAttribPointer(this.a_NormalLoc,this.vboFcount_a_Normal, 
+                         gl.FLOAT, false, 
+							           this.vboStride,	this.vboOffset_a_Normal);	
+  //-- Enable this assignment of the attribute to its' VBO source:
+  gl.enableVertexAttribArray(this.a_Pos1Loc);
+  gl.enableVertexAttribArray(this.a_Colr1Loc);
+  //gl.enableVertexAttribArray(this.a_PtSiz1Loc);
+  gl.enableVertexAttribArray(this.a_NormalLoc);
+
+
+  //NEW port Stuff
+  
+}
+
+VBObox5.prototype.isReady = function() {
+//==============================================================================
+// Returns 'true' if our WebGL rendering context ('gl') is ready to render using
+// this objects VBO and shader program; else return false.
+// see: https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getParameter
+
+var isOK = true;
+
+  if(gl.getParameter(gl.CURRENT_PROGRAM) != this.shaderLoc)  {
+    console.log(this.constructor.name + 
+    						'.isReady() false: shader program at this.shaderLoc not in use!');
+    isOK = false;
+  }
+  if(gl.getParameter(gl.ARRAY_BUFFER_BINDING) != this.vboLoc) {
+      console.log(this.constructor.name + 
+  						'.isReady() false: vbo at this.vboLoc not in use!');
+    isOK = false;
+  }
+  return isOK;
+}
+
+VBObox5.prototype.adjust = function() {
+//==============================================================================
+// Update the GPU to newer, current values we now store for 'uniform' vars on 
+// the GPU; and (if needed) update each attribute's stride and offset in VBO.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.adjust() call you needed to call this.switchToMe()!!');
+  }
+
+	// Adjust values for our uniforms,
+   this.MVPMatrix.setIdentity();
+   this.ModelMatrix.setIdentity();
+// THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
+  this.MVPMatrix.set(g_worldMat);
+  this.MVPMatrix.translate(2.5, 5, 0, 1);
+
+   this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  this.MVPMatrix.rotate(g_angleNow0, 0, 1, 0);
+  this.ModelMatrix.rotate(g_angleNow0, 0, 1, 0);
+
+  //this.MVPMatrix
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+
+  // Set Light Position
+  this.LightPosition.elements[0] = g_light_x;
+  this.LightPosition.elements[1] = g_light_y;
+  this.LightPosition.elements[2] = g_light_z;
+  this.LightPosition.elements[3] = 0.0;
+
+  // Set Eye Position
+  this.EyePosition.elements[0] = eye_position[0];
+  this.EyePosition.elements[1] = eye_position[1];
+  this.EyePosition.elements[2] = eye_position[2];
+  this.EyePosition.elements[3] = 0.0;
+
+  // Set light on or off
+  if (g_lightSwitch) {this.LightOn = 1.0;}
+  else {this.LightOn = 0.0;}
+  
+  this.IA.elements[0] = g_IA_r;
+  this.IA.elements[1] = g_IA_g;
+  this.IA.elements[2] = g_IA_b;
+
+  this.ID.elements[0] = g_ID_r;
+  this.ID.elements[1] = g_ID_g;
+  this.ID.elements[2] = g_ID_b;
+  
+  this.IS.elements[0] = g_IS_r;
+  this.IS.elements[1] = g_IS_g;
+  this.IS.elements[2] = g_IS_b;
+
+  this.KA.elements[0] = .23;
+  this.KA.elements[1] = .23;
+  this.KA.elements[2] = .23;
+
+  this.KD.elements[0] = .28;
+  this.KD.elements[1] = .28;
+  this.KD.elements[2] = .28;
+  
+  this.KS.elements[0] = .77;
+  this.KS.elements[1] = .77;
+  this.KS.elements[2] = .77;
+
+  this.KE.elements[0] = 0.0;
+  this.KE.elements[1] = 0.0;
+  this.KE.elements[2] = 0.0;
+
+  this.isBlinn = 0;
+  this.SE = 89.6;
+
+  //  Transfer new uniforms' values to the GPU:-------------
+  // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
+  gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform3fv(this.u_IALoc, this.IA.elements);
+  gl.uniform3fv(this.u_IDLoc, this.ID.elements);
+  gl.uniform3fv(this.u_ISLoc, this.IS.elements);
+  gl.uniform1f(this.u_LightOnLoc, this.LightOn);
+  gl.uniform1i(this.u_isBlinnLoc, this.isBlinn);
+  gl.uniform3fv(this.u_KALoc, this.KA.elements);
+  gl.uniform3fv(this.u_KDLoc, this.KD.elements);
+  gl.uniform3fv(this.u_KSLoc, this.KS.elements);
+  gl.uniform3fv(this.u_KELoc, this.KE.elements);
+  gl.uniform1f(this.u_SELoc, this.SE);
+}
+
+VBObox5.prototype.draw = function() {
+//=============================================================================
+// Send commands to GPU to select and render current VBObox contents.
+
+  // check: was WebGL context set to use our VBO & shader program?
+  if(this.isReady()==false) {
+        console.log('ERROR! before' + this.constructor.name + 
+  						'.draw() call you needed to call this.switchToMe()!!');
+  }
+  
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+this.MVPMatrix.translate(0.0, 1, 0.0);
+this.ModelMatrix.translate(0.0, 1, 0.0);
+  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 0);
+  this.ModelMatrix.rotate(g_angleNow1, 1, 0, 0);
+
+  //update stuff
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
+
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+  
+  this.MVPMatrix.translate(0.0, 1, 0.0);
+  this.ModelMatrix.translate(0.0, 1, 0.0);
+  this.MVPMatrix.rotate(g_angleNow1, 1, 0, 1);
+  this.ModelMatrix.rotate(g_angleNow1, -1, 0, -1);
+
+  //update stuff
+  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  this.NormalMatrix.transpose();
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
+  										false, 										// use matrix transpose instead?
+  										this.ModelMatrix.elements);	// send data from Javascript.
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
+
+  // ----------------------------Draw the contents of the currently-bound VBO:
+  gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
+                  // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+                  //          gl.TRIANGLES, gl.TRIANGLE_STRIP,
+  							diamondStart/(floatsPerVertex+3), 								// location of 1st vertex to draw;
+  							diamondVerts.length/(floatsPerVertex+3));		// number of vertices to draw on-screen.
+
+}
+
+
+VBObox5.prototype.reload = function() {
+//=============================================================================
+// Over-write current values in the GPU for our already-created VBO: use 
+// gl.bufferSubData() call to re-transfer some or all of our Float32Array 
+// contents to our VBO without changing any GPU memory allocations.
+
+ gl.bufferSubData(gl.ARRAY_BUFFER, 	// GLenum target(same as 'bindBuffer()')
+                  0,                  // byte offset to where data replacement
+                                      // begins in the VBO.
+ 					 				this.vboContents);   // the JS source-data array used to fill VBO
+}
+
+/*
+VBObox1.prototype.empty = function() {
+//=============================================================================
+// Remove/release all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  However, make sure this step is reversible by a call to 
+// 'restoreMe()': be sure to retain all our Float32Array data, all values for 
+// uniforms, all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+
+VBObox1.prototype.restore = function() {
+//=============================================================================
+// Replace/restore all GPU resources used by this VBObox object, including any 
+// shader programs, attributes, uniforms, textures, samplers or other claims on 
+// GPU memory.  Use our retained Float32Array data, all values for  uniforms, 
+// all stride and offset values, etc.
+//
+//
+// 		********   YOU WRITE THIS! ********
+//
+//
+//
+}
+*/
