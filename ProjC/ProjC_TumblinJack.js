@@ -257,6 +257,118 @@ html_IS_bSlider.oninput = function() {
   g_IS_b = this.value/255;
 }
 
+// Save slider values for KA values
+var html_KA_rSlider = document.getElementById("KA_rSlider");
+var html_KA_rOutput = document.getElementById("KA_rValue");
+var g_KA_r = html_KA_rSlider.value/255;
+html_KA_rOutput.innerHTML = html_KA_rSlider.value;
+html_KA_rSlider.oninput = function() {
+  html_KA_rOutput.innerHTML = this.value;
+  g_KA_r = this.value/255;
+}
+// Save slider values for KA values
+var html_KA_gSlider = document.getElementById("KA_gSlider");
+var html_KA_gOutput = document.getElementById("KA_gValue");
+var g_KA_g = html_KA_gSlider.value/255;
+html_KA_gOutput.innerHTML = html_KA_gSlider.value;
+html_KA_gSlider.oninput = function() {
+  html_KA_gOutput.innerHTML = this.value;
+  g_KA_g = this.value/255;
+}
+// Save slider values for KA values
+var html_KA_bSlider = document.getElementById("KA_bSlider");
+var html_KA_bOutput = document.getElementById("KA_bValue");
+var g_KA_b = html_KA_bSlider.value/255;
+html_KA_bOutput.innerHTML = html_KA_bSlider.value;
+html_KA_bSlider.oninput = function() {
+  html_KA_bOutput.innerHTML = this.value;
+  g_KA_b = this.value/255;
+}
+
+// Save slider values for KD values
+var html_KD_rSlider = document.getElementById("KD_rSlider");
+var html_KD_rOutput = document.getElementById("KD_rValue");
+var g_KD_r = html_KD_rSlider.value/255;
+html_KD_rOutput.innerHTML = html_KD_rSlider.value;
+html_KD_rSlider.oninput = function() {
+  html_KD_rOutput.innerHTML = this.value;
+  g_KD_r = this.value/255;
+}
+// Save slider values for KD values
+var html_KD_gSlider = document.getElementById("KD_gSlider");
+var html_KD_gOutput = document.getElementById("KD_gValue");
+var g_KD_g = html_KD_gSlider.value/255;
+html_KD_gOutput.innerHTML = html_KD_gSlider.value;
+html_KD_gSlider.oninput = function() {
+  html_KD_gOutput.innerHTML = this.value;
+  g_KD_g = this.value/255;
+}
+// Save slider values for KD values
+var html_KD_bSlider = document.getElementById("KD_bSlider");
+var html_KD_bOutput = document.getElementById("KD_bValue");
+var g_KD_b = html_KD_bSlider.value/255;
+html_KD_bOutput.innerHTML = html_KD_bSlider.value;
+html_KD_bSlider.oninput = function() {
+  html_KD_bOutput.innerHTML = this.value;
+  g_KD_b = this.value/255;
+}
+
+// Save slider values for KS values
+var html_KS_rSlider = document.getElementById("KS_rSlider");
+var html_KS_rOutput = document.getElementById("KS_rValue");
+var g_KS_r = html_KS_rSlider.value/255;
+html_KS_rOutput.innerHTML = html_KS_rSlider.value;
+html_KS_rSlider.oninput = function() {
+  html_KS_rOutput.innerHTML = this.value;
+  g_KS_r = this.value/255;
+}
+// Save slider values for KS values
+var html_KS_gSlider = document.getElementById("KS_gSlider");
+var html_KS_gOutput = document.getElementById("KS_gValue");
+var g_KS_g = html_KS_gSlider.value/255;
+html_KS_gOutput.innerHTML = html_KS_gSlider.value;
+html_KS_gSlider.oninput = function() {
+  html_KS_gOutput.innerHTML = this.value;
+  g_KS_g = this.value/255;
+}
+// Save slider values for KS values
+var html_KS_bSlider = document.getElementById("KS_bSlider");
+var html_KS_bOutput = document.getElementById("KS_bValue");
+var g_KS_b = html_KS_bSlider.value/255;
+html_KS_bOutput.innerHTML = html_KS_bSlider.value;
+html_KS_bSlider.oninput = function() {
+  html_KS_bOutput.innerHTML = this.value;
+  g_KS_b = this.value/255;
+}
+
+// Save slider values for KE values
+var html_KE_rSlider = document.getElementById("KE_rSlider");
+var html_KE_rOutput = document.getElementById("KE_rValue");
+var g_KE_r = html_KE_rSlider.value/255;
+html_KE_rOutput.innerHTML = html_KE_rSlider.value;
+html_KE_rSlider.oninput = function() {
+  html_KE_rOutput.innerHTML = this.value;
+  g_KE_r = this.value/255;
+}
+// Save slider values for KE values
+var html_KE_gSlider = document.getElementById("KE_gSlider");
+var html_KE_gOutput = document.getElementById("KE_gValue");
+var g_KE_g = html_KE_gSlider.value/255;
+html_KE_gOutput.innerHTML = html_KE_gSlider.value;
+html_KE_gSlider.oninput = function() {
+  html_KE_gOutput.innerHTML = this.value;
+  g_KE_g = this.value/255;
+}
+// Save slider values for KS values
+var html_KE_bSlider = document.getElementById("KE_bSlider");
+var html_KE_bOutput = document.getElementById("KE_bValue");
+var g_KE_b = html_KE_bSlider.value/255;
+html_KE_bOutput.innerHTML = html_KE_bSlider.value;
+html_KE_bSlider.oninput = function() {
+  html_KE_bOutput.innerHTML = this.value;
+  g_KE_b = this.value/255;
+}
+
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
 // (equivalently: transforms 'world' coord. numbers (x,y,z,w) to CVV coord. numbers)
