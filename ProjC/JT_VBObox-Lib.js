@@ -2930,15 +2930,16 @@ VBObox3.prototype.adjust = function() {
    this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
-  this.MVPMatrix.translate(-3.5, 0, 0, 1);
+  //this.MVPMatrix.translate(-3.5, 0, 0, 1);
+  //this.ModelMatrix.translate(-3.5, 0, 0, 1)
 
-  this.MVPMatrix.rotate(90, 1, 0, 0);
-  this.ModelMatrix.rotate(90, 1, 0, 0);
+  //this.MVPMatrix.rotate(90, 1, 0, 0);
+  //this.ModelMatrix.rotate(90, 1, 0, 0);
 
   //this.MVPMatrix
 
-  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
-  this.NormalMatrix.transpose();
+  //this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  //this.NormalMatrix.transpose();
 
   // Set Light Position
   this.LightPosition.elements[0] = g_light_x;
@@ -2989,12 +2990,13 @@ VBObox3.prototype.adjust = function() {
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
-  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+
+  /*gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
   gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
   										false, 										// use matrix transpose instead?
   										this.ModelMatrix.elements);	// send data from Javascript.
 
-  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);*/
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
   gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
   gl.uniform1f(this.u_LightOnLoc, this.LightOn);
@@ -3019,6 +3021,22 @@ VBObox3.prototype.draw = function() {
         console.log('ERROR! before' + this.constructor.name + 
   						'.draw() call you needed to call this.switchToMe()!!');
   }
+
+  this.MVPMatrix.translate(-3.5, 0, 0, 1);
+  this.ModelMatrix.translate(-3.5, 0, 0, 1)
+
+  this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix); 
+  this.NormalMatrix.transpose();
+
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,  // GPU location of the uniform
+                      false,                    // use matrix transpose instead?
+                      this.ModelMatrix.elements); // send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   
   // ----------------------------Draw the contents of the currently-bound VBO:
   gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
@@ -3567,15 +3585,14 @@ VBObox4.prototype.adjust = function() {
    this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
-  this.MVPMatrix.translate(5.5, 0, 0, 1);
+  //this.MVPMatrix.translate(5.5, 0, 0, 1);
+  //this.ModelMatrix.translate(5.5, 0, 0, 1);
 
-  this.MVPMatrix.rotate(90, 1, 0, 0);
-  this.ModelMatrix.rotate(90, 1, 0, 0);
+  //this.MVPMatrix.rotate(90, 1, 0, 0);
+  //this.ModelMatrix.rotate(90, 1, 0, 0);
 
-  //this.MVPMatrix
-
-  this.NormalMatrix.setInverseOf(this.ModelMatrix);	
-  this.NormalMatrix.transpose();
+  //this.NormalMatrix.setInverseOf(this.ModelMatrix);	
+  //this.NormalMatrix.transpose();
 
   // Set Light Position
   this.LightPosition.elements[0] = g_light_x;
@@ -3625,12 +3642,13 @@ VBObox4.prototype.adjust = function() {
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
-  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+
+  /*gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
   gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
   										false, 										// use matrix transpose instead?
   										this.ModelMatrix.elements);	// send data from Javascript.
 
-  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);*/
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
   gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
   gl.uniform1f(this.u_LightOnLoc, this.LightOn);
@@ -3656,6 +3674,22 @@ VBObox4.prototype.draw = function() {
   						'.draw() call you needed to call this.switchToMe()!!');
   }
   
+  this.MVPMatrix.translate(5.5, 0, 0, 1);
+  this.ModelMatrix.translate(5.5, 0, 0, 1);
+
+  this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix); 
+  this.NormalMatrix.transpose();
+
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,  // GPU location of the uniform
+                      false,                    // use matrix transpose instead?
+                      this.ModelMatrix.elements); // send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+
   // ----------------------------Draw the contents of the currently-bound VBO:
   gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
                   // choices: gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
@@ -4224,7 +4258,8 @@ VBObox5.prototype.adjust = function() {
    this.ModelMatrix.setIdentity();
 // THIS DOESN'T WORK!!  this.ModelMatrix = g_worldMat;
   this.MVPMatrix.set(g_worldMat);
-  this.MVPMatrix.translate(2.5, 5, 0, 1);
+  /*this.MVPMatrix.translate(2.5, 5, 0, 1);
+  this.ModelMatrix.translate(2.5, 5, 0, 1);
 
    this.MVPMatrix.rotate(90, 1, 0, 0);
   this.ModelMatrix.rotate(90, 1, 0, 0);
@@ -4232,10 +4267,8 @@ VBObox5.prototype.adjust = function() {
   this.MVPMatrix.rotate(g_angleNow0, 0, 1, 0);
   this.ModelMatrix.rotate(g_angleNow0, 0, 1, 0);
 
-  //this.MVPMatrix
-
   this.NormalMatrix.setInverseOf(this.ModelMatrix);	
-  this.NormalMatrix.transpose();
+  this.NormalMatrix.transpose();*/
 
   // Set Light Position
   this.LightPosition.elements[0] = g_light_x;
@@ -4286,12 +4319,12 @@ VBObox5.prototype.adjust = function() {
 
   //  Transfer new uniforms' values to the GPU:-------------
   // Send  new 'ModelMat' values to the GPU's 'u_ModelMat1' uniform: 
-  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  /*gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
   gl.uniformMatrix4fv(this.u_ModelMatrixLoc,	// GPU location of the uniform
   										false, 										// use matrix transpose instead?
   										this.ModelMatrix.elements);	// send data from Javascript.
 
-  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);*/
   gl.uniform4fv(this.u_LightPositionLoc, this.LightPosition.elements);
   gl.uniform4fv(this.u_EyePositionLoc, this.EyePosition.elements);
   gl.uniform1f(this.u_LightOnLoc, this.LightOn);
@@ -4316,6 +4349,25 @@ VBObox5.prototype.draw = function() {
         console.log('ERROR! before' + this.constructor.name + 
   						'.draw() call you needed to call this.switchToMe()!!');
   }
+  
+  this.MVPMatrix.translate(2.5, 5, 0, 1);
+  this.ModelMatrix.translate(2.5, 5, 0, 1);
+
+   this.MVPMatrix.rotate(90, 1, 0, 0);
+  this.ModelMatrix.rotate(90, 1, 0, 0);
+
+  this.MVPMatrix.rotate(g_angleNow0, 0, 1, 0);
+  this.ModelMatrix.rotate(g_angleNow0, 0, 1, 0);
+
+  this.NormalMatrix.setInverseOf(this.ModelMatrix); 
+  this.NormalMatrix.transpose();
+
+  gl.uniformMatrix4fv(this.u_MVPMatrixLoc, false, this.MVPMatrix.elements);
+  gl.uniformMatrix4fv(this.u_ModelMatrixLoc,  // GPU location of the uniform
+                      false,                    // use matrix transpose instead?
+                      this.ModelMatrix.elements); // send data from Javascript.
+
+  gl.uniformMatrix4fv(this.u_NormalMatrixLoc, false, this.NormalMatrix.elements);
   
   // ----------------------------Draw the contents of the currently-bound VBO:
   gl.drawArrays(gl.TRIANGLES,		    // select the drawing primitive to draw:
