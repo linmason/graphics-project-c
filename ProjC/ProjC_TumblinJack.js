@@ -97,7 +97,7 @@ var g_angleNow0  =  0.0; 			  // Current rotation angle, in degrees.
 var g_angleRate0 = 900.0;				// Rotation angle rate, in degrees/second.
                                 //---------------
 var g_angleNow1  = 100.0;       // current angle, in degrees
-var g_angleRate1 =  600.0;        // rotation angle rate, degrees/sec
+var g_angleRate1 =  1000.0;        // rotation angle rate, degrees/sec
 var g_angleMax1  = 150.0;       // max, min allowed angle, in degrees
 var g_angleMin1  =  60.0;
                                 //---------------
