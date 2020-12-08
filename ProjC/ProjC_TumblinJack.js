@@ -83,6 +83,9 @@ var g_canvasID;									// HTML-5 'canvas' element ID#
 worldBox = new VBObox0();		  // Holds VBO & shaders for 3D 'world' ground-plane grid, etc;
 gouraudBox = new VBObox1();		  // "  "  for first set of custom-shaded 3D parts
 phongBox = new VBObox2();     // "  "  for second set of custom-shaded 3D parts
+gObj1Box = new VBObox3();
+gObj2Box = new VBObox4();
+gObj3Box = new VBObox5();
 
 // For animation:---------------------
 var g_lastMS = Date.now();			// Timestamp (in milliseconds) for our 
@@ -94,7 +97,7 @@ var g_angleNow0  =  0.0; 			  // Current rotation angle, in degrees.
 var g_angleRate0 = 900.0;				// Rotation angle rate, in degrees/second.
                                 //---------------
 var g_angleNow1  = 100.0;       // current angle, in degrees
-var g_angleRate1 =  95.0;        // rotation angle rate, degrees/sec
+var g_angleRate1 =  600.0;        // rotation angle rate, degrees/sec
 var g_angleMax1  = 150.0;       // max, min allowed angle, in degrees
 var g_angleMin1  =  60.0;
                                 //---------------
@@ -776,6 +779,9 @@ function main() {
                         // including ground-plane,                       
   gouraudBox.init(gl);		//  "		"		"  for 1st kind of shading & lighting
 	phongBox.init(gl);    //  "   "   "  for 2nd kind of shading & lighting
+	gObj1Box.init(gl);
+	gObj2Box.init(gl);
+	gObj3Box.init(gl);
 	
 	
   gl.clearColor(0.2, 0.2, 0.2, 1);	  // RGBA color for clearing <canvas>
@@ -895,6 +901,18 @@ var b4Wait = b4Draw - g_lastMS;
   	phongBox.adjust();		  // Send new values for uniforms to the GPU, and
   	phongBox.draw();			  // draw our VBO's contents using our shaders.
   	}
+
+	gObj1Box.switchToMe();
+	gObj1Box.adjust();
+	gObj1Box.draw();
+
+	gObj2Box.switchToMe();
+	gObj2Box.adjust();
+	gObj2Box.draw();
+
+	gObj3Box.switchToMe();
+	gObj3Box.adjust();
+	gObj3Box.draw();
 /* // ?How slow is our own code?  	
 var aftrDraw = Date.now();
 var drawWait = aftrDraw - b4Draw;
