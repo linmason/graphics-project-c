@@ -960,7 +960,7 @@ function setCamera() {
   g_worldMat.setIdentity();    // DEFINE 'world-space' coords.
   
   // Define 'camera lens':
-  var fovy = 40.0;
+  var fovy = 30.0;
   var near = 1.0;
   var far = 100.0;
   g_worldMat.perspective(fovy,   // FOVY: top-to-bottom vertical image angle, in degrees
