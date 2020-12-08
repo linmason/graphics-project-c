@@ -1005,7 +1005,7 @@ VBObox1.prototype.adjust = function() {
   this.KE.elements[1] = g_KE_g;
   this.KE.elements[2] = g_KE_b;
 
-  this.isBlinn = 0;
+  this.isBlinn = g_isBlinn;
   this.SE = g_SE;
 
   //  Transfer new uniforms' values to the GPU:-------------

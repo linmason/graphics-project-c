@@ -379,6 +379,9 @@ html_SE_Slider.oninput = function() {
   g_SE = this.value/255;
 }
 
+// Initalize lighting type
+var g_isBlinn = 1;
+
 
 var MATL_RED_PLASTIC =    1;
 var MATL_GRN_PLASTIC =    2;
@@ -1046,7 +1049,22 @@ function myKeyDown(kev) {
 			break;
 	}
 }
-
+function SwitchLighting() {
+  var lightbutton = document.getElementById("LightingSwitch");
+  if (g_isBlinn == 0) {
+    g_isBlinn = 1;
+    lightbutton.innerHTML = "Blinn-Phong";
+    console.log(g_isBlinn);
+  }
+  else if (g_isBlinn == 1) {
+    g_isBlinn = 0;
+    lightbutton.innerHTML = "Phong";
+    console.log(g_isBlinn);
+  }
+  else {
+    console.log("Error: Wrong lighting type isBlinn");
+  }
+}
 
 function myKeyUp(kev) {
 	//===============================================================================
