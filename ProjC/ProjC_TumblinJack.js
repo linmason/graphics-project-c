@@ -379,8 +379,9 @@ html_SE_Slider.oninput = function() {
   g_SE = this.value/255;
 }
 
-// Initalize lighting type
+// Initalize lighting and shading type
 var g_isBlinn = 1;
+var g_isGouraud = 1; 
 
 
 var MATL_RED_PLASTIC =    1;
@@ -661,6 +662,37 @@ g_KS_g = mt.K_spec[1];
 g_KS_b = mt.K_spec[2];
 g_SE = mt.K_shiny;
 
+// Update HTML
+html_KE_rSlider.value = Math.round(g_KE_r*255);
+html_KE_rOutput.innerHTML = Math.round(g_KE_r*255);
+html_KE_gSlider.value = Math.round(g_KE_g*255);
+html_KE_gOutput.innerHTML = Math.round(g_KE_g*255);
+html_KE_bSlider.value = Math.round(g_KE_b*255);
+html_KE_bOutput.innerHTML = Math.round(g_KE_b*255);
+
+html_KA_rSlider.value = Math.round(g_KA_r*255);
+html_KA_rOutput.innerHTML = Math.round(g_KA_r*255);
+html_KA_gSlider.value = Math.round(g_KA_g*255);
+html_KA_gOutput.innerHTML = Math.round(g_KA_g*255);
+html_KA_bSlider.value = Math.round(g_KA_b*255);
+html_KA_bOutput.innerHTML = Math.round(g_KA_b*255);
+
+html_KD_rSlider.value = Math.round(g_KD_r*255);
+html_KD_rOutput.innerHTML = Math.round(g_KD_r*255);
+html_KD_gSlider.value = Math.round(g_KD_g*255);
+html_KD_gOutput.innerHTML = Math.round(g_KD_g*255);
+html_KD_bSlider.value = Math.round(g_KD_b*255);
+html_KD_bOutput.innerHTML = Math.round(g_KD_b*255);      
+
+html_KS_rSlider.value = Math.round(g_KS_r*255);
+html_KS_rOutput.innerHTML = Math.round(g_KS_r*255);
+html_KS_gSlider.value = Math.round(g_KS_g*255);
+html_KS_gOutput.innerHTML = Math.round(g_KS_g*255);
+html_KS_bSlider.value = Math.round(g_KS_b*255);
+html_KS_bOutput.innerHTML = Math.round(g_KS_b*255);      
+
+html_SE_Slider.value = g_SE;
+html_SE_Output.innerHTML = g_SE;
 
 // GLOBAL CAMERA CONTROL:					// 
 g_worldMat = new Matrix4();				// Changes CVV drawing axes to 'world' axes.
@@ -1063,6 +1095,23 @@ function SwitchLighting() {
   }
   else {
     console.log("Error: Wrong lighting type isBlinn");
+  }
+}
+
+function SwitchShading() {
+  var shadebutton = document.getElementById("ShadingSwitch");
+  if (g_isGouraud == 0) {
+    g_isGouraud = 1;
+    lightbutton.innerHTML = "Gouraud";
+    console.log(g_isGouraud);
+  }
+  else if (g_isGouraud == 1) {
+    g_isGouraud = 0;
+    lightbutton.innerHTML = "Phong";
+    console.log(g_isGouraud);
+  }
+  else {
+    console.log("Error: Wrong shading type g_isGouraud");
   }
 }
 
