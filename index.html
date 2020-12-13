@@ -2,236 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Proj C-LATEST</title>
+    <title>Shading & Lighting Demo</title>
     <style>
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
-    .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-      border-radius: 34px;
-    }
-
-    .slider.round:before {
-      border-radius: 50%;
-    }
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width:100vw-8px;
+        height:100vh-8px;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 500px;
+      }
+      .startButton {
+        font-size: 26px;
+        width: 100px;
+        height: 50px;
+      }
+      h1 {
+        font-size: 40px;
+      }
+      h3 {
+        font-size: 28px;
+      }
+      h4 {
+        font-size: 26px;
+      }
+      p {
+        font-size: 22px;
+      }
     </style>
   </head>
 
-  <body onload="main()" >
-    <canvas id="webgl" width="600" height="600">
-    Please use a browser that supports "canvas"
-    </canvas>
-    <div style="display:flex; flex-direction:row; height: 30px;">
-      <button type="button" onclick="VBO0toggle()">VBO-0 hide/show</button>
-      <p>Shading:</p>
-      <button id="ShadingSwitch" type="button" onclick="SwitchShading()">Gouraud</button>
-      <p>Lighting:</p>
-      <button id="LightingSwitch" type="button" onclick="SwitchLighting()">Blinn-Phong</button>
-      <div style="display:flex; flex-direction:row;">
-        <p>Light:</p>
-        <label class="switch">
-          <input id="Light_Switch"type="checkbox" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <p>     WASD moves around, arrrow keys rotate camera, "M" key changes sphere material</p>
-    </div>
-
-    <div id = "Light Controls" style="display:flex; flex-direction:row; height:calc(30vh - 16px - 30px) !important; overflow: scroll;">
-      <div id="Light Position" >
-        <p style="line-height:10px;">Position:</p>
-        <div style="display:flex; flex-direction:row;">
-          x:<input id="Light_xSlider" type="range" min="-10" max="10" value="10">
-          <p id="Light_xValue"></p>
+  <body>
+    <div class="wrapper">
+      <div class="content">
+        <div class="heading">
+          <h1>Shading and Lighting Demo</h1>
+          <h3>Made by Mason Lin using WebGL</h3>
+          <p>Demonstrates different shading and lighting techniques with customizable light and materials.</p>
         </div>
-        <div style="display:flex; flex-direction:row;">
-          y:<input id="Light_ySlider" type="range" min="-10" max="10" value="10">
-          <p id="Light_yValue"></p>
+        <div class="instructions">
+          <h4>Instructions</h4>
+          <p>WASD moves camera around. arrrow keys rotate camera. "M" key changes sphere material</p>
+          <p>Top row of buttons changes shading and lighting methods. Sliders below change light position, ambient, diffuse, and specular Illumination as well as emissive term, specular exponent, ambient, diffuse, and specular reflectance of the material.</p>
         </div>
-        <div style="display:flex; flex-direction:row;">
-          z:<input id="Light_zSlider" type="range" min="-10" max="10" value="10">
-          <p id="Light_zValue"></p>
-        </div>
-      </div>
-
-      <div id="IA" width="600" height="200" style="margin-left: 50px;">
-        <p>IA:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="IA_rSlider" type="range" min="0" max="255" value="255">
-          <p id="IA_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="IA_gSlider" type="range" min="0" max="255" value="255">
-          <p id="IA_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="IA_bSlider" type="range" min="0" max="255" value="255">
-          <p id="IA_bValue"></p>
-        </div>
-      </div>
-
-      <div id="ID" width="600" height="200" style="margin-left: 50px;">
-        <p>ID:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="ID_rSlider" type="range" min="0" max="255" value="255">
-          <p id="ID_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="ID_gSlider" type="range" min="0" max="255" value="255">
-          <p id="ID_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="ID_bSlider" type="range" min="0" max="255" value="255">
-          <p id="ID_bValue"></p>
-        </div>
-      </div>
-
-      <div id="IS" width="600" height="200" style="margin-left: 50px;">
-        <p>IS:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="IS_rSlider" type="range" min="0" max="255" value="255">
-          <p id="IS_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="IS_gSlider" type="range" min="0" max="255" value="255">
-          <p id="IS_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="IS_bSlider" type="range" min="0" max="255" value="255">
-          <p id="IS_bValue"></p>
-        </div>
-      </div>
-
-      <div id="KA" width="600" height="200" style="margin-left: 50px;">
-        <p>KA:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="KA_rSlider" type="range" min="0" max="255" value="255">
-          <p id="KA_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="KA_gSlider" type="range" min="0" max="255" value="255">
-          <p id="KA_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="KA_bSlider" type="range" min="0" max="255" value="255">
-          <p id="KA_bValue"></p>
-        </div>
-      </div>
-
-      <div id="KD" width="600" height="200" style="margin-left: 50px;">
-        <p>KD:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="KD_rSlider" type="range" min="0" max="255" value="255">
-          <p id="KD_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="KD_gSlider" type="range" min="0" max="255" value="255">
-          <p id="KD_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="KD_bSlider" type="range" min="0" max="255" value="255">
-          <p id="KD_bValue"></p>
-        </div>
-      </div>
-
-      <div id="KS" width="600" height="200" style="margin-left: 50px;">
-        <p>KS:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="KS_rSlider" type="range" min="0" max="255" value="255">
-          <p id="KS_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="KS_gSlider" type="range" min="0" max="255" value="255">
-          <p id="KS_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="KS_bSlider" type="range" min="0" max="255" value="255">
-          <p id="KS_bValue"></p>
-        </div>
-      </div>
-
-      <div id="KE" width="600" height="200" style="margin-left: 50px;">
-        <p>KE:</p>
-        <div style="display:flex; flex-direction:row;">
-          R:<input id="KE_rSlider" type="range" min="0" max="255" value="255">
-          <p id="KE_rValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          G:<input id="KE_gSlider" type="range" min="0" max="255" value="255">
-          <p id="KE_gValue"></p>
-        </div>
-        <div style="display:flex; flex-direction:row;">
-          B:<input id="KE_bSlider" type="range" min="0" max="255" value="255">
-          <p id="KE_bValue"></p>
-        </div>
-      </div>
-
-      <div id="SE" width="600" height="200" style="margin-left: 50px;">
-        <p>SE:</p>
-        <div style="display:flex; flex-direction:row;">
-          <input id="SE_Slider" type="range" min="0" max="100" value="50">
-          <p id="SE_Value"></p>
+        <div class="navigation">
+          <button class="startButton" type="button" onclick="location.href='demo.html';">Start</button>
         </div>
       </div>
     </div>
-    <script src="lib/webgl-utils.js"></script>
-    <script src="lib/webgl-debug.js"></script>
-    <script src="lib/cuon-utils.js"></script>
-    <script src="lib/cuon-matrix-quat03.js"></script>
-<!-- YOU SHOULD UPGRADE to Brandon Jones' far-faster, 
-      far more complete vector/matrix/quaternion library: (Google it!)
-		<script src="../lib/glmatrix.js"></script>
---> 
-		<script src="JT_VBObox-Lib.js"></script>
-    <script src="index.js"></script>
   </body>
 </html>
