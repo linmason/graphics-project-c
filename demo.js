@@ -379,7 +379,7 @@ var g_SE = html_SE_Slider.value/255;
 html_SE_Output.innerHTML = html_SE_Slider.value;
 html_SE_Slider.oninput = function() {
   html_SE_Output.innerHTML = this.value;
-  g_SE = this.value/255;
+  g_SE = this.value;
 }
 
 // Initalize lighting and shading type
